@@ -29,7 +29,25 @@ namespace SoColissimo\WebService;
  * Class BaseSoColissimoWebService
  * @package SoColissimo\WebService 
  * @author Thelia <info@thelia.net>
+ *
+ * @method BaseSoColissimoWebService getAccountNumber()
+ * @method BaseSoColissimoWebService setAccountNumber($value)
+ * @method BaseSoColissimoWebService getPassword()
+ * @method BaseSoColissimoWebService setPassword($value)
+ * @method BaseSoColissimoWebService getWeight()
+ * @method BaseSoColissimoWebService setWeight($value)
  */
-abstract class BaseSoColissimoWebService {
+abstract class BaseSoColissimoWebService extends BaseWebService {
 
+    const WSDL_URL = "https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl";
+
+    protected $account_number=null;
+    protected $password=null;
+    protected $filter_relay=null;
+    /** @var string Weight in grammes !*/
+    protected $weight=null;
+
+    public function __construct($function) {
+        parent::__construct(self::WSDL_URL, $function);
+    }
 } 

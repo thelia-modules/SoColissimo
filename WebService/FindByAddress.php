@@ -23,13 +23,70 @@
 
 
 namespace SoColissimo\WebService;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 
 /**
  * Class FindByAddress
  * @package SoColissimo\WebService 
  * @author Thelia <info@thelia.net>
+ *
+ * @method FindByAddress getAddress()
+ * @method FindByAddress setAddress($value)
+ * @method FindByAddress getZipCode()
+ * @method FindByAddress setZipCode($value)
+ * @method FindByAddress getCity()
+ * @method FindByAddress setCity($value)
+ * @method FindByAddress getCountryCode()
+ * @method FindByAddress setCountryCode($value)
+ * @method FindByAddress getFilterRelay()
+ * @method FindByAddress setFilterRelay($value)
+ * @method FindByAddress getRequestId()
+ * @method FindByAddress setRequestId($value)
+ * @method FindByAddress getLang()
+ * @method FindByAddress setLang($value)
+ * @method FindByAddress getOptionInter()
+ * @method FindByAddress setOptionInter($value)
+ * @method FindByAddress getShippingDate()
+ * @method FindByAddress setShippingDate($value)
  */
 class FindByAddress extends BaseSoColissimoWebService {
 
+    protected $address=null;
+    protected $zip_code=null;
+    protected $city=null;
+    protected $country_code=null;
+    protected $request_id=null;
+    protected $lang=null;
+    protected $option_inter=null;
+    protected $shipping_date=null;
+
+
+    public function __construct() {
+        parent::__construct("findRDVPointRetraitAcheminement");
+    }
+
+    public function isError(\stdClass $response) {
+        return isset($response->return->errorCode) && $response->return->errorCode != 0;
+    }
+
+    public function getError(\stdClass $response)
+    {
+        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+    }
+
+    /**
+     * @param \stdClass $response
+     * @return array
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
+    public function getFormattedResponse(\stdClass $response)
+    {
+        if(!isset($response->return->listePointRetraitAcheminement)) {
+            throw new Exception("An unknown error happened");
+        }
+        $points = $response->return->listePointRetraitAcheminement;
+
+        return $points;
+    }
 } 

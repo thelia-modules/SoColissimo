@@ -23,13 +23,57 @@
 
 
 namespace SoColissimo\WebService;
+use Symfony\Component\Config\Definition\Exception\Exception;
 
 
 /**
  * Class FindById
  * @package SoColissimo\WebService 
  * @author Thelia <info@thelia.net>
+ *
+ * @method FindById getId()
+ * @method FindById setId($value)
+ * @method FindById getReseau()
+ * @method FindById setReseau($value)
+ * @method FindById getLangue()
+ * @method FindById setLangue($value)
+ * @method FindById getDate()
+ * @method FindById setDate($value)
  */
 class FindById extends BaseSoColissimoWebService {
+
+    protected $id;
+    /** @var  string if belgique: R12, else empty */
+    protected $reseau;
+    protected $langue;
+    protected $date;
+
+    public function __construct() {
+        parent::__construct("findPointRetraitAcheminementByID");
+    }
+
+    public function isError(\stdClass $response) {
+        return isset($response->return->errorCode) && $response->return->errorCode != 0;
+    }
+
+    public function getError(\stdClass $response)
+    {
+        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+    }
+
+    /**
+     * @param \stdClass $response
+     * @return \stdClass
+     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     */
+    public function getFormattedResponse(\stdClass $response)
+    {
+        if(!isset($response->return->pointRetraitAcheminement)) {
+            throw new Exception("An unknown error happened");
+        }
+        $points = $response->return->pointRetraitAcheminement;
+
+        return $points;
+    }
 
 } 
