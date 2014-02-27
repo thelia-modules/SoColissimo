@@ -2,7 +2,6 @@
 
 namespace SoColissimo\Model\Base;
 
-use \DateTime;
 use \Exception;
 use \PDO;
 use Propel\Runtime\Propel;
@@ -15,17 +14,19 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use Propel\Runtime\Util\PropelDateTime;
-use SoColissimo\Model\SocolissimoFreeshipping as ChildSocolissimoFreeshipping;
-use SoColissimo\Model\SocolissimoFreeshippingQuery as ChildSocolissimoFreeshippingQuery;
-use SoColissimo\Model\Map\SocolissimoFreeshippingTableMap;
+use SoColissimo\Model\AddressSocolissimoQuery as ChildAddressSocolissimoQuery;
+use SoColissimo\Model\Map\AddressSocolissimoTableMap;
+use SoColissimo\Model\Thelia\Model\Country as ChildCountry;
+use SoColissimo\Model\Thelia\Model\CustomerTitle as ChildCustomerTitle;
+use SoColissimo\Model\Thelia\Model\CountryQuery;
+use SoColissimo\Model\Thelia\Model\CustomerTitleQuery;
 
-abstract class SocolissimoFreeshipping implements ActiveRecordInterface
+abstract class AddressSocolissimo implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\SoColissimo\\Model\\Map\\SocolissimoFreeshippingTableMap';
+    const TABLE_MAP = '\\SoColissimo\\Model\\Map\\AddressSocolissimoTableMap';
 
 
     /**
@@ -61,22 +62,80 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     protected $id;
 
     /**
-     * The value for the active field.
-     * @var        boolean
+     * The value for the title_id field.
+     * @var        int
      */
-    protected $active;
+    protected $title_id;
 
     /**
-     * The value for the created_at field.
+     * The value for the company field.
      * @var        string
      */
-    protected $created_at;
+    protected $company;
 
     /**
-     * The value for the updated_at field.
+     * The value for the firstname field.
      * @var        string
      */
-    protected $updated_at;
+    protected $firstname;
+
+    /**
+     * The value for the lastname field.
+     * @var        string
+     */
+    protected $lastname;
+
+    /**
+     * The value for the address1 field.
+     * @var        string
+     */
+    protected $address1;
+
+    /**
+     * The value for the address2 field.
+     * @var        string
+     */
+    protected $address2;
+
+    /**
+     * The value for the address3 field.
+     * @var        string
+     */
+    protected $address3;
+
+    /**
+     * The value for the zipcode field.
+     * @var        string
+     */
+    protected $zipcode;
+
+    /**
+     * The value for the city field.
+     * @var        string
+     */
+    protected $city;
+
+    /**
+     * The value for the country_id field.
+     * @var        int
+     */
+    protected $country_id;
+
+    /**
+     * The value for the code field.
+     * @var        string
+     */
+    protected $code;
+
+    /**
+     * @var        CustomerTitle
+     */
+    protected $aCustomerTitle;
+
+    /**
+     * @var        Country
+     */
+    protected $aCountry;
 
     /**
      * Flag to prevent endless save loop, if this object is referenced
@@ -87,7 +146,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     protected $alreadyInSave = false;
 
     /**
-     * Initializes internal state of SoColissimo\Model\Base\SocolissimoFreeshipping object.
+     * Initializes internal state of SoColissimo\Model\Base\AddressSocolissimo object.
      */
     public function __construct()
     {
@@ -182,9 +241,9 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>SocolissimoFreeshipping</code> instance.  If
-     * <code>obj</code> is an instance of <code>SocolissimoFreeshipping</code>, delegates to
-     * <code>equals(SocolissimoFreeshipping)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>AddressSocolissimo</code> instance.  If
+     * <code>obj</code> is an instance of <code>AddressSocolissimo</code>, delegates to
+     * <code>equals(AddressSocolissimo)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -267,7 +326,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return SocolissimoFreeshipping The current object, for fluid interface
+     * @return AddressSocolissimo The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -299,7 +358,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return SocolissimoFreeshipping The current object, for fluid interface
+     * @return AddressSocolissimo The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -356,61 +415,131 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     }
 
     /**
-     * Get the [active] column value.
+     * Get the [title_id] column value.
      *
-     * @return   boolean
+     * @return   int
      */
-    public function getActive()
+    public function getTitleId()
     {
 
-        return $this->active;
+        return $this->title_id;
     }
 
     /**
-     * Get the [optionally formatted] temporal [created_at] column value.
+     * Get the [company] column value.
      *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
+     * @return   string
      */
-    public function getCreatedAt($format = NULL)
+    public function getCompany()
     {
-        if ($format === null) {
-            return $this->created_at;
-        } else {
-            return $this->created_at instanceof \DateTime ? $this->created_at->format($format) : null;
-        }
+
+        return $this->company;
     }
 
     /**
-     * Get the [optionally formatted] temporal [updated_at] column value.
+     * Get the [firstname] column value.
      *
-     *
-     * @param      string $format The date/time format string (either date()-style or strftime()-style).
-     *                            If format is NULL, then the raw \DateTime object will be returned.
-     *
-     * @return mixed Formatted date/time value as string or \DateTime object (if format is NULL), NULL if column is NULL, and 0 if column value is 0000-00-00 00:00:00
-     *
-     * @throws PropelException - if unable to parse/validate the date/time value.
+     * @return   string
      */
-    public function getUpdatedAt($format = NULL)
+    public function getFirstname()
     {
-        if ($format === null) {
-            return $this->updated_at;
-        } else {
-            return $this->updated_at instanceof \DateTime ? $this->updated_at->format($format) : null;
-        }
+
+        return $this->firstname;
+    }
+
+    /**
+     * Get the [lastname] column value.
+     *
+     * @return   string
+     */
+    public function getLastname()
+    {
+
+        return $this->lastname;
+    }
+
+    /**
+     * Get the [address1] column value.
+     *
+     * @return   string
+     */
+    public function getAddress1()
+    {
+
+        return $this->address1;
+    }
+
+    /**
+     * Get the [address2] column value.
+     *
+     * @return   string
+     */
+    public function getAddress2()
+    {
+
+        return $this->address2;
+    }
+
+    /**
+     * Get the [address3] column value.
+     *
+     * @return   string
+     */
+    public function getAddress3()
+    {
+
+        return $this->address3;
+    }
+
+    /**
+     * Get the [zipcode] column value.
+     *
+     * @return   string
+     */
+    public function getZipcode()
+    {
+
+        return $this->zipcode;
+    }
+
+    /**
+     * Get the [city] column value.
+     *
+     * @return   string
+     */
+    public function getCity()
+    {
+
+        return $this->city;
+    }
+
+    /**
+     * Get the [country_id] column value.
+     *
+     * @return   int
+     */
+    public function getCountryId()
+    {
+
+        return $this->country_id;
+    }
+
+    /**
+     * Get the [code] column value.
+     *
+     * @return   string
+     */
+    public function getCode()
+    {
+
+        return $this->code;
     }
 
     /**
      * Set the value of [id] column.
      *
      * @param      int $v new value
-     * @return   \SoColissimo\Model\SocolissimoFreeshipping The current object (for fluent API support)
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -420,7 +549,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[SocolissimoFreeshippingTableMap::ID] = true;
+            $this->modifiedColumns[AddressSocolissimoTableMap::ID] = true;
         }
 
 
@@ -428,75 +557,243 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     } // setId()
 
     /**
-     * Sets the value of the [active] column.
-     * Non-boolean arguments are converted using the following rules:
-     *   * 1, '1', 'true',  'on',  and 'yes' are converted to boolean true
-     *   * 0, '0', 'false', 'off', and 'no'  are converted to boolean false
-     * Check on string values is case insensitive (so 'FaLsE' is seen as 'false').
+     * Set the value of [title_id] column.
      *
-     * @param      boolean|integer|string $v The new value
-     * @return   \SoColissimo\Model\SocolissimoFreeshipping The current object (for fluent API support)
+     * @param      int $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
      */
-    public function setActive($v)
+    public function setTitleId($v)
     {
         if ($v !== null) {
-            if (is_string($v)) {
-                $v = in_array(strtolower($v), array('false', 'off', '-', 'no', 'n', '0', '')) ? false : true;
-            } else {
-                $v = (boolean) $v;
-            }
+            $v = (int) $v;
         }
 
-        if ($this->active !== $v) {
-            $this->active = $v;
-            $this->modifiedColumns[SocolissimoFreeshippingTableMap::ACTIVE] = true;
+        if ($this->title_id !== $v) {
+            $this->title_id = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::TITLE_ID] = true;
+        }
+
+        if ($this->aCustomerTitle !== null && $this->aCustomerTitle->getId() !== $v) {
+            $this->aCustomerTitle = null;
         }
 
 
         return $this;
-    } // setActive()
+    } // setTitleId()
 
     /**
-     * Sets the value of [created_at] column to a normalized version of the date/time value specified.
+     * Set the value of [company] column.
      *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \SoColissimo\Model\SocolissimoFreeshipping The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
      */
-    public function setCreatedAt($v)
+    public function setCompany($v)
     {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->created_at !== null || $dt !== null) {
-            if ($dt !== $this->created_at) {
-                $this->created_at = $dt;
-                $this->modifiedColumns[SocolissimoFreeshippingTableMap::CREATED_AT] = true;
-            }
-        } // if either are not null
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->company !== $v) {
+            $this->company = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::COMPANY] = true;
+        }
 
 
         return $this;
-    } // setCreatedAt()
+    } // setCompany()
 
     /**
-     * Sets the value of [updated_at] column to a normalized version of the date/time value specified.
+     * Set the value of [firstname] column.
      *
-     * @param      mixed $v string, integer (timestamp), or \DateTime value.
-     *               Empty strings are treated as NULL.
-     * @return   \SoColissimo\Model\SocolissimoFreeshipping The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
      */
-    public function setUpdatedAt($v)
+    public function setFirstname($v)
     {
-        $dt = PropelDateTime::newInstance($v, null, '\DateTime');
-        if ($this->updated_at !== null || $dt !== null) {
-            if ($dt !== $this->updated_at) {
-                $this->updated_at = $dt;
-                $this->modifiedColumns[SocolissimoFreeshippingTableMap::UPDATED_AT] = true;
-            }
-        } // if either are not null
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->firstname !== $v) {
+            $this->firstname = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::FIRSTNAME] = true;
+        }
 
 
         return $this;
-    } // setUpdatedAt()
+    } // setFirstname()
+
+    /**
+     * Set the value of [lastname] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setLastname($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->lastname !== $v) {
+            $this->lastname = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::LASTNAME] = true;
+        }
+
+
+        return $this;
+    } // setLastname()
+
+    /**
+     * Set the value of [address1] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setAddress1($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->address1 !== $v) {
+            $this->address1 = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::ADDRESS1] = true;
+        }
+
+
+        return $this;
+    } // setAddress1()
+
+    /**
+     * Set the value of [address2] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setAddress2($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->address2 !== $v) {
+            $this->address2 = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::ADDRESS2] = true;
+        }
+
+
+        return $this;
+    } // setAddress2()
+
+    /**
+     * Set the value of [address3] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setAddress3($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->address3 !== $v) {
+            $this->address3 = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::ADDRESS3] = true;
+        }
+
+
+        return $this;
+    } // setAddress3()
+
+    /**
+     * Set the value of [zipcode] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setZipcode($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->zipcode !== $v) {
+            $this->zipcode = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::ZIPCODE] = true;
+        }
+
+
+        return $this;
+    } // setZipcode()
+
+    /**
+     * Set the value of [city] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setCity($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->city !== $v) {
+            $this->city = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::CITY] = true;
+        }
+
+
+        return $this;
+    } // setCity()
+
+    /**
+     * Set the value of [country_id] column.
+     *
+     * @param      int $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setCountryId($v)
+    {
+        if ($v !== null) {
+            $v = (int) $v;
+        }
+
+        if ($this->country_id !== $v) {
+            $this->country_id = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::COUNTRY_ID] = true;
+        }
+
+        if ($this->aCountry !== null && $this->aCountry->getId() !== $v) {
+            $this->aCountry = null;
+        }
+
+
+        return $this;
+    } // setCountryId()
+
+    /**
+     * Set the value of [code] column.
+     *
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setCode($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->code !== $v) {
+            $this->code = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::CODE] = true;
+        }
+
+
+        return $this;
+    } // setCode()
 
     /**
      * Indicates whether the columns in this object are only set to default values.
@@ -535,23 +832,41 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SocolissimoFreeshippingTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : AddressSocolissimoTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SocolissimoFreeshippingTableMap::translateFieldName('Active', TableMap::TYPE_PHPNAME, $indexType)];
-            $this->active = (null !== $col) ? (boolean) $col : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : AddressSocolissimoTableMap::translateFieldName('TitleId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->title_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SocolissimoFreeshippingTableMap::translateFieldName('CreatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->created_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : AddressSocolissimoTableMap::translateFieldName('Company', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->company = (null !== $col) ? (string) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocolissimoFreeshippingTableMap::translateFieldName('UpdatedAt', TableMap::TYPE_PHPNAME, $indexType)];
-            if ($col === '0000-00-00 00:00:00') {
-                $col = null;
-            }
-            $this->updated_at = (null !== $col) ? PropelDateTime::newInstance($col, null, '\DateTime') : null;
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : AddressSocolissimoTableMap::translateFieldName('Firstname', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->firstname = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : AddressSocolissimoTableMap::translateFieldName('Lastname', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->lastname = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : AddressSocolissimoTableMap::translateFieldName('Address1', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->address1 = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 6 + $startcol : AddressSocolissimoTableMap::translateFieldName('Address2', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->address2 = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 7 + $startcol : AddressSocolissimoTableMap::translateFieldName('Address3', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->address3 = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 8 + $startcol : AddressSocolissimoTableMap::translateFieldName('Zipcode', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->zipcode = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 9 + $startcol : AddressSocolissimoTableMap::translateFieldName('City', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->city = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 10 + $startcol : AddressSocolissimoTableMap::translateFieldName('CountryId', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->country_id = (null !== $col) ? (int) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : AddressSocolissimoTableMap::translateFieldName('Code', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->code = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -560,10 +875,10 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = SocolissimoFreeshippingTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 12; // 12 = AddressSocolissimoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \SoColissimo\Model\SocolissimoFreeshipping object", 0, $e);
+            throw new PropelException("Error populating \SoColissimo\Model\AddressSocolissimo object", 0, $e);
         }
     }
 
@@ -582,6 +897,12 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function ensureConsistency()
     {
+        if ($this->aCustomerTitle !== null && $this->title_id !== $this->aCustomerTitle->getId()) {
+            $this->aCustomerTitle = null;
+        }
+        if ($this->aCountry !== null && $this->country_id !== $this->aCountry->getId()) {
+            $this->aCountry = null;
+        }
     } // ensureConsistency
 
     /**
@@ -605,13 +926,13 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(AddressSocolissimoTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildSocolissimoFreeshippingQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildAddressSocolissimoQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -621,6 +942,8 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
 
         if ($deep) {  // also de-associate any related objects?
 
+            $this->aCustomerTitle = null;
+            $this->aCountry = null;
         } // if (deep)
     }
 
@@ -630,8 +953,8 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see SocolissimoFreeshipping::setDeleted()
-     * @see SocolissimoFreeshipping::isDeleted()
+     * @see AddressSocolissimo::setDeleted()
+     * @see AddressSocolissimo::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -640,12 +963,12 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AddressSocolissimoTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildSocolissimoFreeshippingQuery::create()
+            $deleteQuery = ChildAddressSocolissimoQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -682,7 +1005,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AddressSocolissimoTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -691,19 +1014,8 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
             $ret = $this->preSave($con);
             if ($isInsert) {
                 $ret = $ret && $this->preInsert($con);
-                // timestampable behavior
-                if (!$this->isColumnModified(SocolissimoFreeshippingTableMap::CREATED_AT)) {
-                    $this->setCreatedAt(time());
-                }
-                if (!$this->isColumnModified(SocolissimoFreeshippingTableMap::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
             } else {
                 $ret = $ret && $this->preUpdate($con);
-                // timestampable behavior
-                if ($this->isModified() && !$this->isColumnModified(SocolissimoFreeshippingTableMap::UPDATED_AT)) {
-                    $this->setUpdatedAt(time());
-                }
             }
             if ($ret) {
                 $affectedRows = $this->doSave($con);
@@ -713,7 +1025,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SocolissimoFreeshippingTableMap::addInstanceToPool($this);
+                AddressSocolissimoTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -742,6 +1054,25 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         $affectedRows = 0; // initialize var to track total num of affected rows
         if (!$this->alreadyInSave) {
             $this->alreadyInSave = true;
+
+            // We call the save method on the following object(s) if they
+            // were passed to this object by their corresponding set
+            // method.  This object relates to these object(s) by a
+            // foreign key reference.
+
+            if ($this->aCustomerTitle !== null) {
+                if ($this->aCustomerTitle->isModified() || $this->aCustomerTitle->isNew()) {
+                    $affectedRows += $this->aCustomerTitle->save($con);
+                }
+                $this->setCustomerTitle($this->aCustomerTitle);
+            }
+
+            if ($this->aCountry !== null) {
+                if ($this->aCountry->isModified() || $this->aCountry->isNew()) {
+                    $affectedRows += $this->aCountry->save($con);
+                }
+                $this->setCountry($this->aCountry);
+            }
 
             if ($this->isNew() || $this->isModified()) {
                 // persist changes
@@ -774,27 +1105,47 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[SocolissimoFreeshippingTableMap::ID] = true;
-        if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SocolissimoFreeshippingTableMap::ID . ')');
-        }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::ID)) {
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::ACTIVE)) {
-            $modifiedColumns[':p' . $index++]  = 'ACTIVE';
+        if ($this->isColumnModified(AddressSocolissimoTableMap::TITLE_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'TITLE_ID';
         }
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::CREATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'CREATED_AT';
+        if ($this->isColumnModified(AddressSocolissimoTableMap::COMPANY)) {
+            $modifiedColumns[':p' . $index++]  = 'COMPANY';
         }
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::UPDATED_AT)) {
-            $modifiedColumns[':p' . $index++]  = 'UPDATED_AT';
+        if ($this->isColumnModified(AddressSocolissimoTableMap::FIRSTNAME)) {
+            $modifiedColumns[':p' . $index++]  = 'FIRSTNAME';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::LASTNAME)) {
+            $modifiedColumns[':p' . $index++]  = 'LASTNAME';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS1)) {
+            $modifiedColumns[':p' . $index++]  = 'ADDRESS1';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS2)) {
+            $modifiedColumns[':p' . $index++]  = 'ADDRESS2';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS3)) {
+            $modifiedColumns[':p' . $index++]  = 'ADDRESS3';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ZIPCODE)) {
+            $modifiedColumns[':p' . $index++]  = 'ZIPCODE';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::CITY)) {
+            $modifiedColumns[':p' . $index++]  = 'CITY';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::COUNTRY_ID)) {
+            $modifiedColumns[':p' . $index++]  = 'COUNTRY_ID';
+        }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::CODE)) {
+            $modifiedColumns[':p' . $index++]  = 'CODE';
         }
 
         $sql = sprintf(
-            'INSERT INTO socolissimo_freeshipping (%s) VALUES (%s)',
+            'INSERT INTO address_socolissimo (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -806,14 +1157,38 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
                     case 'ID':
                         $stmt->bindValue($identifier, $this->id, PDO::PARAM_INT);
                         break;
-                    case 'ACTIVE':
-                        $stmt->bindValue($identifier, (int) $this->active, PDO::PARAM_INT);
+                    case 'TITLE_ID':
+                        $stmt->bindValue($identifier, $this->title_id, PDO::PARAM_INT);
                         break;
-                    case 'CREATED_AT':
-                        $stmt->bindValue($identifier, $this->created_at ? $this->created_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                    case 'COMPANY':
+                        $stmt->bindValue($identifier, $this->company, PDO::PARAM_STR);
                         break;
-                    case 'UPDATED_AT':
-                        $stmt->bindValue($identifier, $this->updated_at ? $this->updated_at->format("Y-m-d H:i:s") : null, PDO::PARAM_STR);
+                    case 'FIRSTNAME':
+                        $stmt->bindValue($identifier, $this->firstname, PDO::PARAM_STR);
+                        break;
+                    case 'LASTNAME':
+                        $stmt->bindValue($identifier, $this->lastname, PDO::PARAM_STR);
+                        break;
+                    case 'ADDRESS1':
+                        $stmt->bindValue($identifier, $this->address1, PDO::PARAM_STR);
+                        break;
+                    case 'ADDRESS2':
+                        $stmt->bindValue($identifier, $this->address2, PDO::PARAM_STR);
+                        break;
+                    case 'ADDRESS3':
+                        $stmt->bindValue($identifier, $this->address3, PDO::PARAM_STR);
+                        break;
+                    case 'ZIPCODE':
+                        $stmt->bindValue($identifier, $this->zipcode, PDO::PARAM_STR);
+                        break;
+                    case 'CITY':
+                        $stmt->bindValue($identifier, $this->city, PDO::PARAM_STR);
+                        break;
+                    case 'COUNTRY_ID':
+                        $stmt->bindValue($identifier, $this->country_id, PDO::PARAM_INT);
+                        break;
+                    case 'CODE':
+                        $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -822,13 +1197,6 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
             Propel::log($e->getMessage(), Propel::LOG_ERR);
             throw new PropelException(sprintf('Unable to execute INSERT statement [%s]', $sql), 0, $e);
         }
-
-        try {
-            $pk = $con->lastInsertId();
-        } catch (Exception $e) {
-            throw new PropelException('Unable to get autoincrement id.', 0, $e);
-        }
-        $this->setId($pk);
 
         $this->setNew(false);
     }
@@ -861,7 +1229,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SocolissimoFreeshippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AddressSocolissimoTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -881,13 +1249,37 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
                 return $this->getId();
                 break;
             case 1:
-                return $this->getActive();
+                return $this->getTitleId();
                 break;
             case 2:
-                return $this->getCreatedAt();
+                return $this->getCompany();
                 break;
             case 3:
-                return $this->getUpdatedAt();
+                return $this->getFirstname();
+                break;
+            case 4:
+                return $this->getLastname();
+                break;
+            case 5:
+                return $this->getAddress1();
+                break;
+            case 6:
+                return $this->getAddress2();
+                break;
+            case 7:
+                return $this->getAddress3();
+                break;
+            case 8:
+                return $this->getZipcode();
+                break;
+            case 9:
+                return $this->getCity();
+                break;
+            case 10:
+                return $this->getCountryId();
+                break;
+            case 11:
+                return $this->getCode();
                 break;
             default:
                 return null;
@@ -906,27 +1298,44 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      *                    Defaults to TableMap::TYPE_PHPNAME.
      * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
      * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
-    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array())
+    public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['SocolissimoFreeshipping'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['AddressSocolissimo'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['SocolissimoFreeshipping'][$this->getPrimaryKey()] = true;
-        $keys = SocolissimoFreeshippingTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['AddressSocolissimo'][$this->getPrimaryKey()] = true;
+        $keys = AddressSocolissimoTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
-            $keys[1] => $this->getActive(),
-            $keys[2] => $this->getCreatedAt(),
-            $keys[3] => $this->getUpdatedAt(),
+            $keys[1] => $this->getTitleId(),
+            $keys[2] => $this->getCompany(),
+            $keys[3] => $this->getFirstname(),
+            $keys[4] => $this->getLastname(),
+            $keys[5] => $this->getAddress1(),
+            $keys[6] => $this->getAddress2(),
+            $keys[7] => $this->getAddress3(),
+            $keys[8] => $this->getZipcode(),
+            $keys[9] => $this->getCity(),
+            $keys[10] => $this->getCountryId(),
+            $keys[11] => $this->getCode(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
             $result[$key] = $virtualColumn;
         }
 
+        if ($includeForeignObjects) {
+            if (null !== $this->aCustomerTitle) {
+                $result['CustomerTitle'] = $this->aCustomerTitle->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+            if (null !== $this->aCountry) {
+                $result['Country'] = $this->aCountry->toArray($keyType, $includeLazyLoadColumns,  $alreadyDumpedObjects, true);
+            }
+        }
 
         return $result;
     }
@@ -944,7 +1353,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SocolissimoFreeshippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = AddressSocolissimoTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -964,13 +1373,37 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
                 $this->setId($value);
                 break;
             case 1:
-                $this->setActive($value);
+                $this->setTitleId($value);
                 break;
             case 2:
-                $this->setCreatedAt($value);
+                $this->setCompany($value);
                 break;
             case 3:
-                $this->setUpdatedAt($value);
+                $this->setFirstname($value);
+                break;
+            case 4:
+                $this->setLastname($value);
+                break;
+            case 5:
+                $this->setAddress1($value);
+                break;
+            case 6:
+                $this->setAddress2($value);
+                break;
+            case 7:
+                $this->setAddress3($value);
+                break;
+            case 8:
+                $this->setZipcode($value);
+                break;
+            case 9:
+                $this->setCity($value);
+                break;
+            case 10:
+                $this->setCountryId($value);
+                break;
+            case 11:
+                $this->setCode($value);
                 break;
         } // switch()
     }
@@ -994,12 +1427,20 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = SocolissimoFreeshippingTableMap::getFieldNames($keyType);
+        $keys = AddressSocolissimoTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
-        if (array_key_exists($keys[1], $arr)) $this->setActive($arr[$keys[1]]);
-        if (array_key_exists($keys[2], $arr)) $this->setCreatedAt($arr[$keys[2]]);
-        if (array_key_exists($keys[3], $arr)) $this->setUpdatedAt($arr[$keys[3]]);
+        if (array_key_exists($keys[1], $arr)) $this->setTitleId($arr[$keys[1]]);
+        if (array_key_exists($keys[2], $arr)) $this->setCompany($arr[$keys[2]]);
+        if (array_key_exists($keys[3], $arr)) $this->setFirstname($arr[$keys[3]]);
+        if (array_key_exists($keys[4], $arr)) $this->setLastname($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setAddress1($arr[$keys[5]]);
+        if (array_key_exists($keys[6], $arr)) $this->setAddress2($arr[$keys[6]]);
+        if (array_key_exists($keys[7], $arr)) $this->setAddress3($arr[$keys[7]]);
+        if (array_key_exists($keys[8], $arr)) $this->setZipcode($arr[$keys[8]]);
+        if (array_key_exists($keys[9], $arr)) $this->setCity($arr[$keys[9]]);
+        if (array_key_exists($keys[10], $arr)) $this->setCountryId($arr[$keys[10]]);
+        if (array_key_exists($keys[11], $arr)) $this->setCode($arr[$keys[11]]);
     }
 
     /**
@@ -1009,12 +1450,20 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+        $criteria = new Criteria(AddressSocolissimoTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::ID)) $criteria->add(SocolissimoFreeshippingTableMap::ID, $this->id);
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::ACTIVE)) $criteria->add(SocolissimoFreeshippingTableMap::ACTIVE, $this->active);
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::CREATED_AT)) $criteria->add(SocolissimoFreeshippingTableMap::CREATED_AT, $this->created_at);
-        if ($this->isColumnModified(SocolissimoFreeshippingTableMap::UPDATED_AT)) $criteria->add(SocolissimoFreeshippingTableMap::UPDATED_AT, $this->updated_at);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ID)) $criteria->add(AddressSocolissimoTableMap::ID, $this->id);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::TITLE_ID)) $criteria->add(AddressSocolissimoTableMap::TITLE_ID, $this->title_id);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::COMPANY)) $criteria->add(AddressSocolissimoTableMap::COMPANY, $this->company);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::FIRSTNAME)) $criteria->add(AddressSocolissimoTableMap::FIRSTNAME, $this->firstname);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::LASTNAME)) $criteria->add(AddressSocolissimoTableMap::LASTNAME, $this->lastname);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS1)) $criteria->add(AddressSocolissimoTableMap::ADDRESS1, $this->address1);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS2)) $criteria->add(AddressSocolissimoTableMap::ADDRESS2, $this->address2);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ADDRESS3)) $criteria->add(AddressSocolissimoTableMap::ADDRESS3, $this->address3);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::ZIPCODE)) $criteria->add(AddressSocolissimoTableMap::ZIPCODE, $this->zipcode);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::CITY)) $criteria->add(AddressSocolissimoTableMap::CITY, $this->city);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::COUNTRY_ID)) $criteria->add(AddressSocolissimoTableMap::COUNTRY_ID, $this->country_id);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::CODE)) $criteria->add(AddressSocolissimoTableMap::CODE, $this->code);
 
         return $criteria;
     }
@@ -1029,8 +1478,8 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SocolissimoFreeshippingTableMap::DATABASE_NAME);
-        $criteria->add(SocolissimoFreeshippingTableMap::ID, $this->id);
+        $criteria = new Criteria(AddressSocolissimoTableMap::DATABASE_NAME);
+        $criteria->add(AddressSocolissimoTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1071,19 +1520,27 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \SoColissimo\Model\SocolissimoFreeshipping (or compatible) type.
+     * @param      object $copyObj An object of \SoColissimo\Model\AddressSocolissimo (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
     {
-        $copyObj->setActive($this->getActive());
-        $copyObj->setCreatedAt($this->getCreatedAt());
-        $copyObj->setUpdatedAt($this->getUpdatedAt());
+        $copyObj->setId($this->getId());
+        $copyObj->setTitleId($this->getTitleId());
+        $copyObj->setCompany($this->getCompany());
+        $copyObj->setFirstname($this->getFirstname());
+        $copyObj->setLastname($this->getLastname());
+        $copyObj->setAddress1($this->getAddress1());
+        $copyObj->setAddress2($this->getAddress2());
+        $copyObj->setAddress3($this->getAddress3());
+        $copyObj->setZipcode($this->getZipcode());
+        $copyObj->setCity($this->getCity());
+        $copyObj->setCountryId($this->getCountryId());
+        $copyObj->setCode($this->getCode());
         if ($makeNew) {
             $copyObj->setNew(true);
-            $copyObj->setId(NULL); // this is a auto-increment column, so set to default value
         }
     }
 
@@ -1096,7 +1553,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \SoColissimo\Model\SocolissimoFreeshipping Clone of current object.
+     * @return                 \SoColissimo\Model\AddressSocolissimo Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1110,14 +1567,124 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
     }
 
     /**
+     * Declares an association between this object and a ChildCustomerTitle object.
+     *
+     * @param                  ChildCustomerTitle $v
+     * @return                 \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCustomerTitle(ChildCustomerTitle $v = null)
+    {
+        if ($v === null) {
+            $this->setTitleId(NULL);
+        } else {
+            $this->setTitleId($v->getId());
+        }
+
+        $this->aCustomerTitle = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCustomerTitle object, it will not be re-added.
+        if ($v !== null) {
+            $v->addAddressSocolissimo($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCustomerTitle object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCustomerTitle The associated ChildCustomerTitle object.
+     * @throws PropelException
+     */
+    public function getCustomerTitle(ConnectionInterface $con = null)
+    {
+        if ($this->aCustomerTitle === null && ($this->title_id !== null)) {
+            $this->aCustomerTitle = CustomerTitleQuery::create()->findPk($this->title_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCustomerTitle->addAddressSocolissimos($this);
+             */
+        }
+
+        return $this->aCustomerTitle;
+    }
+
+    /**
+     * Declares an association between this object and a ChildCountry object.
+     *
+     * @param                  ChildCountry $v
+     * @return                 \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     * @throws PropelException
+     */
+    public function setCountry(ChildCountry $v = null)
+    {
+        if ($v === null) {
+            $this->setCountryId(NULL);
+        } else {
+            $this->setCountryId($v->getId());
+        }
+
+        $this->aCountry = $v;
+
+        // Add binding for other direction of this n:n relationship.
+        // If this object has already been added to the ChildCountry object, it will not be re-added.
+        if ($v !== null) {
+            $v->addAddressSocolissimo($this);
+        }
+
+
+        return $this;
+    }
+
+
+    /**
+     * Get the associated ChildCountry object
+     *
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildCountry The associated ChildCountry object.
+     * @throws PropelException
+     */
+    public function getCountry(ConnectionInterface $con = null)
+    {
+        if ($this->aCountry === null && ($this->country_id !== null)) {
+            $this->aCountry = CountryQuery::create()->findPk($this->country_id, $con);
+            /* The following can be used additionally to
+                guarantee the related object contains a reference
+                to this object.  This level of coupling may, however, be
+                undesirable since it could result in an only partially populated collection
+                in the referenced object.
+                $this->aCountry->addAddressSocolissimos($this);
+             */
+        }
+
+        return $this->aCountry;
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
     {
         $this->id = null;
-        $this->active = null;
-        $this->created_at = null;
-        $this->updated_at = null;
+        $this->title_id = null;
+        $this->company = null;
+        $this->firstname = null;
+        $this->lastname = null;
+        $this->address1 = null;
+        $this->address2 = null;
+        $this->address3 = null;
+        $this->zipcode = null;
+        $this->city = null;
+        $this->country_id = null;
+        $this->code = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();
@@ -1139,6 +1706,8 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
         if ($deep) {
         } // if ($deep)
 
+        $this->aCustomerTitle = null;
+        $this->aCountry = null;
     }
 
     /**
@@ -1148,21 +1717,7 @@ abstract class SocolissimoFreeshipping implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SocolissimoFreeshippingTableMap::DEFAULT_STRING_FORMAT);
-    }
-
-    // timestampable behavior
-
-    /**
-     * Mark the current object so that the update date doesn't get updated during next save
-     *
-     * @return     ChildSocolissimoFreeshipping The current object (for fluent API support)
-     */
-    public function keepUpdateDateUnchanged()
-    {
-        $this->modifiedColumns[SocolissimoFreeshippingTableMap::UPDATED_AT] = true;
-
-        return $this;
+        return (string) $this->exportTo(AddressSocolissimoTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

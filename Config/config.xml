@@ -7,26 +7,21 @@
     <loops>
         <loop class="SoColissimo\Loop\CheckRightsLoop" name="socolissimo.check.rights" />
         <loop class="SoColissimo\Loop\Price" name="socolissimo" />
-        <!-- sample definition
-        <loop name="MySuperLoop" class="MyModule\Loop\MySuperLoop" />
-        -->
+        <loop class="SoColissimo\Loop\SoColissimoId" name="socolissimoid" />
+        <loop class="SoColissimo\Loop\GetRelais" name="socolissimo.around" />
+        <loop class="SoColissimo\Loop\SoColissimoAddress" name="address.socolissimo" />
     </loops>
 
     <forms>
         <form name="socolissimo.freeshipping.form" class="SoColissimo\Form\FreeShipping" />
-        <!--
-        <form name="MyFormName" class="MyModule\Form\MySuperForm" />
-        -->
+        <form name="socolissimo.configure" class="SoColissimo\Form\ConfigureSoColissimo" />
     </forms>
 
-    <commands>
-        <!--
-        <command class="MyModule\Command\MySuperCommand" />
-        -->
-    </commands>
-
-
     <services>
+        <service id="hook.order.module.socolissimo" class="SoColissimo\Listener\SetDeliveryModule" scope="request">
+            <argument type="service" id="request"/>
+            <tag name="kernel.event_subscriber"/>
+        </service>
         <service id="send.socolissimo.mail" class="SoColissimo\Listener\SendMail" scope="request">
             <argument type="service" id="thelia.parser" />
             <argument type="service" id="mailer"/>

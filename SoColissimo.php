@@ -24,6 +24,7 @@
 namespace SoColissimo;
 
 use Thelia\Model\Country;
+use Thelia\Model\ModuleQuery;
 use Thelia\Module\BaseModule;
 use Thelia\Module\DeliveryModuleInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -40,7 +41,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
     private static $prices = null;
 
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
-
+    const JSON_CONFIG_PATH = "/Config/config.json";
     public static function getPrices()
     {
         if(null === self::$prices) {
@@ -143,6 +144,10 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
         $database = new Database($con->getWrappedConnection());
 
         $database->insertSql(null, array(__DIR__ . '/Config/thelia.sql'));
+    }
+
+    public static function getModCode() {
+        return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
     }
 
 }

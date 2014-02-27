@@ -11,12 +11,12 @@ use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\RelationMap;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Map\TableMapTrait;
-use SoColissimo\Model\SocolissimoFreeshipping;
-use SoColissimo\Model\SocolissimoFreeshippingQuery;
+use SoColissimo\Model\AddressSocolissimo;
+use SoColissimo\Model\AddressSocolissimoQuery;
 
 
 /**
- * This class defines the structure of the 'socolissimo_freeshipping' table.
+ * This class defines the structure of the 'address_socolissimo' table.
  *
  *
  *
@@ -26,14 +26,14 @@ use SoColissimo\Model\SocolissimoFreeshippingQuery;
  * (i.e. if it's a text column type).
  *
  */
-class SocolissimoFreeshippingTableMap extends TableMap
+class AddressSocolissimoTableMap extends TableMap
 {
     use InstancePoolTrait;
     use TableMapTrait;
     /**
      * The (dot-path) name of this class
      */
-    const CLASS_NAME = 'SoColissimo.Model.Map.SocolissimoFreeshippingTableMap';
+    const CLASS_NAME = 'SoColissimo.Model.Map.AddressSocolissimoTableMap';
 
     /**
      * The default database name for this class
@@ -43,22 +43,22 @@ class SocolissimoFreeshippingTableMap extends TableMap
     /**
      * The table name for this class
      */
-    const TABLE_NAME = 'socolissimo_freeshipping';
+    const TABLE_NAME = 'address_socolissimo';
 
     /**
      * The related Propel class for this table
      */
-    const OM_CLASS = '\\SoColissimo\\Model\\SocolissimoFreeshipping';
+    const OM_CLASS = '\\SoColissimo\\Model\\AddressSocolissimo';
 
     /**
      * A class that can be returned by this tableMap
      */
-    const CLASS_DEFAULT = 'SoColissimo.Model.SocolissimoFreeshipping';
+    const CLASS_DEFAULT = 'SoColissimo.Model.AddressSocolissimo';
 
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 4;
+    const NUM_COLUMNS = 12;
 
     /**
      * The number of lazy-loaded columns
@@ -68,27 +68,67 @@ class SocolissimoFreeshippingTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 4;
+    const NUM_HYDRATE_COLUMNS = 12;
 
     /**
      * the column name for the ID field
      */
-    const ID = 'socolissimo_freeshipping.ID';
+    const ID = 'address_socolissimo.ID';
 
     /**
-     * the column name for the ACTIVE field
+     * the column name for the TITLE_ID field
      */
-    const ACTIVE = 'socolissimo_freeshipping.ACTIVE';
+    const TITLE_ID = 'address_socolissimo.TITLE_ID';
 
     /**
-     * the column name for the CREATED_AT field
+     * the column name for the COMPANY field
      */
-    const CREATED_AT = 'socolissimo_freeshipping.CREATED_AT';
+    const COMPANY = 'address_socolissimo.COMPANY';
 
     /**
-     * the column name for the UPDATED_AT field
+     * the column name for the FIRSTNAME field
      */
-    const UPDATED_AT = 'socolissimo_freeshipping.UPDATED_AT';
+    const FIRSTNAME = 'address_socolissimo.FIRSTNAME';
+
+    /**
+     * the column name for the LASTNAME field
+     */
+    const LASTNAME = 'address_socolissimo.LASTNAME';
+
+    /**
+     * the column name for the ADDRESS1 field
+     */
+    const ADDRESS1 = 'address_socolissimo.ADDRESS1';
+
+    /**
+     * the column name for the ADDRESS2 field
+     */
+    const ADDRESS2 = 'address_socolissimo.ADDRESS2';
+
+    /**
+     * the column name for the ADDRESS3 field
+     */
+    const ADDRESS3 = 'address_socolissimo.ADDRESS3';
+
+    /**
+     * the column name for the ZIPCODE field
+     */
+    const ZIPCODE = 'address_socolissimo.ZIPCODE';
+
+    /**
+     * the column name for the CITY field
+     */
+    const CITY = 'address_socolissimo.CITY';
+
+    /**
+     * the column name for the COUNTRY_ID field
+     */
+    const COUNTRY_ID = 'address_socolissimo.COUNTRY_ID';
+
+    /**
+     * the column name for the CODE field
+     */
+    const CODE = 'address_socolissimo.CODE';
 
     /**
      * The default string format for model objects of the related table
@@ -102,12 +142,12 @@ class SocolissimoFreeshippingTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Active', 'CreatedAt', 'UpdatedAt', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'active', 'createdAt', 'updatedAt', ),
-        self::TYPE_COLNAME       => array(SocolissimoFreeshippingTableMap::ID, SocolissimoFreeshippingTableMap::ACTIVE, SocolissimoFreeshippingTableMap::CREATED_AT, SocolissimoFreeshippingTableMap::UPDATED_AT, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'ACTIVE', 'CREATED_AT', 'UPDATED_AT', ),
-        self::TYPE_FIELDNAME     => array('id', 'active', 'created_at', 'updated_at', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id', 'TitleId', 'Company', 'Firstname', 'Lastname', 'Address1', 'Address2', 'Address3', 'Zipcode', 'City', 'CountryId', 'Code', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'titleId', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'countryId', 'code', ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID, AddressSocolissimoTableMap::TITLE_ID, AddressSocolissimoTableMap::COMPANY, AddressSocolissimoTableMap::FIRSTNAME, AddressSocolissimoTableMap::LASTNAME, AddressSocolissimoTableMap::ADDRESS1, AddressSocolissimoTableMap::ADDRESS2, AddressSocolissimoTableMap::ADDRESS3, AddressSocolissimoTableMap::ZIPCODE, AddressSocolissimoTableMap::CITY, AddressSocolissimoTableMap::COUNTRY_ID, AddressSocolissimoTableMap::CODE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'TITLE_ID', 'COMPANY', 'FIRSTNAME', 'LASTNAME', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'ZIPCODE', 'CITY', 'COUNTRY_ID', 'CODE', ),
+        self::TYPE_FIELDNAME     => array('id', 'title_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'country_id', 'code', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -117,12 +157,12 @@ class SocolissimoFreeshippingTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Active' => 1, 'CreatedAt' => 2, 'UpdatedAt' => 3, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'active' => 1, 'createdAt' => 2, 'updatedAt' => 3, ),
-        self::TYPE_COLNAME       => array(SocolissimoFreeshippingTableMap::ID => 0, SocolissimoFreeshippingTableMap::ACTIVE => 1, SocolissimoFreeshippingTableMap::CREATED_AT => 2, SocolissimoFreeshippingTableMap::UPDATED_AT => 3, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'ACTIVE' => 1, 'CREATED_AT' => 2, 'UPDATED_AT' => 3, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'active' => 1, 'created_at' => 2, 'updated_at' => 3, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'TitleId' => 1, 'Company' => 2, 'Firstname' => 3, 'Lastname' => 4, 'Address1' => 5, 'Address2' => 6, 'Address3' => 7, 'Zipcode' => 8, 'City' => 9, 'CountryId' => 10, 'Code' => 11, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'titleId' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'countryId' => 10, 'code' => 11, ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID => 0, AddressSocolissimoTableMap::TITLE_ID => 1, AddressSocolissimoTableMap::COMPANY => 2, AddressSocolissimoTableMap::FIRSTNAME => 3, AddressSocolissimoTableMap::LASTNAME => 4, AddressSocolissimoTableMap::ADDRESS1 => 5, AddressSocolissimoTableMap::ADDRESS2 => 6, AddressSocolissimoTableMap::ADDRESS3 => 7, AddressSocolissimoTableMap::ZIPCODE => 8, AddressSocolissimoTableMap::CITY => 9, AddressSocolissimoTableMap::COUNTRY_ID => 10, AddressSocolissimoTableMap::CODE => 11, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'TITLE_ID' => 1, 'COMPANY' => 2, 'FIRSTNAME' => 3, 'LASTNAME' => 4, 'ADDRESS1' => 5, 'ADDRESS2' => 6, 'ADDRESS3' => 7, 'ZIPCODE' => 8, 'CITY' => 9, 'COUNTRY_ID' => 10, 'CODE' => 11, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title_id' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'country_id' => 10, 'code' => 11, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
     );
 
     /**
@@ -135,16 +175,24 @@ class SocolissimoFreeshippingTableMap extends TableMap
     public function initialize()
     {
         // attributes
-        $this->setName('socolissimo_freeshipping');
-        $this->setPhpName('SocolissimoFreeshipping');
-        $this->setClassName('\\SoColissimo\\Model\\SocolissimoFreeshipping');
+        $this->setName('address_socolissimo');
+        $this->setPhpName('AddressSocolissimo');
+        $this->setClassName('\\SoColissimo\\Model\\AddressSocolissimo');
         $this->setPackage('SoColissimo.Model');
-        $this->setUseIdGenerator(true);
+        $this->setUseIdGenerator(false);
         // columns
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
-        $this->addColumn('ACTIVE', 'Active', 'BOOLEAN', true, 1, null);
-        $this->addColumn('CREATED_AT', 'CreatedAt', 'TIMESTAMP', false, null, null);
-        $this->addColumn('UPDATED_AT', 'UpdatedAt', 'TIMESTAMP', false, null, null);
+        $this->addForeignKey('TITLE_ID', 'TitleId', 'INTEGER', 'customer_title', 'ID', true, null, null);
+        $this->addColumn('COMPANY', 'Company', 'VARCHAR', false, 255, null);
+        $this->addColumn('FIRSTNAME', 'Firstname', 'VARCHAR', true, 255, null);
+        $this->addColumn('LASTNAME', 'Lastname', 'VARCHAR', true, 255, null);
+        $this->addColumn('ADDRESS1', 'Address1', 'VARCHAR', true, 255, null);
+        $this->addColumn('ADDRESS2', 'Address2', 'VARCHAR', true, 255, null);
+        $this->addColumn('ADDRESS3', 'Address3', 'VARCHAR', true, 255, null);
+        $this->addColumn('ZIPCODE', 'Zipcode', 'VARCHAR', true, 10, null);
+        $this->addColumn('CITY', 'City', 'VARCHAR', true, 255, null);
+        $this->addForeignKey('COUNTRY_ID', 'CountryId', 'INTEGER', 'country', 'ID', true, null, null);
+        $this->addColumn('CODE', 'Code', 'VARCHAR', true, 10, null);
     } // initialize()
 
     /**
@@ -152,20 +200,9 @@ class SocolissimoFreeshippingTableMap extends TableMap
      */
     public function buildRelations()
     {
+        $this->addRelation('CustomerTitle', '\\SoColissimo\\Model\\Thelia\\Model\\CustomerTitle', RelationMap::MANY_TO_ONE, array('title_id' => 'id', ), 'RESTRICT', 'RESTRICT');
+        $this->addRelation('Country', '\\SoColissimo\\Model\\Thelia\\Model\\Country', RelationMap::MANY_TO_ONE, array('country_id' => 'id', ), 'RESTRICT', 'RESTRICT');
     } // buildRelations()
-
-    /**
-     *
-     * Gets the list of behaviors registered for this table
-     *
-     * @return array Associative array (name => parameters) of behaviors
-     */
-    public function getBehaviors()
-    {
-        return array(
-            'timestampable' => array('create_column' => 'created_at', 'update_column' => 'updated_at', ),
-        );
-    } // getBehaviors()
 
     /**
      * Retrieves a string version of the primary key from the DB resultset row that can be used to uniquely identify a row in this table.
@@ -223,7 +260,7 @@ class SocolissimoFreeshippingTableMap extends TableMap
      */
     public static function getOMClass($withPrefix = true)
     {
-        return $withPrefix ? SocolissimoFreeshippingTableMap::CLASS_DEFAULT : SocolissimoFreeshippingTableMap::OM_CLASS;
+        return $withPrefix ? AddressSocolissimoTableMap::CLASS_DEFAULT : AddressSocolissimoTableMap::OM_CLASS;
     }
 
     /**
@@ -237,21 +274,21 @@ class SocolissimoFreeshippingTableMap extends TableMap
      *
      * @throws PropelException Any exceptions caught during processing will be
      *         rethrown wrapped into a PropelException.
-     * @return array (SocolissimoFreeshipping object, last column rank)
+     * @return array (AddressSocolissimo object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
-        $key = SocolissimoFreeshippingTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
-        if (null !== ($obj = SocolissimoFreeshippingTableMap::getInstanceFromPool($key))) {
+        $key = AddressSocolissimoTableMap::getPrimaryKeyHashFromRow($row, $offset, $indexType);
+        if (null !== ($obj = AddressSocolissimoTableMap::getInstanceFromPool($key))) {
             // We no longer rehydrate the object, since this can cause data loss.
             // See http://www.propelorm.org/ticket/509
             // $obj->hydrate($row, $offset, true); // rehydrate
-            $col = $offset + SocolissimoFreeshippingTableMap::NUM_HYDRATE_COLUMNS;
+            $col = $offset + AddressSocolissimoTableMap::NUM_HYDRATE_COLUMNS;
         } else {
-            $cls = SocolissimoFreeshippingTableMap::OM_CLASS;
+            $cls = AddressSocolissimoTableMap::OM_CLASS;
             $obj = new $cls();
             $col = $obj->hydrate($row, $offset, false, $indexType);
-            SocolissimoFreeshippingTableMap::addInstanceToPool($obj, $key);
+            AddressSocolissimoTableMap::addInstanceToPool($obj, $key);
         }
 
         return array($obj, $col);
@@ -274,8 +311,8 @@ class SocolissimoFreeshippingTableMap extends TableMap
         $cls = static::getOMClass(false);
         // populate the object(s)
         while ($row = $dataFetcher->fetch()) {
-            $key = SocolissimoFreeshippingTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
-            if (null !== ($obj = SocolissimoFreeshippingTableMap::getInstanceFromPool($key))) {
+            $key = AddressSocolissimoTableMap::getPrimaryKeyHashFromRow($row, 0, $dataFetcher->getIndexType());
+            if (null !== ($obj = AddressSocolissimoTableMap::getInstanceFromPool($key))) {
                 // We no longer rehydrate the object, since this can cause data loss.
                 // See http://www.propelorm.org/ticket/509
                 // $obj->hydrate($row, 0, true); // rehydrate
@@ -284,7 +321,7 @@ class SocolissimoFreeshippingTableMap extends TableMap
                 $obj = new $cls();
                 $obj->hydrate($row);
                 $results[] = $obj;
-                SocolissimoFreeshippingTableMap::addInstanceToPool($obj, $key);
+                AddressSocolissimoTableMap::addInstanceToPool($obj, $key);
             } // if key exists
         }
 
@@ -305,15 +342,31 @@ class SocolissimoFreeshippingTableMap extends TableMap
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
         if (null === $alias) {
-            $criteria->addSelectColumn(SocolissimoFreeshippingTableMap::ID);
-            $criteria->addSelectColumn(SocolissimoFreeshippingTableMap::ACTIVE);
-            $criteria->addSelectColumn(SocolissimoFreeshippingTableMap::CREATED_AT);
-            $criteria->addSelectColumn(SocolissimoFreeshippingTableMap::UPDATED_AT);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::ID);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::TITLE_ID);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::COMPANY);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::FIRSTNAME);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::LASTNAME);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::ADDRESS1);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::ADDRESS2);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::ADDRESS3);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::ZIPCODE);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::CITY);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::COUNTRY_ID);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::CODE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
-            $criteria->addSelectColumn($alias . '.ACTIVE');
-            $criteria->addSelectColumn($alias . '.CREATED_AT');
-            $criteria->addSelectColumn($alias . '.UPDATED_AT');
+            $criteria->addSelectColumn($alias . '.TITLE_ID');
+            $criteria->addSelectColumn($alias . '.COMPANY');
+            $criteria->addSelectColumn($alias . '.FIRSTNAME');
+            $criteria->addSelectColumn($alias . '.LASTNAME');
+            $criteria->addSelectColumn($alias . '.ADDRESS1');
+            $criteria->addSelectColumn($alias . '.ADDRESS2');
+            $criteria->addSelectColumn($alias . '.ADDRESS3');
+            $criteria->addSelectColumn($alias . '.ZIPCODE');
+            $criteria->addSelectColumn($alias . '.CITY');
+            $criteria->addSelectColumn($alias . '.COUNTRY_ID');
+            $criteria->addSelectColumn($alias . '.CODE');
         }
     }
 
@@ -326,7 +379,7 @@ class SocolissimoFreeshippingTableMap extends TableMap
      */
     public static function getTableMap()
     {
-        return Propel::getServiceContainer()->getDatabaseMap(SocolissimoFreeshippingTableMap::DATABASE_NAME)->getTable(SocolissimoFreeshippingTableMap::TABLE_NAME);
+        return Propel::getServiceContainer()->getDatabaseMap(AddressSocolissimoTableMap::DATABASE_NAME)->getTable(AddressSocolissimoTableMap::TABLE_NAME);
     }
 
     /**
@@ -334,16 +387,16 @@ class SocolissimoFreeshippingTableMap extends TableMap
      */
     public static function buildTableMap()
     {
-      $dbMap = Propel::getServiceContainer()->getDatabaseMap(SocolissimoFreeshippingTableMap::DATABASE_NAME);
-      if (!$dbMap->hasTable(SocolissimoFreeshippingTableMap::TABLE_NAME)) {
-        $dbMap->addTableObject(new SocolissimoFreeshippingTableMap());
+      $dbMap = Propel::getServiceContainer()->getDatabaseMap(AddressSocolissimoTableMap::DATABASE_NAME);
+      if (!$dbMap->hasTable(AddressSocolissimoTableMap::TABLE_NAME)) {
+        $dbMap->addTableObject(new AddressSocolissimoTableMap());
       }
     }
 
     /**
-     * Performs a DELETE on the database, given a SocolissimoFreeshipping or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a AddressSocolissimo or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or SocolissimoFreeshipping object or primary key or array of primary keys
+     * @param mixed               $values Criteria or AddressSocolissimo object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -354,25 +407,25 @@ class SocolissimoFreeshippingTableMap extends TableMap
      public static function doDelete($values, ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AddressSocolissimoTableMap::DATABASE_NAME);
         }
 
         if ($values instanceof Criteria) {
             // rename for clarity
             $criteria = $values;
-        } elseif ($values instanceof \SoColissimo\Model\SocolissimoFreeshipping) { // it's a model object
+        } elseif ($values instanceof \SoColissimo\Model\AddressSocolissimo) { // it's a model object
             // create criteria based on pk values
             $criteria = $values->buildPkeyCriteria();
         } else { // it's a primary key, or an array of pks
-            $criteria = new Criteria(SocolissimoFreeshippingTableMap::DATABASE_NAME);
-            $criteria->add(SocolissimoFreeshippingTableMap::ID, (array) $values, Criteria::IN);
+            $criteria = new Criteria(AddressSocolissimoTableMap::DATABASE_NAME);
+            $criteria->add(AddressSocolissimoTableMap::ID, (array) $values, Criteria::IN);
         }
 
-        $query = SocolissimoFreeshippingQuery::create()->mergeWith($criteria);
+        $query = AddressSocolissimoQuery::create()->mergeWith($criteria);
 
-        if ($values instanceof Criteria) { SocolissimoFreeshippingTableMap::clearInstancePool();
+        if ($values instanceof Criteria) { AddressSocolissimoTableMap::clearInstancePool();
         } elseif (!is_object($values)) { // it's a primary key, or an array of pks
-            foreach ((array) $values as $singleval) { SocolissimoFreeshippingTableMap::removeInstanceFromPool($singleval);
+            foreach ((array) $values as $singleval) { AddressSocolissimoTableMap::removeInstanceFromPool($singleval);
             }
         }
 
@@ -380,20 +433,20 @@ class SocolissimoFreeshippingTableMap extends TableMap
     }
 
     /**
-     * Deletes all rows from the socolissimo_freeshipping table.
+     * Deletes all rows from the address_socolissimo table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
-        return SocolissimoFreeshippingQuery::create()->doDeleteAll($con);
+        return AddressSocolissimoQuery::create()->doDeleteAll($con);
     }
 
     /**
-     * Performs an INSERT on the database, given a SocolissimoFreeshipping or Criteria object.
+     * Performs an INSERT on the database, given a AddressSocolissimo or Criteria object.
      *
-     * @param mixed               $criteria Criteria or SocolissimoFreeshipping object containing data that is used to create the INSERT statement.
+     * @param mixed               $criteria Criteria or AddressSocolissimo object containing data that is used to create the INSERT statement.
      * @param ConnectionInterface $con the ConnectionInterface connection to use
      * @return mixed           The new primary key.
      * @throws PropelException Any exceptions caught during processing will be
@@ -402,22 +455,18 @@ class SocolissimoFreeshippingTableMap extends TableMap
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(AddressSocolissimoTableMap::DATABASE_NAME);
         }
 
         if ($criteria instanceof Criteria) {
             $criteria = clone $criteria; // rename for clarity
         } else {
-            $criteria = $criteria->buildCriteria(); // build Criteria from SocolissimoFreeshipping object
-        }
-
-        if ($criteria->containsKey(SocolissimoFreeshippingTableMap::ID) && $criteria->keyContainsValue(SocolissimoFreeshippingTableMap::ID) ) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key ('.SocolissimoFreeshippingTableMap::ID.')');
+            $criteria = $criteria->buildCriteria(); // build Criteria from AddressSocolissimo object
         }
 
 
         // Set the correct dbName
-        $query = SocolissimoFreeshippingQuery::create()->mergeWith($criteria);
+        $query = AddressSocolissimoQuery::create()->mergeWith($criteria);
 
         try {
             // use transaction because $criteria could contain info
@@ -433,7 +482,7 @@ class SocolissimoFreeshippingTableMap extends TableMap
         return $pk;
     }
 
-} // SocolissimoFreeshippingTableMap
+} // AddressSocolissimoTableMap
 // This is the static code needed to register the TableMap for this table with the main Propel class.
 //
-SocolissimoFreeshippingTableMap::buildTableMap();
+AddressSocolissimoTableMap::buildTableMap();

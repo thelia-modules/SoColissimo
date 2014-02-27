@@ -22,58 +22,65 @@
 /*************************************************************************************/
 
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace SoColissimo\Form;
+use SoColissimo\Model\Config;
+use SoColissimo\SoColissimo;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Thelia\Core\Translation\Translator;
+use Thelia\Form\BaseForm;
 
 
 /**
- * Class FindById
- * @package SoColissimo\WebService 
+ * Class ConfigureSoColissimo
+ * @package SoColissimo\Form 
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService {
-
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
-
-    public function __construct() {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response) {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
+class ConfigureSoColissimo extends BaseForm {
+    /**
+     *
+     * in this function you add all the fields you need for your Form.
+     * Form this you have to call add method on $this->formBuilder attribute :
+     *
+     * $this->formBuilder->add("name", "text")
+     *   ->add("email", "email", array(
+     *           "attr" => array(
+     *               "class" => "field"
+     *           ),
+     *           "label" => "email",
+     *           "constraints" => array(
+     *               new \Symfony\Component\Validator\Constraints\NotBlank()
+     *           )
+     *       )
+     *   )
+     *   ->add('age', 'integer');
+     *
+     * @return null
+     */
+    protected function buildForm()
     {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        $config = Config::read(SoColissimo::JSON_CONFIG_PATH);
+        $this->formBuilder
+            ->add("accountnumber","text",array(
+                "constraints" => array(new NotBlank()),
+                "data"=> isset($config["account_number"]) ? $config["account_number"]:"",
+                "label" => Translator::getInstance()->trans("Account number"),
+                "label_attr"=>array("for"=>"accountnumber")
+            ))
+            ->add("password","text",array(
+                "constraints" => array(new NotBlank()),
+                "data"=> isset($config["password"]) ? $config["password"]:"",
+                "label" => Translator::getInstance()->trans("Password"),
+                "label_attr"=>array("for"=>"password")
+            ))
+        ;
     }
 
     /**
-     * @param \stdClass $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @return string the name of you form. This name must be unique
      */
-    public function getFormattedResponse(\stdClass $response)
+    public function getName()
     {
-        if(!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
-        }
-        $points = $response->return->pointRetraitAcheminement;
-
-        return $points;
+        return "configuresocolissimo";
     }
 
 } 

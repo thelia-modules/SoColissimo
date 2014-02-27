@@ -10,4 +10,14 @@
     <route id="socolissimo.edit.freeshipping" path="/admin/module/socolissimo/freeshipping" methods="post">
         <default key="_controller">SoColissimo\Controller\FreeShipping::set</default>
     </route>
+
+    <route id="socolissimo.configure" path="/admin/module/socolissimo/configure" methods="post">
+        <default key="_controller">SoColissimo\Controller\SaveConfig::save</default>
+    </route>
+
+    <route id="socolissimo.get.specific.location" path="/module/socolissimo/{zipcode}/{city}" methods="get">
+        <default key="_controller">SoColissimo\Controller\GetSpecificLocation::get</default>
+        <requirement key="zipcode">\d{5}</requirement>
+        <requirement key="city">[a-zA-Z\- ]+</requirement>
+    </route>
 </routes>

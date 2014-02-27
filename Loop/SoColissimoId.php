@@ -22,58 +22,51 @@
 /*************************************************************************************/
 
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace SoColissimo\Loop;
+use SoColissimo\SoColissimo;
+use Thelia\Core\Template\Element\ArraySearchLoopInterface;
+use Thelia\Core\Template\Element\BaseLoop;
+use Thelia\Core\Template\Element\LoopResult;
+use Thelia\Core\Template\Element\LoopResultRow;
+use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 
 
 /**
- * Class FindById
- * @package SoColissimo\WebService 
+ * Class SoColissimoId
+ * @package SoColissimo\Loop 
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService {
-
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
-
-    public function __construct() {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response) {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
+class SoColissimoId extends BaseLoop implements ArraySearchLoopInterface {
+    /**
+     * this method returns an array
+     *
+     * @return array
+     */
+    public function buildArray()
     {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        return array(SoColissimo::getModCode());
     }
 
     /**
-     * @param \stdClass $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @param LoopResult $loopResult
+     *
+     * @return LoopResult
      */
-    public function getFormattedResponse(\stdClass $response)
+    public function parseResults(LoopResult $loopResult)
     {
-        if(!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
+        foreach($loopResult->getResultDataCollection() as $id)
+        {
+            $loopResultRow = new LoopResultRow();
+            $loopResult->addRow(
+                $loopResultRow->set('MODULE_ID', $id)
+            );
         }
-        $points = $response->return->pointRetraitAcheminement;
+        return $loopResult;
+    }
 
-        return $points;
+    protected function getArgDefinitions()
+    {
+        return new ArgumentCollection();
     }
 
 } 

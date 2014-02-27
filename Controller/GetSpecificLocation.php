@@ -21,59 +21,19 @@
 /*                                                                                   */
 /*************************************************************************************/
 
+namespace SoColissimo\Controller;
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
-
+use Thelia\Controller\Front\BaseFrontController;
 
 /**
- * Class FindById
- * @package SoColissimo\WebService 
+ * Class SearchCityController
+ * @package IciRelais\Controller
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService {
-
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
-
-    public function __construct() {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response) {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
+class GetSpecificLocation extends BaseFrontController
+{
+    public function get($zipcode, $city)
     {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        return $this->render("getSpecificLocationSoColissimo", array("_zipcode_"=>$zipcode, "_city_"=>$city));
     }
-
-    /**
-     * @param \stdClass $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
-     */
-    public function getFormattedResponse(\stdClass $response)
-    {
-        if(!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
-        }
-        $points = $response->return->pointRetraitAcheminement;
-
-        return $points;
-    }
-
-} 
+}

@@ -21,59 +21,57 @@
 /*                                                                                   */
 /*************************************************************************************/
 
+namespace SoColissimo\Loop;
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
-
-
+use SoColissimo\Model\AddressSocolissimoQuery;
+use Thelia\Core\Template\Loop\Address;
+use Thelia\Core\Template\Element\LoopResult;
+use Thelia\Core\Template\Element\LoopResultRow;
 /**
- * Class FindById
- * @package SoColissimo\WebService 
+ * Class SoColissimoDelivery
+ * @package SoColissimo\Loop
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService {
+class SoColissimoAddress extends Address
+{
+    protected $exists = false;
+    protected $timestampable = false;
 
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
-
-    public function __construct() {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response) {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
+    protected function setExists($id)
     {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        $this->exists = AddressSocolissimoQuery::create()->findPK($id) !== null;
     }
-
-    /**
-     * @param \stdClass $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
-     */
-    public function getFormattedResponse(\stdClass $response)
+    public function buildModelCriteria()
     {
-        if(!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
+        $id = $this->getId();
+        $this->setExists($id[0]);
+
+        return $this->exists ?
+                AddressSoColissimoQuery::create()->filterById($id[0]) :
+                parent::buildModelCriteria();
+    }
+    public function parseResults(LoopResult $loopResult)
+    {
+        if (!$this->exists) {
+            return parent::parseResults($loopResult);
+        } else {
+            /** @var \SoColissimo\Model\AddressSocolissimo $address */
+            foreach ($loopResult->getResultDataCollection() as $address) {
+                $loopResultRow = new LoopResultRow();
+                $loopResultRow->set("TITLE", $address->getTitleId())
+                    ->set("COMPANY", $address->getCompany())
+                    ->set("FIRSTNAME", $address->getFirstname())
+                    ->set("LASTNAME", $address->getLastname())
+                    ->set("ADDRESS1", $address->getAddress1())
+                    ->set("ADDRESS2", $address->getAddress2())
+                    ->set("ADDRESS3", $address->getAddress3())
+                    ->set("ZIPCODE", $address->getZipcode())
+                    ->set("CITY", $address->getCity())
+                    ->set("COUNTRY", $address->getCountryId())
+                ; $loopResult->addRow($loopResultRow);
+            }
+
+            return $loopResult;
         }
-        $points = $response->return->pointRetraitAcheminement;
-
-        return $points;
     }
-
-} 
+}
