@@ -5,14 +5,31 @@
 
 <script>
     $(document).ready(function() {
+        var checkboxes = [];
+
+        {loop name="js.get.orders.socolissimo.export" type="order.notsent.socolissimo"}
+        checkboxes.push("export_{$ID}");
+        {/loop}
+        //Buttons
+        $("#check-all-but").click( function() {
+            checkboxes.forEach(function(entry) {
+                $("#"+entry).prop('checked', true);
+            });
+        });
+        $("#uncheck-all-but").click( function() {
+            checkboxes.forEach(function(entry) {
+                $("#"+entry).prop('checked', false);
+            });
+        });
+        $("#reverse-all-but").click( function() {
+            checkboxes.forEach(function(entry) {
+                var box=$("#"+entry);
+                box.prop('checked', !box.is(":checked"));
+            });
+        });
         // Export form button
         $("button[name=export_socolissimo_form]").click(function() {
             var value = $("input[name='exportsocolissimoorder[new_status_id]']:checked").val();
-            var checkboxes = [];
-
-            {loop name="js.get.orders.socolissimo.export" type="order.notsent.socolissimo"}
-                checkboxes.push("export_{$ID}");
-            {/loop}
             if(value == "sent") {
                 checkboxes.forEach(function(entry) {
                     var box=$("#"+entry);

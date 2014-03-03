@@ -48,6 +48,16 @@
 
             <div class="tab-content">
                 <div id="export" class="tab-pane {if $tab eq 2}active{/if} form-container">
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            {intl l="operations"}
+                        </div>
+                        <div class="panel-body">
+                            <button id="check-all-but" title="{intl l="Check all"}" class="form-submit-button btn btn-sm btn-default">{intl l="Check all"}</button>
+                            <button id="uncheck-all-but" title="{intl l="Uncheck all"}" class="form-submit-button btn btn-sm btn-default">{intl l="Uncheck all"}</button>
+                            <button id="reverse-all-but" title="{intl l="Reverse selection"}" class="form-submit-button btn btn-sm btn-default">{intl l="Reverse selection"}</button>
+                        </div>
+                    </div>
                     {form name="socolissimo.export.inet"}
                     <form action="{url path='/admin/module/socolissimo/export'}" method="post">
                         {form_hidden_fields form=$form}
