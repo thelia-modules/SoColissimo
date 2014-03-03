@@ -1,20 +1,8 @@
-   _____        _____      _ _         _
-  / ____|      / ____|    | (_)       (_)
- | (___   ___ | |     ___ | |_ ___ ___ _ _ __ ___   ___
-  \___ \ / _ \| |    / _ \| | / __/ __| | '_ ` _ \ / _ \
-  ____) | (_) | |___| (_) | | \__ \__ \ | | | | | | (_) |
- |_____/ \___/ \_____\___/|_|_|___/___/_|_| |_| |_|\___/
-              ____          _______ _          _ _
-             |  _ \        |__   __| |        | (_)
-             | |_) |_   _     | |  | |__   ___| |_  __ _
-             |  _ <| | | |    | |  | '_ \ / _ \ | |/ _` |
-             | |_) | |_| |    | |  | | | |  __/ | | (_| |
-             |____/ \__, |    |_|  |_| |_|\___|_|_|\__,_|
-                     __/ |
-                    |___/               <info@thelia.net>
+SoColissimo Module v1.0
+author: <info@thelia.net>
 
 Summary
--------
+=======
 
 ### fr_FR
 1. Installation
@@ -28,14 +16,22 @@ Summary
 
 
 fr_FR
------
+=====
 
-### Installation
-### Utilisation
-### Intégration
+Installation
+------------
+Pour installer le module SoColissimo, téléchargez l'archive et extrayez la dans le dossier <dosser de thelia>/local/modules
+
+Utilisation
+-----------
+Intégration
+-----------
 
 en_US
------
-### Install notes
-### How to use
-### Integration
+=====
+Install notes
+-----------
+How to use
+-----------
+Integration
+-----------
