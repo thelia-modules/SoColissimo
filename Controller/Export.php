@@ -180,13 +180,16 @@ class Export extends BaseAdminController
                     /**
                      * Then update order's status if necessary
                      */
-                    $event = new OrderEvent($order);
                     if ($status_id == "processing") {
+                        $event = new OrderEvent($order);
                         $event->setStatus(SoColissimo::STATUS_PROCESSING);
+                        $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     } elseif ($status_id == "sent") {
+                        $event = new OrderEvent($order);
                         $event->setStatus(SoColissimo::STATUS_SENT);
+                        $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     }
-                    $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
+
                 }
             }
         } catch (\Exception $e) {
