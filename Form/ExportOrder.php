@@ -22,18 +22,18 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Form;
-use SoColissimo\Model\Config;
+use Propel\Runtime\ActiveQuery\Criteria;
 use SoColissimo\SoColissimo;
-use Symfony\Component\Validator\Constraints\NotBlank;
-use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
+use Thelia\Model\Base\OrderQuery;
+use Thelia\Core\Translation\Translator;
 
 /**
- * Class ConfigureSoColissimo
+ * Class ExportOrder
  * @package SoColissimo\Form
  * @author Thelia <info@thelia.net>
  */
-class ConfigureSoColissimo extends BaseForm
+class ExportOrder extends BaseForm
 {
     /**
      *
@@ -57,21 +57,32 @@ class ConfigureSoColissimo extends BaseForm
      */
     protected function buildForm()
     {
-        $config = Config::read(SoColissimo::JSON_CONFIG_PATH);
+        $query = OrderQuery::create()
+            ->filterByDeliveryModuleId(SoColissimo::getModCode())
+            ->filterByStatusId(array(SoColissimo::STATUS_PAID, SoColissimo::STATUS_PROCESSING), Criteria::IN)
+            ->find();
+
         $this->formBuilder
-            ->add("accountnumber","text",array(
-                "constraints" => array(new NotBlank()),
-                "data"=> isset($config["account_number"]) ? $config["account_number"]:"",
-                "label" => Translator::getInstance()->trans("Account number"),
-                "label_attr"=>array("for"=>"accountnumber")
-            ))
-            ->add("password","text",array(
-                "constraints" => array(new NotBlank()),
-                "data"=> isset($config["password"]) ? $config["password"]:"",
-                "label" => Translator::getInstance()->trans("Password"),
-                "label_attr"=>array("for"=>"password")
-            ))
-        ;
+            ->add('new_status_id', 'choice',array(
+                    'label' => Translator::getInstance()->trans('server'),
+                    'choices' => array(
+                        "nochange" => Translator::getInstance()->trans("Do not change"),
+                        "processing" => Translator::getInstance()->trans("Set orders status as processing"),
+                        "sent" => Translator::getInstance()->trans("Set orders status as sent")
+                    ),
+                    'required' => 'true',
+                    'expanded'=>true,
+                    'multiple'=>false,
+                    'data'=>'nochange'
+                )
+            );
+        /** @var \Thelia\Model\Order $order */
+        foreach ($query as $order) {
+            $this->formBuilder->add("order_".$order->getId(), "checkbox", array(
+                'label'=>$order->getRef(),
+                'label_attr'=>array('for'=>'export_'.$order->getId())
+            ));
+        }
     }
 
     /**
@@ -79,7 +90,7 @@ class ConfigureSoColissimo extends BaseForm
      */
     public function getName()
     {
-        return "configuresocolissimo";
+        return "exportsocolissimoorder";
     }
 
 }

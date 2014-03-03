@@ -4,7 +4,6 @@ namespace SoColissimo\Model;
 
 use SoColissimo\Model\Base\SocolissimoFreeshippingQuery as BaseSocolissimoFreeshippingQuery;
 
-
 /**
  * Skeleton subclass for performing query and update operations on the 'socolissimo_freeshipping' table.
  *
@@ -17,7 +16,8 @@ use SoColissimo\Model\Base\SocolissimoFreeshippingQuery as BaseSocolissimoFreesh
  */
 class SocolissimoFreeshippingQuery extends BaseSocolissimoFreeshippingQuery
 {
-    public function getLast() {
+    public function getLast()
+    {
         return $this->orderById('desc')->findOne()->getActive();
     }
 } // SocolissimoFreeshippingQuery

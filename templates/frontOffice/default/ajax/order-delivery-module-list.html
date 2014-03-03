@@ -4,7 +4,7 @@
 {loop type="socolissimoid" name="socolissimoid"}
     {assign var="socolissimo" value=$MODULE_ID}
 {/loop}
-{loop type="delivery.ici" name="deliveries" force_return="true" country=$country}
+{loop type="delivery" name="deliveries" force_return="true" country=$country}
 
 
 
@@ -27,29 +27,18 @@
         <!-- GENERAL -->
         <script>
             var selector = $("#delivery-method_{$ID}");
-            {if $ID eq $ICI_RELAIS_MODULE}
-            {literal}
+            {if $ID eq $socolissimo}
+                {literal}
                 selector.change(function(){
-                    show_hide_ici_relais_map(true);
+                    show_hide_socolissimo_map(true);
+                });
+                {/literal}
+            {else}
+                {literal}
+                selector.change(function(){
                     show_hide_socolissimo_map(false);
                 });
-            {/literal}
-            {else}
-                {if $ID eq $socolissimo}
-                    {literal}
-                    selector.change(function(){
-                        show_hide_ici_relais_map(false);
-                        show_hide_socolissimo_map(true);
-                    });
-                    {/literal}
-                {else}
-                    {literal}
-                    selector.change(function(){
-                        show_hide_ici_relais_map(false);
-                        show_hide_socolissimo_map(false);
-                    });
-                    {/literal}
-                {/if}
+                {/literal}
             {/if}
         </script>
         <!-- ------- -->
@@ -217,172 +206,6 @@
         {/if}
         <!-- || SOCOLISSIMO || -->
 
-        <!-- ICI RELAIS -->
-        {if $ID eq $ICI_RELAIS_MODULE}<br/><br/>
-        	<div id="google-map-ici-relais" {if !$isDeliveryMethodChecked} style="display: none;" {/if}>
-				<script>	
-				<!--
-					function show_hide_ici_relais_map(flag) {
-						if(flag) {
-							document.getElementById('google-map-ici-relais').style.display = 'block';
-						} else {
-							document.getElementById('google-map-ici-relais').style.display = 'none';
-						}
-					}         	
-					function check_selection_relais() 
-					{
-						if ($('input[name=choix]:checked').length == 0) 
-						{
-							alert("{intl l="Please choose a pick-up & Go store"}.");
-							return false;
-						}
-						return true;
-					}
-
-		        	function updatemap_ici(url_site, adr_geoloc, locations) {
-		        		document.getElementById('relaymap').innerHTML = "";
-		        		// Define MAP
-			        	var mapOptions = {
-							 zoom: 13,
-							 mapTypeId: google.maps.MapTypeId.ROADMAP
-						}
-						// On va créer la map dans la div qui a l'id relaymap
-						var map = new google.maps.Map(document.getElementById('relaymap'), mapOptions);
-			        	// Then, display everything on the map
-		        		var geocoder = new google.maps.Geocoder();
-		        		// We get latitude and longitude for the customer's adress
-		        		var b = [];
-		        		b['address'] = adr_geoloc;
-						geocoder.geocode(b, function(results, status){
-						  	if(status == google.maps.GeocoderStatus.OK){
-						  		// Et on centre la map sur cette position
-						    	map.setCenter(results[0].geometry.location);
-						    } 
-						    else{
-						    	// Sinon on met le centre de la map sur Clermont-Ferrand ;)
-						        alert('{intl l="Actual address can\'t be geolocated"}');
-						        var myLatLng = new google.maps.LatLng(45.7789, 3.0782);
-						        map.setCenter(myLatLng);
-						        map.setZoom(3);
-						    }
-						});
-						
-						var infowindow = new google.maps.InfoWindow();
-	
-						var marker, i;
-						
-						// Pour chaque point relais dans locations on crée un nouveau marker
-						// And Complete table-relais
-						var buf = "";
-						for(i = 0; i < Object.keys(locations).length; i++){  
-							buf += '<tr><td style="padding: 5px;">'+locations[i][0]+', '+locations[i][4]+', '+locations[i][5]+' '+locations[i][6];
-							buf += '- '+locations[i][7];
-							buf += '</td><td><input type="radio" name="pr_code" id="pr'+locations[i][3]+'" value="'+locations[i][3]+'" ';
-							if(i == 0) buf += 'checked'
-							buf += '/></td></tr>';
-							marker = new google.maps.Marker({
-						    	position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-						    	// Icone d'un point relai
-						    	icon: new google.maps.MarkerImage("{image file="assets/logo_pr.png" source="IciRelais"}"),
-						    	map: map
-						    });
-						    
-						    // Lors du clic sur un point relai on affiche une bulle avec les informations
-						    google.maps.event.addListener(marker, 'click', (function(marker, i) {
-								return function() {
-						    		infowindow.setContent(locations[i][0]+'<br/>'+locations[i][4]+'<br/>'+locations[i][5]+' '+locations[i][6]+'<br/>'+locations[i][7]);
-						    		infowindow.open(map, marker);
-						    	}
-						    })(marker, i));
-						    
-						     // Lors de la fermeture de la bulle d'information on déselectionne le bouton radio associé
-						    google.maps.event.addListener(infowindow, 'closeclick', (function(marker, i) {
-								return function() {}
-						    })(marker, i)); 
-						    
-						}
-						document.getElementById("table-relais").innerHTML =buf;
-		        	}
-		        	
-		        	function initialize_ici() {
-		        		// Get site base url
-		        		var url_site = '{url path="/"}';
-		        		// Get customer address
-		        		
-		        		{loop type="address" name="delivery-selection-icirelais" customer="current" default="true"}
-		        		var adr_geoloc = "{$ADDRESS1}, {$ZIPCODE} {$CITY}";
-		        		{/loop}
-		        		// Get every relay around customer's address
-		        		var locations = new Array();
-						
-				        {loop type="icirelais.relais.around" name="delivery-selection-icirelais"}
-				        	locations.push(['{$NAME}', {$LATITUDE}, {$LONGITUDE}, '{$CODE}', '{$ADDRESS}', '{$ZIPCODE}', '{$CITY}', '{$DISTANCE}']);
-				        {/loop}
-			        	updatemap_ici(url_site, adr_geoloc, locations);
-					}
-				
-				
-				function search_city_relais() {
-					var zipcode = document.getElementById("search-zipcode").value;
-					var city = document.getElementById("search-city").value;
-					if(zipcode == "" || city == "") {
-						alert("{intl l="Please enter a city and a zipcode"}");
-					{literal}
-					} else if(!(/\d{5}/.test(zipcode))) {
-					{/literal}
-						alert("{intl l="Please enter a valid zipcode"}");
-					} else {
-						// Get site base url
-		        		var url_site = '{url path="/"}';
-		        		// Get search address
-		        		var adr_geoloc = zipcode+" "+city;
-		        		// Get every relay around customer's address
-		        		var locations = new Array();
-		        		$.get(url_site+"module/icirelais/"+zipcode+"/"+city, function(data){
-		        			locations = JSON.parse(data);
-		        			updatemap_ici(url_site, adr_geoloc, locations);
-		        		});
-					}
-				}
-				// Search city pseudo-form
-				document.getElementById("search-city-submit").onclick = search_city_relais;
-				//-->
-				</script>
-                <!-- If delivery method is Ici Relais -->
-				<div id="relaymap" style="width: 450px; height: 420px; float: left;"></div>
-					<table id="table-relais" style="height: 311px;">
-					</table>
-					<!-- Search city -->
-					<div class="panel" style="width: 450px;">
-	                    <div class="panel-heading clearfix">
-							{intl l="Search relay in a city"}
-						</div>
-						<div class="panel-body" style="padding: 5px;">
-							<div class="form-group">
-								<label for="search-city" class="control-label">
-									{intl l="city"} :
-								</label>
-								<input type="text" id="search-city" placeholder="{intl l='city'}" class="form-control" style="width: 400px;" onPaste="" {literal}onkeydown="if (event.keyCode == 13) {search_city_relais();return false;}"{/literal}/>
-							</div>
-							<div class="form-group">
-								<label for="search-zipcode" class="control-label">
-									{intl l="zipcode"} :
-								</label>
-								
-								<input type="text" id="search-zipcode" placeholder="{intl l='zipcode'}" class="form-control" style="width: 400px;" onPaste="" {literal}onkeydown="if (event.keyCode == 13) {search_city_relais();return false;}"{/literal}/>
-							</div>
-					
-							<div class="form-group">
-								<input type="button" id="search-city-submit" class="form-submit-button btn btn-sm btn-default" title="{intl l='Search'}" value="{intl l='Search'}">
-							</div>
-						</div>
-					</div>
-					<!-- --- -->
-        	</div>
-        {/if}
-
-        <!-- || ICI RELAIS || -->
-
     </div>
 {/loop}
 {ifloop rel="deliveries"}
@@ -399,7 +222,6 @@
         }
         function initialize()
         {
-            initialize_ici();
             initialize_so();
         }
     </script>

@@ -8,8 +8,10 @@ use SoColissimo\Model\Config;
 use SoColissimo\Form\ConfigureSoColissimo;
 use Thelia\Core\Translation\Translator;
 
-class SaveConfig extends BaseAdminController {
-    public function save() {
+class SaveConfig extends BaseAdminController
+{
+    public function save()
+    {
         $error_message="";
         $conf = new Config();
         $form = new ConfigureSoColissimo($this->getRequest());
@@ -39,4 +41,3 @@ class SaveConfig extends BaseAdminController {
                 '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'));
     }
 }
-

@@ -21,7 +21,6 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace SoColissimo\Loop;
 use SoColissimo\Model\Config;
 use SoColissimo\SoColissimo;
@@ -37,10 +36,11 @@ use Thelia\Model\AddressQuery;
 
 /**
  * Class GetRelais
- * @package SoColissimo\Loop 
+ * @package SoColissimo\Loop
  * @author Thelia <info@thelia.net>
  */
-class GetRelais extends BaseLoop implements ArraySearchLoopInterface {
+class GetRelais extends BaseLoop implements ArraySearchLoopInterface
+{
     /**
      * this method returns an array ***Thanks cap'tain obvious \(^.^)/***
      *
@@ -96,7 +96,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface {
 
         try {
             $response = $request->exec();
-        } catch(InvalidArgumentException $e) {
+        } catch (InvalidArgumentException $e) {
             $response = array("Error"=>$e->getMessage());
         }
 
@@ -110,7 +110,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface {
      */
     public function parseResults(LoopResult $loopResult)
     {
-        foreach($loopResult->getResultDataCollection() as $item) {
+        foreach ($loopResult->getResultDataCollection() as $item) {
             $loopResultRow = new LoopResultRow();
             $distance = $item->distanceEnMetre;
             if (strlen($distance) < 4) {
@@ -178,4 +178,4 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface {
         );
     }
 
-} 
+}

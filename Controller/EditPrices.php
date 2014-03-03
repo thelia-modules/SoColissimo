@@ -54,7 +54,7 @@ class EditPrices extends BaseAdminController
 
                 if (is_readable($json_path)) {
                     $json_data = json_decode(file_get_contents($json_path),true);
-                } elseif(!file_exists($json_path)) {
+                } elseif (!file_exists($json_path)) {
                     $json_data = array();
                 } else {
                     throw new \Exception("Can't read SoColissimo".SoColissimo::JSON_PRICE_RESOURCE.". Please change the rights on the file.");

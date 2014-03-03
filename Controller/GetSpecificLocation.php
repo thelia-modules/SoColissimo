@@ -24,6 +24,8 @@
 namespace SoColissimo\Controller;
 
 use Thelia\Controller\Front\BaseFrontController;
+use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\Template\TemplateDefinition;
 
 /**
  * Class SearchCityController
@@ -34,6 +36,13 @@ class GetSpecificLocation extends BaseFrontController
 {
     public function get($zipcode, $city)
     {
-        return $this->render("getSpecificLocationSoColissimo", array("_zipcode_"=>$zipcode, "_city_"=>$city));
+        $parser = $this->getParser();
+        $parser->setTemplateDefinition(
+            new TemplateDefinition(
+                'module_socolissimo',
+                TemplateDefinition::FRONT_OFFICE
+            )
+        );
+        return Response::create($parser->render("getSpecificLocationSoColissimo.html", array("_zipcode_"=>$zipcode, "_city_"=>$city)));
     }
 }

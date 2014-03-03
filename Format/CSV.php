@@ -21,59 +21,79 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace SoColissimo\Format;
 
 /**
- * Class FindById
- * @package SoColissimo\WebService
+ * Class CSV
+ * @package SoColissimo\Format
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService
+class CSV
 {
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
+    protected $separator;
+    protected $lines=array();
 
-    public function __construct()
+    const CRLF = "\r\n";
+    /**
+     * @param $separator
+     * @param array $lines
+     */
+    public function __construct($separator, array $lines=array())
     {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
+        $this->separator = $separator;
 
-    public function isError(\stdClass $response)
-    {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
-    {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        foreach ($lines as $line) {
+            if ($line instanceof CSVLine) {
+                $this->addLine($line);
+            }
+        }
     }
 
     /**
-     * @param  \stdClass                                                $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @param $separator
+     * @param  array $lines
+     * @return CSV
      */
-    public function getFormattedResponse(\stdClass $response)
+    public static function create($separator, array $lines=array())
     {
-        if (!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
-        }
-        $points = $response->return->pointRetraitAcheminement;
-
-        return $points;
+        return new static($separator, $lines);
     }
 
+    /**
+     * @param  CSVLine $line
+     * @return $this
+     */
+    public function addLine(CSVLine $line)
+    {
+        $this->lines[] = $line;
+
+        return $this;
+    }
+
+    /**
+     * @return string parsed CSV
+     */
+    public function parse()
+    {
+        $buffer = "";
+
+        for ($j=0; $j < ($lineslen=count($this->lines)); ++$j) {
+            /** @var CSVLine $line */
+            $line = $this->lines[$j];
+            $aline = $line->getValues();
+
+            for ($i=0; $i < ($linelen=count($aline)); ++$i) {
+                $buffer .= "\"".$aline[$i]."\"";
+
+                if ($i !== $linelen-1) {
+                    $buffer .= $this->separator;
+                }
+            }
+            if ($j !== $lineslen-1) {
+                $buffer .= self::CRLF;
+            }
+        }
+
+        return $buffer;
+    }
 }

@@ -5,6 +5,27 @@
 
 <script>
     $(document).ready(function() {
+        // Export form button
+        $("button[name=export_socolissimo_form]").click(function() {
+            var value = $("input[name='exportsocolissimoorder[new_status_id]']:checked").val();
+            var checkboxes = [];
+
+            {loop name="js.get.orders.socolissimo.export" type="order.notsent.socolissimo"}
+                checkboxes.push("export_{$ID}");
+            {/loop}
+            if(value == "sent") {
+                checkboxes.forEach(function(entry) {
+                    var box=$("#"+entry);
+                    if(box.is(":checked")) {
+                        var row= box.parents("tr"); // get first tr parent
+                        row.hide('slow', function() {
+                            row.remove();
+                        });
+                    }
+                });
+            }
+        });
+        // Free shipping shitch
         $(".freeshipping-activation-SoColissimo").bootstrapSwitch();
 
         $(".freeshipping-activation-SoColissimo").on("switch-change", function(e, data){

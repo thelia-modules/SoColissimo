@@ -21,14 +21,12 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace SoColissimo\WebService;
 use Symfony\Component\Config\Definition\Exception\Exception;
 
-
 /**
  * Class FindByAddress
- * @package SoColissimo\WebService 
+ * @package SoColissimo\WebService
  * @author Thelia <info@thelia.net>
  *
  * @method FindByAddress getAddress()
@@ -50,8 +48,8 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  * @method FindByAddress getShippingDate()
  * @method FindByAddress setShippingDate($value)
  */
-class FindByAddress extends BaseSoColissimoWebService {
-
+class FindByAddress extends BaseSoColissimoWebService
+{
     protected $address=null;
     protected $zip_code=null;
     protected $city=null;
@@ -61,12 +59,13 @@ class FindByAddress extends BaseSoColissimoWebService {
     protected $option_inter=null;
     protected $shipping_date=null;
 
-
-    public function __construct() {
+    public function __construct()
+    {
         parent::__construct("findRDVPointRetraitAcheminement");
     }
 
-    public function isError(\stdClass $response) {
+    public function isError(\stdClass $response)
+    {
         return isset($response->return->errorCode) && $response->return->errorCode != 0;
     }
 
@@ -76,17 +75,17 @@ class FindByAddress extends BaseSoColissimoWebService {
     }
 
     /**
-     * @param \stdClass $response
+     * @param  \stdClass                                                $response
      * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\Exception
      */
     public function getFormattedResponse(\stdClass $response)
     {
-        if(!isset($response->return->listePointRetraitAcheminement)) {
+        if (!isset($response->return->listePointRetraitAcheminement)) {
             throw new Exception("An unknown error happened");
         }
         $points = $response->return->listePointRetraitAcheminement;
 
         return $points;
     }
-} 
+}

@@ -21,18 +21,17 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace SoColissimo\Tests\WebService;
-
 
 /**
  * Class BaseSoColissimoWebServiceTest
- * @package SoColissimo\Tests\WebService 
+ * @package SoColissimo\Tests\WebService
  * @author Thelia <info@thelia.net>
  */
-class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
-
-    public function testCall() {
+class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase
+{
+    public function testCall()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $this->assertInstanceOf("\\SoapClient",$instance->getSoap());
@@ -42,7 +41,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \BadFunctionCallException
      */
-    public function testBadFunctionCallException() {
+    public function testBadFunctionCallException()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance->FooBar();
@@ -51,7 +51,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      */
-    public function testGetInvalidArgumentException() {
+    public function testGetInvalidArgumentException()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance->getFoo("bar");
@@ -60,7 +61,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      */
-    public function testSetInvalidArgumentException() {
+    public function testSetInvalidArgumentException()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance->setFoo();
@@ -69,7 +71,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      */
-    public function testSetInvalidArgumentException2() {
+    public function testSetInvalidArgumentException2()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance->setFoo("apple", "banana");
@@ -78,7 +81,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \BadFunctionCallException
      */
-    public function testGetBadFunctionCallException() {
+    public function testGetBadFunctionCallException()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance->getFoo();
@@ -87,7 +91,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      */
-    public function testExceptFindByAddressExec() {
+    public function testExceptFindByAddressExec()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance
@@ -107,7 +112,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
         $instance->exec();
     }
 
-    public function testFindByAddressExec() {
+    public function testFindByAddressExec()
+    {
         $instance = new \SoColissimo\WebService\FindByAddress();
 
         $instance
@@ -132,7 +138,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
     /**
      * @expectedException \Symfony\Component\Serializer\Exception\InvalidArgumentException
      */
-    public function testExceptFindByIdExec() {
+    public function testExceptFindByIdExec()
+    {
         $instance = new \SoColissimo\WebService\FindById();
 
         $instance
@@ -146,7 +153,8 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
         $instance->exec();
     }
 
-    public function testFindByIdExec() {
+    public function testFindByIdExec()
+    {
         $instance = new \SoColissimo\WebService\FindById();
 
         $instance
@@ -161,4 +169,4 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase {
 
         $this->assertInstanceOf("\\stdclass",$response);
     }
-} 
+}

@@ -10,11 +10,13 @@
         <loop class="SoColissimo\Loop\SoColissimoId" name="socolissimoid" />
         <loop class="SoColissimo\Loop\GetRelais" name="socolissimo.around" />
         <loop class="SoColissimo\Loop\SoColissimoAddress" name="address.socolissimo" />
+        <loop class="SoColissimo\Loop\NotSentOrders" name="order.notsent.socolissimo" />
     </loops>
 
     <forms>
         <form name="socolissimo.freeshipping.form" class="SoColissimo\Form\FreeShipping" />
         <form name="socolissimo.configure" class="SoColissimo\Form\ConfigureSoColissimo" />
+        <form name="socolissimo.export.inet" class="SoColissimo\Form\ExportOrder" />
     </forms>
 
     <services>

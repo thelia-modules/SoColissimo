@@ -42,9 +42,14 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
 
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
     const JSON_CONFIG_PATH = "/Config/config.json";
+
+    const STATUS_PAID = 2;
+    const STATUS_PROCESSING = 3;
+    const STATUS_SENT = 4;
+
     public static function getPrices()
     {
-        if(null === self::$prices) {
+        if (null === self::$prices) {
             self::$prices = json_decode(file_get_contents(sprintf('%s%s', __DIR__, self::JSON_PRICE_RESOURCE)), true);
         }
 
@@ -62,11 +67,11 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
     {
         $freeshipping = SocolissimoFreeshippingQuery::create()->getLast();
         $postage=0;
-        if(!$freeshipping) {
+        if (!$freeshipping) {
             $prices = self::getPrices();
 
             /* check if Colissimo delivers the asked area */
-            if(!isset($prices[$areaId]) || !isset($prices[$areaId]["slices"])) {
+            if (!isset($prices[$areaId]) || !isset($prices[$areaId]["slices"])) {
                 throw new OrderException("SoColissimo delivery unavailable for the chosen delivery country", OrderException::DELIVERY_MODULE_UNAVAILABLE);
             }
 
@@ -76,20 +81,21 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
             /* check this weight is not too much */
             end($areaPrices);
             $maxWeight = key($areaPrices);
-            if($weight > $maxWeight) {
+            if ($weight > $maxWeight) {
                 throw new OrderException(sprintf("SoColissimo delivery unavailable for this cart weight (%s kg)", $weight), OrderException::DELIVERY_MODULE_UNAVAILABLE);
             }
 
             $postage = current($areaPrices);
 
-            while(prev($areaPrices)) {
-                if($weight > key($areaPrices)) {
+            while (prev($areaPrices)) {
+                if ($weight > key($areaPrices)) {
                     break;
                 }
 
                 $postage = current($areaPrices);
             }
         }
+
         return $postage;
 
     }
@@ -118,7 +124,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
      *
      * calculate and return delivery price
      *
-     * @param Country $country
+     * @param  Country                          $country
      * @return mixed
      * @throws \Thelia\Exception\OrderException
      */
@@ -136,7 +142,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
 
     public function getCode()
     {
-        return 'Colissimo';
+        return 'SoColissimo';
     }
 
     public function postActivation(ConnectionInterface $con = null)
@@ -146,7 +152,8 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
         $database->insertSql(null, array(__DIR__ . '/Config/thelia.sql'));
     }
 
-    public static function getModCode() {
+    public static function getModCode()
+    {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
     }
 

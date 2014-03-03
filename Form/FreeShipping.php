@@ -23,12 +23,12 @@
 
 namespace SoColissimo\Form;
 
-
 use SoColissimo\Model\SocolissimoFreeshippingQuery;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
 
-class FreeShipping extends BaseForm {
+class FreeShipping extends BaseForm
+{
     /**
      *
      * in this function you add all the fields you need for your Form.
@@ -67,6 +67,5 @@ class FreeShipping extends BaseForm {
     {
         return "socolissimofreeshipping";
     }
-
 
 }

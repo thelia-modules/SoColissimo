@@ -33,7 +33,6 @@ use Thelia\Model\ConfigQuery;
 use Thelia\Model\MessageQuery;
 use Thelia\Module\PaymentModuleInterface;
 
-
 /**
  * Class SendMail
  * @package Colissimo\Listener
@@ -78,7 +77,6 @@ class SendMail implements EventSubscriberInterface
                 $this->parser->assign('order_date', $order->getCreatedAt());
                 $this->parser->assign('update_date', $order->getUpdatedAt());
                 $this->parser->assign('package', $order->getDeliveryRef());
-
 
                 $message
                     ->setLocale($order->getLang()->getLocale());

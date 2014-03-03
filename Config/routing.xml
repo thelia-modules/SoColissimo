@@ -20,4 +20,8 @@
         <requirement key="zipcode">\d{5}</requirement>
         <requirement key="city">[a-zA-Z\- ]+</requirement>
     </route>
+
+    <route id="socolissimo.export" path="/admin/module/socolissimo/export" methods="post">
+        <default key="_controller">SoColissimo\Controller\Export::export</default>
+    </route>
 </routes>

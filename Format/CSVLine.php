@@ -21,59 +21,47 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace SoColissimo\Format;
 
 /**
- * Class FindById
- * @package SoColissimo\WebService
+ * Class CSVLine
+ * @package SoColissimo\Format
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService
+class CSVLine
 {
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
+    protected $values=array();
 
-    public function __construct()
+    public function __construct(array $values)
     {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response)
-    {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
-    {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        $this->values = $values;
     }
 
     /**
-     * @param  \stdClass                                                $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * @param  array   $values
+     * @return CSVLine
      */
-    public function getFormattedResponse(\stdClass $response)
+    public static function create(array $values)
     {
-        if (!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
-        }
-        $points = $response->return->pointRetraitAcheminement;
-
-        return $points;
+        return new static($values);
     }
 
+    /**
+     * @return array
+     */
+    public function getValues()
+    {
+        return $this->values;
+    }
+
+    /**
+     * @param $value
+     * @return $this
+     */
+    public function addValue($value)
+    {
+        $this->values[] = $value;
+
+        return $this;
+    }
 }

@@ -21,59 +21,37 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace SoColissimo\WebService;
-use Symfony\Component\Config\Definition\Exception\Exception;
+namespace SoColissimo\Loop;
+use Propel\Runtime\ActiveQuery\Criteria;
+use SoColissimo\SoColissimo;
+use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
+use Thelia\Model\OrderQuery;
+use Thelia\Core\Template\Loop\Order;
 
 /**
- * Class FindById
- * @package SoColissimo\WebService
+ * Class NotSentOrders
+ * @package SoColissimo\Loop
  * @author Thelia <info@thelia.net>
- *
- * @method FindById getId()
- * @method FindById setId($value)
- * @method FindById getReseau()
- * @method FindById setReseau($value)
- * @method FindById getLangue()
- * @method FindById setLangue($value)
- * @method FindById getDate()
- * @method FindById setDate($value)
  */
-class FindById extends BaseSoColissimoWebService
+class NotSentOrders extends Order
 {
-    protected $id;
-    /** @var  string if belgique: R12, else empty */
-    protected $reseau;
-    protected $langue;
-    protected $date;
-
-    public function __construct()
+    public function getArgDefinitions()
     {
-        parent::__construct("findPointRetraitAcheminementByID");
-    }
-
-    public function isError(\stdClass $response)
-    {
-        return isset($response->return->errorCode) && $response->return->errorCode != 0;
-    }
-
-    public function getError(\stdClass $response)
-    {
-        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
+        return new ArgumentCollection();
     }
 
     /**
-     * @param  \stdClass                                                $response
-     * @return \stdClass
-     * @throws \Symfony\Component\Config\Definition\Exception\Exception
+     * this method returns a Propel ModelCriteria
+     *
+     * @return \Propel\Runtime\ActiveQuery\ModelCriteria
      */
-    public function getFormattedResponse(\stdClass $response)
+    public function buildModelCriteria()
     {
-        if (!isset($response->return->pointRetraitAcheminement)) {
-            throw new Exception("An unknown error happened");
-        }
-        $points = $response->return->pointRetraitAcheminement;
+        $query = OrderQuery::create()
+            ->filterByDeliveryModuleId(SoColissimo::getModCode())
+            ->filterByStatusId(array(SoColissimo::STATUS_PAID, SoColissimo::STATUS_PROCESSING), Criteria::IN);
 
-        return $points;
+        return $query;
     }
 
 }

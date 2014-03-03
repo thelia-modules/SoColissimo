@@ -21,7 +21,6 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace SoColissimo\Listener;
 use SoColissimo\Model\Config;
 use SoColissimo\WebService\FindById;
@@ -39,18 +38,20 @@ use SoColissimo\Model\OrderAddressSocolissimo;
 
 /**
  * Class SetDeliveryModule
- * @package SoColissimo\Listener 
+ * @package SoColissimo\Listener
  * @author Thelia <info@thelia.net>
  */
-class SetDeliveryModule implements EventSubscriberInterface {
-
+class SetDeliveryModule implements EventSubscriberInterface
+{
     protected $request;
 
-    public function __construct(Request $request) {
+    public function __construct(Request $request)
+    {
         $this->request = $request;
     }
 
-    public function getRequest() {
+    public function getRequest()
+    {
         return $this->request;
     }
 
@@ -167,4 +168,4 @@ class SetDeliveryModule implements EventSubscriberInterface {
         );
     }
 
-} 
+}

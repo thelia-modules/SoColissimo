@@ -28,8 +28,10 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
 
-class FreeShipping extends BaseAdminController {
-    public function set() {
+class FreeShipping extends BaseAdminController
+{
+    public function set()
+    {
         $form = new \SoColissimo\Form\FreeShipping($this->getRequest());
         $response=null;
 
@@ -43,6 +45,7 @@ class FreeShipping extends BaseAdminController {
         } catch (\Exception $e) {
             $response = JsonResponse::create(array("error"=>$e->getMessage()), 500);
         }
+
         return $response;
     }
 }

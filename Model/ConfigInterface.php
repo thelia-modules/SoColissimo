@@ -1,7 +1,8 @@
 <?php
 namespace SoColissimo\Model;
 
-interface ConfigInterface {
+interface ConfigInterface
+{
     // Data access
     public function write($file=null);
     public static function read($file=null);
@@ -11,7 +12,7 @@ interface ConfigInterface {
      * @return SoColissimo\Model\ConfigInterface
      */
     public function setAccountNumber($account_number);
-    
+
     /*
      * @return SoColissimo\Model\ConfigInterface
      */
