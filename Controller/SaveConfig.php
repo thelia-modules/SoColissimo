@@ -7,11 +7,17 @@ use Thelia\Controller\Admin\BaseAdminController;
 use SoColissimo\Model\Config;
 use SoColissimo\Form\ConfigureSoColissimo;
 use Thelia\Core\Translation\Translator;
+use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Security\AccessManager;
 
 class SaveConfig extends BaseAdminController
 {
     public function save()
     {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
         $error_message="";
         $conf = new Config();
         $form = new ConfigureSoColissimo($this->getRequest());

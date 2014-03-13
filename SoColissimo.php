@@ -43,10 +43,6 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
     const JSON_CONFIG_PATH = "/Config/config.json";
 
-    const STATUS_PAID = 2;
-    const STATUS_PROCESSING = 3;
-    const STATUS_SENT = 4;
-
     public static function getPrices()
     {
         if (null === self::$prices) {

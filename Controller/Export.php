@@ -34,9 +34,12 @@ use Thelia\Core\Event\TheliaEvents;
 use Thelia\Core\HttpFoundation\Response;
 use Thelia\Model\Base\CountryQuery;
 use Thelia\Model\ConfigQuery;
+use Thelia\Model\CustomerTitleI18nQuery;
 use Thelia\Model\OrderAddressQuery;
 use Thelia\Model\OrderQuery;
 use Thelia\Core\Event\Order\OrderEvent;
+use Thelia\Model\OrderStatus;
+use Thelia\Model\OrderStatusQuery;
 
 /**
  * Class Export
@@ -46,6 +49,7 @@ use Thelia\Core\Event\Order\OrderEvent;
 class Export extends BaseAdminController
 {
     const CSV_SEPARATOR = ";";
+
     const DEFAULT_PHONE = "0100000000";
     const DEFAULT_CELLPHONE = "0600000000";
 
@@ -63,9 +67,22 @@ class Export extends BaseAdminController
                 throw new Exception("Bad value for new_status_id field");
             }
 
+            $status = OrderStatusQuery::create()
+                ->filterByCode(
+                    array(
+                        OrderStatus::CODE_PAID,
+                        OrderStatus::CODE_PROCESSING,
+                        OrderStatus::CODE_SENT
+                    ),
+                    Criteria::IN
+                )
+                ->find()
+                ->toArray("code")
+            ;
+
             $query = OrderQuery::create()
                 ->filterByDeliveryModuleId(SoColissimo::getModCode())
-                ->filterByStatusId(array(SoColissimo::STATUS_PAID, SoColissimo::STATUS_PROCESSING), Criteria::IN)
+                ->filterByStatusId(array($status['paid']['Id'], $status['processing']['Id']), Criteria::IN)
                 ->find();
 
             // check form && exec csv
@@ -101,6 +118,18 @@ class Export extends BaseAdminController
                     }
 
                     /**
+                     * Retrieve Title
+                     */
+                    $title = CustomerTitleI18nQuery::create()
+                        ->filterById($customer->getTitleId())
+                        ->findOneByLocale(
+                            $this->getSession()
+                                ->getAdminEditionLang()
+                                    ->getLocale()
+                        );
+
+
+                    /**
                      * Get user's phone & cellphone
                      * First get invoice address phone,
                      * If empty, try to get default address' phone.
@@ -110,19 +139,19 @@ class Export extends BaseAdminController
                     if (empty($phone)) {
                         $phone = $customer->getDefaultAddress()->getPhone();
 
-                        if (empty($phone)) {
-                            $phone=self::DEFAULT_PHONE;
+                        if(empty($phone)) {
+                            $phone = self::DEFAULT_PHONE;
                         }
                     }
+
                     /**
-                     * First, get default address' cellphone,
-                     * If empty, set default
+                     * Cellp
                      */
-                    $cellphone =$customer->getDefaultAddress()->getCellphone();
-                    if (empty($cellphone)) {
+                     $cellphone = $customer->getDefaultAddress()->getCellphone();
+
+                    if(empty($cellphone)) {
                         $cellphone = self::DEFAULT_CELLPHONE;
                     }
-
                     /**
                      * Compute package weight
                      */
@@ -146,20 +175,15 @@ class Export extends BaseAdminController
                      * Get store's name
                      */
                     $store_name = ConfigQuery::read("store_name");
-
-                    /**
-                     * RDV
-                     */
-                    $rdv = "";
                     /**
                      * Write CSV line
                      */
                     $csv->addLine(
                         CSVLine::create(
                             array(
-                                $order->getRef(),
-                                $address->getLastname(),
                                 $address->getFirstname(),
+                                $address->getLastname(),
+                                $address->getCompany(),
                                 $address->getAddress1(),
                                 $address->getAddress2(),
                                 $address->getAddress3(),
@@ -168,10 +192,11 @@ class Export extends BaseAdminController
                                 $country->getIsoalpha2(),
                                 $phone,
                                 $cellphone,
-                                $weight,
-                                $customer->getEmail(),
+                                $order->getRef(),
+                                $title->getShort(),
                                 $relay_id->getCode(),
-                                $rdv,
+                                $customer->getEmail(),
+                                $weight,
                                 $store_name
                             )
                         )
@@ -182,11 +207,11 @@ class Export extends BaseAdminController
                      */
                     if ($status_id == "processing") {
                         $event = new OrderEvent($order);
-                        $event->setStatus(SoColissimo::STATUS_PROCESSING);
+                        $event->setStatus($status['processing']['Id']);
                         $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     } elseif ($status_id == "sent") {
                         $event = new OrderEvent($order);
-                        $event->setStatus(SoColissimo::STATUS_SENT);
+                        $event->setStatus($status['sent']['Id']);
                         $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     }
 

@@ -27,7 +27,8 @@ use SoColissimo\SoColissimo;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Model\OrderQuery;
 use Thelia\Core\Template\Loop\Order;
-
+use Thelia\Model\OrderStatus;
+use Thelia\Model\OrderStatusQuery;
 /**
  * Class NotSentOrders
  * @package SoColissimo\Loop
@@ -47,9 +48,21 @@ class NotSentOrders extends Order
      */
     public function buildModelCriteria()
     {
+        $status = OrderStatusQuery::create()
+            ->filterByCode(
+                array(
+                    OrderStatus::CODE_PAID,
+                    OrderStatus::CODE_PROCESSING,
+                    OrderStatus::CODE_SENT
+                ),
+                Criteria::IN
+            )
+            ->find()
+            ->toArray("code")
+        ;
         $query = OrderQuery::create()
             ->filterByDeliveryModuleId(SoColissimo::getModCode())
-            ->filterByStatusId(array(SoColissimo::STATUS_PAID, SoColissimo::STATUS_PROCESSING), Criteria::IN);
+            ->filterByStatusId(array($status['paid']['Id'], $status['processing']['Id']), Criteria::IN);
 
         return $query;
     }

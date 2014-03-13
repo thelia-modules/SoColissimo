@@ -21,52 +21,17 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace SoColissimo\Loop;
 
-use Propel\Runtime\ActiveQuery\Criteria;
-use SoColissimo\SoColissimo;
-use Thelia\Core\Template\Element\ArraySearchLoopInterface;
-use Thelia\Core\Template\Element\BaseLoop;
-use Thelia\Core\Template\Element\LoopResult;
-use Thelia\Core\Template\Element\LoopResultRow;
+namespace SoColissimo\Tests\WebService;
 
-use Thelia\Core\Template\Loop\Argument\Argument;
-use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Model\OrderQuery;
 
 /**
- * Class SoColissimoUrlTracking
- * @package SoColissimo\Loop
+ * Class TrackingTest
+ * @package SoColissimo\Tests\WebService 
  * @author Thelia <info@thelia.net>
  */
-class SoColissimoUrlTracking extends BaseLoop implements ArraySearchLoopInterface
-{
-    /**
-     * @return ArgumentCollection
-     */
-    const BASE_URL="http://e-trace.ils-consult.fr/ici-webtrace/webclients.aspx?verknr=%s&versdat=&kundenr=%s&cmd=VERKNR_SEARCH";
-    protected function getArgDefinitions()
-    {
-        return new ArgumentCollection(
-            Argument::createAnyTypeArgument('ref', null, true)
-        );
-    }
-
-    public function buildArray()
-    {
-        return array();
-    }
-
-    public function parseResults(LoopResult $loopResult)
-    {
-        foreach ($loopResult->getResultDataCollection() as $ref => $code) {
-            $loopResultRow = new LoopResultRow();
-            $loopResultRow->set("URL", sprintf(self::BASE_URL,$ref,$code));
-
-            $loopResult->addRow($loopResultRow);
-        }
-
-        return $loopResult;
+class TrackingTest extends \PHPUnit_Framework_TestCase {
+    public function testOK() {
 
     }
-}
+} 

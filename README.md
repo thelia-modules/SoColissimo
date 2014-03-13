@@ -26,7 +26,8 @@ Utilisation
 -----------
 Tout d'abord, allez dans votre back-office, onglet Modules, et activez le module SoColissimo.
 Allez ensuite sur la page de configuration de ce dernier, onglet "Configurer SoColissimo", et entrez vos identifiants
-pour le service SoColissimo.
+pour le service SoColissimo. 
+Pour importer les fichiers généré via l'export avec Expeditor INET, vous avez besoin de THELIA_INET.FMT présent dans l'archive du module.
 
 
 Intégration
@@ -46,7 +47,7 @@ How to use
 -----------
 First, go to your back office, tab Modules, and activate the module SoColissimo.
 Then go to Socolissimo configure page, tab "Configure SoColissimo" and enter your Socolissimo id and password.
-
+To import exported files in Expeditor INET, you need the file THELIA_INET.FMT, that is in the archive.
 
 Integration
 -----------

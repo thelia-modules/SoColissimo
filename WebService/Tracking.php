@@ -21,52 +21,48 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-namespace SoColissimo\Loop;
 
-use Propel\Runtime\ActiveQuery\Criteria;
-use SoColissimo\SoColissimo;
-use Thelia\Core\Template\Element\ArraySearchLoopInterface;
-use Thelia\Core\Template\Element\BaseLoop;
-use Thelia\Core\Template\Element\LoopResult;
-use Thelia\Core\Template\Element\LoopResultRow;
+namespace SoColissimo\WebService;
 
-use Thelia\Core\Template\Loop\Argument\Argument;
-use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Model\OrderQuery;
 
 /**
- * Class SoColissimoUrlTracking
- * @package SoColissimo\Loop
+ * Class Tracking
+ * @package SoColissimo\WebService 
  * @author Thelia <info@thelia.net>
  */
-class SoColissimoUrlTracking extends BaseLoop implements ArraySearchLoopInterface
-{
+class Tracking extends BaseSoColissimoWebService {
+
+    const WSDL_URL = "https://www.coliposte.fr/tracking-chargeur-cxf/TrackingServiceWS?wsdl";
+
+    protected $skybill_number=null;
+
+    public function __construct()
+    {
+        parent::__construct("track");
+    }
     /**
-     * @return ArgumentCollection
+     * @return bool
      */
-    const BASE_URL="http://e-trace.ils-consult.fr/ici-webtrace/webclients.aspx?verknr=%s&versdat=&kundenr=%s&cmd=VERKNR_SEARCH";
-    protected function getArgDefinitions()
+    public function isError(\stdClass $response)
     {
-        return new ArgumentCollection(
-            Argument::createAnyTypeArgument('ref', null, true)
-        );
+        return isset($response->return->errorCode) && $response->return->errorCode != 0;
     }
 
-    public function buildArray()
+    public function getError(\stdClass $response)
     {
-        return array();
+        return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
     }
 
-    public function parseResults(LoopResult $loopResult)
+    /**
+     * @return \stdClass
+     */
+    public function getFormattedResponse(\stdClass $response)
     {
-        foreach ($loopResult->getResultDataCollection() as $ref => $code) {
-            $loopResultRow = new LoopResultRow();
-            $loopResultRow->set("URL", sprintf(self::BASE_URL,$ref,$code));
-
-            $loopResult->addRow($loopResultRow);
+        if (!isset($response->return->pointRetraitAcheminement)) {
+            throw new \Exception("An unknown error happened");
         }
+        $points = $response->return->SkybillInformationResult;
 
-        return $loopResult;
-
+        return $points;
     }
-}
+} 

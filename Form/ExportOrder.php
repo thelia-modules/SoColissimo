@@ -27,6 +27,8 @@ use SoColissimo\SoColissimo;
 use Thelia\Form\BaseForm;
 use Thelia\Model\Base\OrderQuery;
 use Thelia\Core\Translation\Translator;
+use Thelia\Model\OrderStatusQuery;
+use Thelia\Model\OrderStatus;
 
 /**
  * Class ExportOrder
@@ -57,9 +59,21 @@ class ExportOrder extends BaseForm
      */
     protected function buildForm()
     {
+        $status = OrderStatusQuery::create()
+            ->filterByCode(
+                array(
+                    OrderStatus::CODE_PAID,
+                    OrderStatus::CODE_PROCESSING,
+                    OrderStatus::CODE_SENT
+                ),
+                Criteria::IN
+            )
+            ->find()
+            ->toArray("code")
+        ;
         $query = OrderQuery::create()
             ->filterByDeliveryModuleId(SoColissimo::getModCode())
-            ->filterByStatusId(array(SoColissimo::STATUS_PAID, SoColissimo::STATUS_PROCESSING), Criteria::IN)
+            ->filterByStatusId(array($status['paid']['Id'], $status['processing']['Id']), Criteria::IN)
             ->find();
 
         $this->formBuilder
