@@ -56,7 +56,7 @@ class SendMail implements EventSubscriberInterface
         $order = $event->getOrder();
         $socolissimo = new SoColissimo();
 
-        if ($order->getStatusId() == PaymentModuleInterface::SENT && $order->getDeliveryModuleId() == $socolissimo->getModuleModel()->getId()) {
+        if ($order->isSent() && $order->getDeliveryModuleId() == $socolissimo->getModuleModel()->getId()) {
             $contact_email = ConfigQuery::read('store_email');
 
             if ($contact_email) {
