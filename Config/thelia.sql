@@ -82,7 +82,7 @@ SET FOREIGN_KEY_CHECKS = 1;
 -- ---------------------------------------------------------------------
 -- First, delete existing entries
 SET @var := 0;
-SELECT @var := `id` FROM `message` WHERE name="mail_colissimo";
+SELECT @var := `id` FROM `message` WHERE name="mail_socolissimo";
 DELETE FROM `message` WHERE `id`=@var;
 -- Try if ON DELETE constraint isn't set
 DELETE FROM `message_i18n` WHERE `id`=@var;
