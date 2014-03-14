@@ -43,6 +43,7 @@ class GetSpecificLocation extends BaseFrontController
                 TemplateDefinition::FRONT_OFFICE
             )
         );
+
         return Response::create(
             $parser->render(
                 "getSpecificLocationSoColissimo.html",

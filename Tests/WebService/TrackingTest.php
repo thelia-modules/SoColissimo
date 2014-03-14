@@ -21,17 +21,16 @@
 /*                                                                                   */
 /*************************************************************************************/
 
-
 namespace SoColissimo\Tests\WebService;
-
 
 /**
  * Class TrackingTest
- * @package SoColissimo\Tests\WebService 
+ * @package SoColissimo\Tests\WebService
  * @author Thelia <info@thelia.net>
  */
-class TrackingTest extends \PHPUnit_Framework_TestCase {
-    public function testOK() {
-
+class TrackingTest extends \PHPUnit_Framework_TestCase
+{
+    public function testOK()
+    {
     }
-} 
+}

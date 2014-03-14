@@ -88,7 +88,9 @@ class EditPrices extends BaseAdminController
           }
 
         $this->redirectToRoute("admin.module.configure",array(),
-            array ( 'module_code'=>"SoColissimo",
+            array (
+                'current_tab'=>'price_slices_tab',
+                'module_code'=>"SoColissimo",
                 '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'));
     }
 }

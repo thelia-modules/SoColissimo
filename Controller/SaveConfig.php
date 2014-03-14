@@ -43,7 +43,9 @@ class SaveConfig extends BaseAdminController
             $form
         );
         $this->redirectToRoute("admin.module.configure",array(),
-            array ( 'module_code'=>"SoColissimo",
+            array (
+                'current_tab'=>'configure',
+                'module_code'=>"SoColissimo",
                 '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'));
     }
 }

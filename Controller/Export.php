@@ -139,7 +139,6 @@ class Export extends BaseAdminController
                                     ->getLocale()
                         );
 
-
                     /**
                      * Get user's phone & cellphone
                      * First get invoice address phone,
@@ -150,7 +149,7 @@ class Export extends BaseAdminController
                     if (empty($phone)) {
                         $phone = $customer->getDefaultAddress()->getPhone();
 
-                        if(empty($phone)) {
+                        if (empty($phone)) {
                             $phone = self::DEFAULT_PHONE;
                         }
                     }
@@ -160,7 +159,7 @@ class Export extends BaseAdminController
                      */
                      $cellphone = $customer->getDefaultAddress()->getCellphone();
 
-                    if(empty($cellphone)) {
+                    if (empty($cellphone)) {
                         $cellphone = self::DEFAULT_CELLPHONE;
                     }
                     /**

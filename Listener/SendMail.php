@@ -31,7 +31,6 @@ use Thelia\Core\Template\ParserInterface;
 use Thelia\Mailer\MailerFactory;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\MessageQuery;
-use Thelia\Module\PaymentModuleInterface;
 
 /**
  * Class SendMail

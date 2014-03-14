@@ -146,12 +146,12 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
         $database = new Database($con->getWrappedConnection());
 
         $database->insertSql(null, array(__DIR__ . '/Config/thelia.sql'));
-        if(!file_exists(__DIR__.self::JSON_CONFIG_PATH)) {
-            if(!is_writable(__DIR__."/Config")) {
+        if (!file_exists(__DIR__.self::JSON_CONFIG_PATH)) {
+            if (!is_writable(__DIR__."/Config")) {
                 throw new \Exception("The directory config is not writable");
             }
 
-            if(!file_put_contents(__DIR__.self::JSON_CONFIG_PATH, "{}")) {
+            if (!file_put_contents(__DIR__.self::JSON_CONFIG_PATH, "{}")) {
                 throw new \Exception("The file ".self::JSON_CONFIG_PATH." doesn't exists, please create it.");
             }
         }

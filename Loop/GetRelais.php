@@ -98,7 +98,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             $response = $request->exec();
         } catch (InvalidArgumentException $e) {
             $response = array();
-        } catch(\SoapFault $e) {
+        } catch (\SoapFault $e) {
             $response = array();
         }
 
