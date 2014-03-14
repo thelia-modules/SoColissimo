@@ -53,7 +53,6 @@ class NotSentOrders extends Order
                 array(
                     OrderStatus::CODE_PAID,
                     OrderStatus::CODE_PROCESSING,
-                    OrderStatus::CODE_SENT
                 ),
                 Criteria::IN
             )
@@ -62,7 +61,12 @@ class NotSentOrders extends Order
         ;
         $query = OrderQuery::create()
             ->filterByDeliveryModuleId(SoColissimo::getModCode())
-            ->filterByStatusId(array($status['paid']['Id'], $status['processing']['Id']), Criteria::IN);
+            ->filterByStatusId(
+                array(
+                    $status[OrderStatus::CODE_PAID]['Id'],
+                    $status[OrderStatus::CODE_PROCESSING]['Id']),
+                Criteria::IN
+            );
 
         return $query;
     }

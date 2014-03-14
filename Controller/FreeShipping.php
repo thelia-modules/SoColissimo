@@ -28,10 +28,17 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
 
+use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Security\AccessManager;
+
 class FreeShipping extends BaseAdminController
 {
     public function set()
     {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
         $form = new \SoColissimo\Form\FreeShipping($this->getRequest());
         $response=null;
 

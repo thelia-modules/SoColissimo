@@ -11,7 +11,6 @@
         <loop class="SoColissimo\Loop\GetRelais" name="socolissimo.around" />
         <loop class="SoColissimo\Loop\SoColissimoAddress" name="address.socolissimo" />
         <loop class="SoColissimo\Loop\NotSentOrders" name="order.notsent.socolissimo" />
-        <loop class="SoColissimo\Loop\SoColissimoUrlTracking" name="socolissimo.tracking" />
     </loops>
 
     <forms>

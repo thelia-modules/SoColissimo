@@ -25,7 +25,8 @@ namespace SoColissimo\Controller;
 use SoColissimo\SoColissimo;
 use Thelia\Model\AreaQuery;
 use Thelia\Controller\Admin\BaseAdminController;
-
+use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Security\AccessManager;
 /**
  * Class EditPrices
  * @package SoColissimo\Controller
@@ -36,8 +37,11 @@ class EditPrices extends BaseAdminController
 
     public function editprices()
     {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
         // Get data & treat
-        $post = $this->getRequest();
+        $post = $this->getRequest()->request;
         $operation = $post->get('operation');
         $area = $post->get('area');
         $weight = $post->get('weight');

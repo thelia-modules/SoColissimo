@@ -43,6 +43,17 @@ class GetSpecificLocation extends BaseFrontController
                 TemplateDefinition::FRONT_OFFICE
             )
         );
-        return Response::create($parser->render("getSpecificLocationSoColissimo.html", array("_zipcode_"=>$zipcode, "_city_"=>$city)));
+        return Response::create(
+            $parser->render(
+                "getSpecificLocationSoColissimo.html",
+                array(
+                    "_zipcode_"=>$zipcode,
+                    "_city_"=>$city)
+            ),
+            200,
+            array(
+                "Content-type"=>"application/json",
+            )
+        );
     }
 }

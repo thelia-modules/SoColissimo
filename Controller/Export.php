@@ -40,6 +40,8 @@ use Thelia\Model\OrderQuery;
 use Thelia\Core\Event\Order\OrderEvent;
 use Thelia\Model\OrderStatus;
 use Thelia\Model\OrderStatusQuery;
+use Thelia\Core\Security\Resource\AdminResources;
+use Thelia\Core\Security\AccessManager;
 
 /**
  * Class Export
@@ -55,6 +57,10 @@ class Export extends BaseAdminController
 
     public function export()
     {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
         $csv = new CSV(self::CSV_SEPARATOR);
 
         try {
@@ -82,7 +88,12 @@ class Export extends BaseAdminController
 
             $query = OrderQuery::create()
                 ->filterByDeliveryModuleId(SoColissimo::getModCode())
-                ->filterByStatusId(array($status['paid']['Id'], $status['processing']['Id']), Criteria::IN)
+                ->filterByStatusId(
+                    array(
+                        $status[OrderStatus::CODE_PAID]['Id'],
+                        $status[OrderStatus::CODE_PROCESSING]['Id']),
+                    Criteria::IN
+                )
                 ->find();
 
             // check form && exec csv
@@ -207,11 +218,11 @@ class Export extends BaseAdminController
                      */
                     if ($status_id == "processing") {
                         $event = new OrderEvent($order);
-                        $event->setStatus($status['processing']['Id']);
+                        $event->setStatus($status[OrderStatus::CODE_PROCESSING]['Id']);
                         $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     } elseif ($status_id == "sent") {
                         $event = new OrderEvent($order);
-                        $event->setStatus($status['sent']['Id']);
+                        $event->setStatus($status[OrderStatus::CODE_SENT]['Id']);
                         $this->dispatch(TheliaEvents::ORDER_UPDATE_STATUS, $event);
                     }
 
