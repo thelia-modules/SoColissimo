@@ -52,7 +52,7 @@
         <!-- ------- -->
 
         <!-- SOCOLISSIMO -->
-        {if $ID eq $socolissimo}
+        {if $ID == $socolissimo}
         <div id="google-map-socolissimo" {if !$isDeliveryMethodChecked} style="display: none;" {/if}>
             <script>
 
@@ -117,8 +117,8 @@
                         buf += '/></td></tr>';
                         marker = new google.maps.Marker({
                             position: new google.maps.LatLng(locations[i][1], locations[i][2]),
-                        map: map
-                    });
+                            map: map
+                        });
 
                     // Lors du clic sur un point relai on affiche une bulle avec les informations
                     google.maps.event.addListener(marker, 'click', (function(marker, i) {
@@ -172,8 +172,13 @@
                         // Get every relay around customer's address
                         var locations = new Array();
                         $.get(url_site+"module/socolissimo/"+zipcode+"/"+city, function(data){
-                            locations = JSON.parse(data);
-                            updatemap_socolissimo(url_site, adr_geoloc, locations);
+                            if (!$.isEmptyObject(data)) {
+                                locations = JSON.parse(data);
+                                updatemap_socolissimo(url_site, adr_geoloc, locations);
+                            } else {
+                                alert("{intl l="SoColissimo is not unavailable. Please choose another delivery method"}");
+                            }
+
                         });
                     }
                 }
