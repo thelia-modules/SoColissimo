@@ -96,26 +96,6 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
 
     }
 
-    public function setRequest(Request $request)
-    {
-        $this->request = $request;
-    }
-
-    public function getRequest()
-    {
-        return $this->request;
-    }
-
-    public function setDispatcher(EventDispatcherInterface $dispatcher)
-    {
-        $this->dispatcher = $dispatcher;
-    }
-
-    public function getDispatcher()
-    {
-        return $this->dispatcher;
-    }
-
     /**
      *
      * calculate and return delivery price
