@@ -22,7 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Loop;
-use SoColissimo\Model\Config;
+
 use SoColissimo\SoColissimo;
 use SoColissimo\WebService\FindByAddress;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
@@ -33,6 +33,7 @@ use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Model\AddressQuery;
+use Thelia\Model\ConfigQuery;
 
 /**
  * Class GetRelais
@@ -78,7 +79,6 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         }
 
         // Then ask the Web Service
-        $config = Config::read(SoColissimo::JSON_CONFIG_PATH);
         $request = new FindByAddress();
         $request
             ->setAddress($address["address"])
@@ -90,8 +90,8 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             ->setLang("FR")
             ->setOptionInter("1")
             ->setShippingDate(date("d/m/Y"))
-            ->setAccountNumber(isset($config['account_number']) ? $config['account_number']:"")
-            ->setPassword(isset($config['password']) ? $config['password']:"")
+            ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
+            ->setPassword(ConfigQuery::read('socolissimo_pwd'))
         ;
 
         try {

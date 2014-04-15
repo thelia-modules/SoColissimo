@@ -23,6 +23,8 @@
 
 namespace SoColissimo\WebService;
 
+use Thelia\Model\ConfigQuery;
+
 /**
  * Class BaseSoColissimoWebService
  * @package SoColissimo\WebService
@@ -37,7 +39,6 @@ namespace SoColissimo\WebService;
  */
 abstract class BaseSoColissimoWebService extends BaseWebService
 {
-    const WSDL_URL = "https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl";
 
     protected $account_number=null;
     protected $password=null;
@@ -47,6 +48,12 @@ abstract class BaseSoColissimoWebService extends BaseWebService
 
     public function __construct($function)
     {
-        parent::__construct(self::WSDL_URL, $function);
+        $testMode = ConfigQuery::read('socolissimo_test_mode');
+        if ($testMode) {
+            $url = ConfigQuery::read('socolissimo_url_test');
+        } else {
+            $url = ConfigQuery::read('socolissimo_url_prod');
+        }
+        parent::__construct($url, $function);
     }
 }
