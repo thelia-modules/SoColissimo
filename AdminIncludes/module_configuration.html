@@ -151,20 +151,39 @@
                             {form name="socolissimo.configure"}
                             <form action="{url path='/admin/module/socolissimo/configure'}" method="post">
                                 {form_hidden_fields form=$form}
-
-                                {form_field form=$form field="accountnumber"}
-                                    <label for="{$label_attr.for}">
-                                        {$label} :
-                                    </label>
-
-                                    <input type="text" name="{$name}" id="{$label_attr.for}" value="{$value}" required pattern="\d+" class="form-control" />
+                                {form_field form=$form field='url_prod'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                    </div>
                                 {/form_field}
-                                {form_field form=$form field="password"}
-                                <label for="{$label_attr.for}">
-                                    {$label} :
-                                </label>
+                                {form_field form=$form field='url_test'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                    </div>
+                                {/form_field}
+                                {form_field form=$form field='test_mode'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
 
-                                <input type="text" name="{$name}" id="{$label_attr.for}" value="{$value}" required pattern="[a-z\d]+" class="form-control" />
+                                        <select name="{$name}" id="{$label_attr.for}" class="form-control">
+                                                <option value="0" {if $value == 0}selected{/if}>{intl l="PRODUCTION"}</option>
+                                                <option value="1" {if $value == 1}selected{/if}>{intl l="TEST"}</option>
+                                        </select>
+                                    </div>
+                                {/form_field}
+                                {form_field form=$form field='accountnumber'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}" >
+                                    </div>
+                                {/form_field}
+                                {form_field form=$form field='password'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                    </div>
                                 {/form_field}
                                     <br/>
                                 <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l='Save changes'}">{intl l='Save changes'} <span class="glyphicon glyphicon-ok"></span></button>

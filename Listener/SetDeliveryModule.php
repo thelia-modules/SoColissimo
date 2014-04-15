@@ -22,12 +22,13 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Listener;
-use SoColissimo\Model\Config;
+
 use SoColissimo\WebService\FindById;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
 
 use Thelia\Core\HttpFoundation\Request;
+use Thelia\Model\ConfigQuery;
 use Thelia\Model\OrderAddressQuery;
 use SoColissimo\SoColissimo;
 use Thelia\Core\Event\Order\OrderEvent;
@@ -68,13 +69,12 @@ class SetDeliveryModule implements EventSubscriberInterface
             $pr_code = $request->get('socolissimo_code');
             if (!empty($pr_code)) {
                 $req = new FindById();
-                $config = Config::read(SoColissimo::JSON_CONFIG_PATH);
 
                 $req->setId($pr_code)
                     ->setLangue("FR")
                     ->setDate(date("d/m/Y"))
-                    ->setAccountNumber($config["account_number"])
-                    ->setPassword($config["password"])
+                    ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
+                    ->setPassword(ConfigQuery::read('socolissimo_pwd'))
                 ;
 
                 $response = $req->exec();

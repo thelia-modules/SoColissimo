@@ -23,16 +23,17 @@
 
 namespace SoColissimo;
 
+use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleQuery;
 use Thelia\Module\BaseModule;
 use Thelia\Module\DeliveryModuleInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Thelia\Exception\OrderException;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
 use SoColissimo\Model\SocolissimoFreeshippingQuery;
+
 class SoColissimo extends BaseModule implements DeliveryModuleInterface
 {
     protected $request;
@@ -125,16 +126,13 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
     {
         $database = new Database($con->getWrappedConnection());
 
-        $database->insertSql(null, array(__DIR__ . '/Config/thelia.sql'));
-        if (!file_exists(__DIR__.self::JSON_CONFIG_PATH)) {
-            if (!is_writable(__DIR__."/Config")) {
-                throw new \Exception("The directory config is not writable");
-            }
+        $database->insertSql(null, [__DIR__ . '/Config/thelia.sql', __DIR__ . '/Config/insert.sql']);
 
-            if (!file_put_contents(__DIR__.self::JSON_CONFIG_PATH, "{}")) {
-                throw new \Exception("The file ".self::JSON_CONFIG_PATH." doesn't exists, please create it.");
-            }
-        }
+        ConfigQuery::write('socolissimo_login', null, 1, 1);
+        ConfigQuery::write('socolissimo_pwd', null, 1, 1);
+        ConfigQuery::write('socolissimo_url_prod', "https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
+        ConfigQuery::write('socolissimo_url_test', "https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
+        ConfigQuery::write('socolissimo_test_mode', 1, 1, 1);
     }
 
     public static function getModCode()

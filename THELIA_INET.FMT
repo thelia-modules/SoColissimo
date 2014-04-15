@@ -3,7 +3,7 @@ DELIMITE=O
 SEPARATEUR=59
 DELIMITEUR=34
 FINDELIGNE=CRLF
-Unité poids=KG
+UnitÃ© poids=KG
 [CHAMPS]
 Prenom=1
 NomDestinataire=2

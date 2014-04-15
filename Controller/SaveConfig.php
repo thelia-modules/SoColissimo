@@ -4,11 +4,11 @@ namespace SoColissimo\Controller;
 
 use SoColissimo\SoColissimo;
 use Thelia\Controller\Admin\BaseAdminController;
-use SoColissimo\Model\Config;
 use SoColissimo\Form\ConfigureSoColissimo;
 use Thelia\Core\Translation\Translator;
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
+use Thelia\Model\ConfigQuery;
 
 class SaveConfig extends BaseAdminController
 {
@@ -18,34 +18,33 @@ class SaveConfig extends BaseAdminController
             return $response;
         }
 
-        $error_message="";
-        $conf = new Config();
         $form = new ConfigureSoColissimo($this->getRequest());
         try {
             $vform = $this->validateForm($form);
-            // After post checks (PREG_MATCH) & create json file
-            if(preg_match("#^[a-z\d]+$#i", $vform->get('password')->getData()) &&
-                preg_match("#^[\d]+$#", $vform->get('accountnumber')->getData())
-            ) {
-                $conf->setAccountNumber($vform->get('accountnumber')->getData())
-                    ->setPassword($vform->get('password')->getData())
-                    ->write(SoColissimo::JSON_CONFIG_PATH)
-                ;
-            } else {
-                throw new \Exception(Translator::getInstance()->trans("Error in form syntax, please check that your values are correct."));
-            }
+
+            ConfigQuery::write('socolissimo_login', $vform->get('accountnumber')->getData(), 1, 1);
+            ConfigQuery::write('socolissimo_pwd', $vform->get('password')->getData(), 1, 1);
+            ConfigQuery::write('socolissimo_url_prod', $vform->get('url_prod')->getData(), 1, 1);
+            ConfigQuery::write('socolissimo_url_test', $vform->get('url_test')->getData(), 1, 1);
+            ConfigQuery::write('socolissimo_test_mode', $vform->get('test_mode')->getData(), 1, 1);
+
+            $this->redirectToRoute("admin.module.configure", [], ['module_code' => 'SoColissimo', 'current_tab' => 'configure']);
         } catch (\Exception $e) {
-            $error_message = $e->getMessage();
+            $this->setupFormErrorContext(
+                Translator::getInstance()->trans("socolissimo update config"),
+                $e->getMessage(),
+                $form,
+                $e
+            );
+
+            return $this->render(
+                'module-configure',
+                [
+                    'module_code' => 'SoColissimo',
+                    'current_tab' => 'configure',
+                ]
+            );
         }
-        $this->setupFormErrorContext(
-            'erreur sauvegarde configuration',
-            $error_message,
-            $form
-        );
-        $this->redirectToRoute("admin.module.configure",array(),
-            array (
-                'current_tab'=>'configure',
-                'module_code'=>"SoColissimo",
-                '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'));
+
     }
 }

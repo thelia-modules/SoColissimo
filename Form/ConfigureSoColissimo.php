@@ -22,11 +22,13 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Form;
-use SoColissimo\Model\Config;
+
 use SoColissimo\SoColissimo;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Url;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
+use Thelia\Model\ConfigQuery;
 
 /**
  * Class ConfigureSoColissimo
@@ -57,20 +59,68 @@ class ConfigureSoColissimo extends BaseForm
      */
     protected function buildForm()
     {
-        $config = Config::read(SoColissimo::JSON_CONFIG_PATH);
+        $translator = Translator::getInstance();
         $this->formBuilder
-            ->add("accountnumber","text",array(
-                "constraints" => array(new NotBlank()),
-                "data"=> isset($config["account_number"]) ? $config["account_number"]:"",
-                "label" => Translator::getInstance()->trans("Account number"),
-                "label_attr"=>array("for"=>"accountnumber")
-            ))
-            ->add("password","text",array(
-                "constraints" => array(new NotBlank()),
-                "data"=> isset($config["password"]) ? $config["password"]:"",
-                "label" => Translator::getInstance()->trans("Password"),
-                "label_attr"=>array("for"=>"password")
-            ))
+            ->add(
+                'accountnumber',
+                'text',
+                [
+                    'constraints' => [new NotBlank()],
+                    'data'        => ConfigQuery::read('socolissimo_login'),
+                    'label'       => $translator->trans("Account number"),
+                    'label_attr'  => ['for' => 'accountnumber']
+                ]
+            )
+            ->add(
+                'password',
+                'text',
+                [
+                    'constraints' => [new NotBlank()],
+                    'data'        => ConfigQuery::read('socolissimo_pwd'),
+                    'label'       => $translator->trans("Password"),
+                    'label_attr'  => ['for' => 'password']
+                ]
+            )
+            ->add(
+                'url_prod',
+                'text',
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Url([
+                            'protocols' => ['https']
+                        ])
+                    ],
+                    'data'        => ConfigQuery::read('socolissimo_url_prod'),
+                    'label'       => $translator->trans("socolissimo url prod"),
+                    'label_attr'  => ['for' => 'socolissimo_url_prod']
+                ]
+            )
+            ->add(
+                'url_test',
+                'text',
+                [
+                    'constraints' => [
+                        new NotBlank(),
+                        new Url([
+                            'protocols' => ['https']
+                        ])
+                    ],
+                    'data'        => ConfigQuery::read('socolissimo_url_test'),
+                    'label'       => $translator->trans("socolissimo url test"),
+                    'label_attr'  => ['for' => 'socolissimo_url_test']
+                ]
+            )
+            ->add(
+                'test_mode',
+                'text',
+                [
+                    'constraints' => [new NotBlank()],
+                    'data'        => ConfigQuery::read('socolissimo_test_mode'),
+                    'label'       => $translator->trans("test mode"),
+                    'label_attr'  => ['for' => 'test_mode']
+                ]
+            )
         ;
     }
 
