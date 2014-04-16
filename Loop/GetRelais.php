@@ -132,8 +132,6 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             }
             $loopResultRow->set('distance ', $distance);
 
-            Tlog::getInstance()->info($loopResultRow);
-
             $loopResult->addRow($loopResultRow);
         }
 
