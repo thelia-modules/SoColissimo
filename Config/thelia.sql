@@ -18,9 +18,6 @@ CREATE TABLE `socolissimo_freeshipping`
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB;
 
-INSERT INTO `socolissimo_freeshipping`(`active`, `created_at`, `updated_at`) VALUES (0, NOW(), NOW());
-
-
 -- ---------------------------------------------------------------------
 -- address_socolissimo
 -- ---------------------------------------------------------------------
@@ -41,6 +38,7 @@ CREATE TABLE `address_socolissimo`
     `city` VARCHAR(255) NOT NULL,
     `country_id` INTEGER NOT NULL,
     `code` VARCHAR(10) NOT NULL,
+    `type` VARCHAR(10) NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FI_address_socolissimo_customer_title_id` (`title_id`),
     INDEX `FI_address_socolissimo_country_id` (`country_id`),
@@ -66,6 +64,7 @@ CREATE TABLE `order_address_socolissimo`
 (
     `id` INTEGER NOT NULL,
     `code` VARCHAR(10) NOT NULL,
+    `type` VARCHAR(10) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `fk_order_address_socolissimo_order_address_id`
         FOREIGN KEY (`id`)
@@ -76,4 +75,3 @@ CREATE TABLE `order_address_socolissimo`
 
 # This restores the fkey checks, after having unset them earlier
 SET FOREIGN_KEY_CHECKS = 1;
-

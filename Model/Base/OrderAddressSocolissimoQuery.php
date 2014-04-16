@@ -24,9 +24,11 @@ use SoColissimo\Model\Thelia\Model\OrderAddress;
  *
  * @method     ChildOrderAddressSocolissimoQuery orderById($order = Criteria::ASC) Order by the id column
  * @method     ChildOrderAddressSocolissimoQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method     ChildOrderAddressSocolissimoQuery orderByType($order = Criteria::ASC) Order by the type column
  *
  * @method     ChildOrderAddressSocolissimoQuery groupById() Group by the id column
  * @method     ChildOrderAddressSocolissimoQuery groupByCode() Group by the code column
+ * @method     ChildOrderAddressSocolissimoQuery groupByType() Group by the type column
  *
  * @method     ChildOrderAddressSocolissimoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildOrderAddressSocolissimoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -41,9 +43,11 @@ use SoColissimo\Model\Thelia\Model\OrderAddress;
  *
  * @method     ChildOrderAddressSocolissimo findOneById(int $id) Return the first ChildOrderAddressSocolissimo filtered by the id column
  * @method     ChildOrderAddressSocolissimo findOneByCode(string $code) Return the first ChildOrderAddressSocolissimo filtered by the code column
+ * @method     ChildOrderAddressSocolissimo findOneByType(string $type) Return the first ChildOrderAddressSocolissimo filtered by the type column
  *
  * @method     array findById(int $id) Return ChildOrderAddressSocolissimo objects filtered by the id column
  * @method     array findByCode(string $code) Return ChildOrderAddressSocolissimo objects filtered by the code column
+ * @method     array findByType(string $type) Return ChildOrderAddressSocolissimo objects filtered by the type column
  *
  */
 abstract class OrderAddressSocolissimoQuery extends ModelCriteria
@@ -132,7 +136,7 @@ abstract class OrderAddressSocolissimoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, CODE FROM order_address_socolissimo WHERE ID = :p0';
+        $sql = 'SELECT ID, CODE, TYPE FROM order_address_socolissimo WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -289,6 +293,35 @@ abstract class OrderAddressSocolissimoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(OrderAddressSocolissimoTableMap::CODE, $code, $comparison);
+    }
+
+    /**
+     * Filter the query on the type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByType('fooValue');   // WHERE type = 'fooValue'
+     * $query->filterByType('%fooValue%'); // WHERE type LIKE '%fooValue%'
+     * </code>
+     *
+     * @param string $type       The value to use as filter.
+     *                           Accepts wildcards (* and % trigger a LIKE)
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildOrderAddressSocolissimoQuery The current query, for fluid interface
+     */
+    public function filterByType($type = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($type)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $type)) {
+                $type = str_replace('*', '%', $type);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(OrderAddressSocolissimoTableMap::TYPE, $type, $comparison);
     }
 
     /**

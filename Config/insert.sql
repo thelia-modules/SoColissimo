@@ -1,6 +1,8 @@
 # This is a fix for InnoDB in MySQL >= 4.1.x
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
+
+INSERT INTO `socolissimo_freeshipping`(`active`, `created_at`, `updated_at`) VALUES (0, NOW(), NOW());
 -- ---------------------------------------------------------------------
 -- Mail templates for socolissimo
 -- ---------------------------------------------------------------------

@@ -35,6 +35,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimoQuery orderByCity($order = Criteria::ASC) Order by the city column
  * @method     ChildAddressSocolissimoQuery orderByCountryId($order = Criteria::ASC) Order by the country_id column
  * @method     ChildAddressSocolissimoQuery orderByCode($order = Criteria::ASC) Order by the code column
+ * @method     ChildAddressSocolissimoQuery orderByType($order = Criteria::ASC) Order by the type column
  *
  * @method     ChildAddressSocolissimoQuery groupById() Group by the id column
  * @method     ChildAddressSocolissimoQuery groupByTitleId() Group by the title_id column
@@ -48,6 +49,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimoQuery groupByCity() Group by the city column
  * @method     ChildAddressSocolissimoQuery groupByCountryId() Group by the country_id column
  * @method     ChildAddressSocolissimoQuery groupByCode() Group by the code column
+ * @method     ChildAddressSocolissimoQuery groupByType() Group by the type column
  *
  * @method     ChildAddressSocolissimoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAddressSocolissimoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -76,6 +78,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimo findOneByCity(string $city) Return the first ChildAddressSocolissimo filtered by the city column
  * @method     ChildAddressSocolissimo findOneByCountryId(int $country_id) Return the first ChildAddressSocolissimo filtered by the country_id column
  * @method     ChildAddressSocolissimo findOneByCode(string $code) Return the first ChildAddressSocolissimo filtered by the code column
+ * @method     ChildAddressSocolissimo findOneByType(string $type) Return the first ChildAddressSocolissimo filtered by the type column
  *
  * @method     array findById(int $id) Return ChildAddressSocolissimo objects filtered by the id column
  * @method     array findByTitleId(int $title_id) Return ChildAddressSocolissimo objects filtered by the title_id column
@@ -89,6 +92,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     array findByCity(string $city) Return ChildAddressSocolissimo objects filtered by the city column
  * @method     array findByCountryId(int $country_id) Return ChildAddressSocolissimo objects filtered by the country_id column
  * @method     array findByCode(string $code) Return ChildAddressSocolissimo objects filtered by the code column
+ * @method     array findByType(string $type) Return ChildAddressSocolissimo objects filtered by the type column
  *
  */
 abstract class AddressSocolissimoQuery extends ModelCriteria
@@ -177,7 +181,7 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, TITLE_ID, COMPANY, FIRSTNAME, LASTNAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY_ID, CODE FROM address_socolissimo WHERE ID = :p0';
+        $sql = 'SELECT ID, TITLE_ID, COMPANY, FIRSTNAME, LASTNAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY_ID, CODE, TYPE FROM address_socolissimo WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -650,6 +654,35 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(AddressSocolissimoTableMap::CODE, $code, $comparison);
+    }
+
+    /**
+     * Filter the query on the type column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByType('fooValue');   // WHERE type = 'fooValue'
+     * $query->filterByType('%fooValue%'); // WHERE type LIKE '%fooValue%'
+     * </code>
+     *
+     * @param string $type       The value to use as filter.
+     *                           Accepts wildcards (* and % trigger a LIKE)
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildAddressSocolissimoQuery The current query, for fluid interface
+     */
+    public function filterByType($type = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($type)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $type)) {
+                $type = str_replace('*', '%', $type);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(AddressSocolissimoTableMap::TYPE, $type, $comparison);
     }
 
     /**

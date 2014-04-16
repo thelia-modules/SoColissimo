@@ -57,7 +57,7 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 12;
+    const NUM_COLUMNS = 13;
 
     /**
      * The number of lazy-loaded columns
@@ -67,7 +67,7 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 12;
+    const NUM_HYDRATE_COLUMNS = 13;
 
     /**
      * the column name for the ID field
@@ -130,6 +130,11 @@ class AddressSocolissimoTableMap extends TableMap
     const CODE = 'address_socolissimo.CODE';
 
     /**
+     * the column name for the TYPE field
+     */
+    const TYPE = 'address_socolissimo.TYPE';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -141,12 +146,12 @@ class AddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'TitleId', 'Company', 'Firstname', 'Lastname', 'Address1', 'Address2', 'Address3', 'Zipcode', 'City', 'CountryId', 'Code', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'titleId', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'countryId', 'code', ),
-        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID, AddressSocolissimoTableMap::TITLE_ID, AddressSocolissimoTableMap::COMPANY, AddressSocolissimoTableMap::FIRSTNAME, AddressSocolissimoTableMap::LASTNAME, AddressSocolissimoTableMap::ADDRESS1, AddressSocolissimoTableMap::ADDRESS2, AddressSocolissimoTableMap::ADDRESS3, AddressSocolissimoTableMap::ZIPCODE, AddressSocolissimoTableMap::CITY, AddressSocolissimoTableMap::COUNTRY_ID, AddressSocolissimoTableMap::CODE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'TITLE_ID', 'COMPANY', 'FIRSTNAME', 'LASTNAME', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'ZIPCODE', 'CITY', 'COUNTRY_ID', 'CODE', ),
-        self::TYPE_FIELDNAME     => array('id', 'title_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'country_id', 'code', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        self::TYPE_PHPNAME       => array('Id', 'TitleId', 'Company', 'Firstname', 'Lastname', 'Address1', 'Address2', 'Address3', 'Zipcode', 'City', 'CountryId', 'Code', 'Type', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'titleId', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'countryId', 'code', 'type', ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID, AddressSocolissimoTableMap::TITLE_ID, AddressSocolissimoTableMap::COMPANY, AddressSocolissimoTableMap::FIRSTNAME, AddressSocolissimoTableMap::LASTNAME, AddressSocolissimoTableMap::ADDRESS1, AddressSocolissimoTableMap::ADDRESS2, AddressSocolissimoTableMap::ADDRESS3, AddressSocolissimoTableMap::ZIPCODE, AddressSocolissimoTableMap::CITY, AddressSocolissimoTableMap::COUNTRY_ID, AddressSocolissimoTableMap::CODE, AddressSocolissimoTableMap::TYPE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'TITLE_ID', 'COMPANY', 'FIRSTNAME', 'LASTNAME', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'ZIPCODE', 'CITY', 'COUNTRY_ID', 'CODE', 'TYPE', ),
+        self::TYPE_FIELDNAME     => array('id', 'title_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'country_id', 'code', 'type', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -156,12 +161,12 @@ class AddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'TitleId' => 1, 'Company' => 2, 'Firstname' => 3, 'Lastname' => 4, 'Address1' => 5, 'Address2' => 6, 'Address3' => 7, 'Zipcode' => 8, 'City' => 9, 'CountryId' => 10, 'Code' => 11, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'titleId' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'countryId' => 10, 'code' => 11, ),
-        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID => 0, AddressSocolissimoTableMap::TITLE_ID => 1, AddressSocolissimoTableMap::COMPANY => 2, AddressSocolissimoTableMap::FIRSTNAME => 3, AddressSocolissimoTableMap::LASTNAME => 4, AddressSocolissimoTableMap::ADDRESS1 => 5, AddressSocolissimoTableMap::ADDRESS2 => 6, AddressSocolissimoTableMap::ADDRESS3 => 7, AddressSocolissimoTableMap::ZIPCODE => 8, AddressSocolissimoTableMap::CITY => 9, AddressSocolissimoTableMap::COUNTRY_ID => 10, AddressSocolissimoTableMap::CODE => 11, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'TITLE_ID' => 1, 'COMPANY' => 2, 'FIRSTNAME' => 3, 'LASTNAME' => 4, 'ADDRESS1' => 5, 'ADDRESS2' => 6, 'ADDRESS3' => 7, 'ZIPCODE' => 8, 'CITY' => 9, 'COUNTRY_ID' => 10, 'CODE' => 11, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title_id' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'country_id' => 10, 'code' => 11, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'TitleId' => 1, 'Company' => 2, 'Firstname' => 3, 'Lastname' => 4, 'Address1' => 5, 'Address2' => 6, 'Address3' => 7, 'Zipcode' => 8, 'City' => 9, 'CountryId' => 10, 'Code' => 11, 'Type' => 12, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'titleId' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'countryId' => 10, 'code' => 11, 'type' => 12, ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID => 0, AddressSocolissimoTableMap::TITLE_ID => 1, AddressSocolissimoTableMap::COMPANY => 2, AddressSocolissimoTableMap::FIRSTNAME => 3, AddressSocolissimoTableMap::LASTNAME => 4, AddressSocolissimoTableMap::ADDRESS1 => 5, AddressSocolissimoTableMap::ADDRESS2 => 6, AddressSocolissimoTableMap::ADDRESS3 => 7, AddressSocolissimoTableMap::ZIPCODE => 8, AddressSocolissimoTableMap::CITY => 9, AddressSocolissimoTableMap::COUNTRY_ID => 10, AddressSocolissimoTableMap::CODE => 11, AddressSocolissimoTableMap::TYPE => 12, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'TITLE_ID' => 1, 'COMPANY' => 2, 'FIRSTNAME' => 3, 'LASTNAME' => 4, 'ADDRESS1' => 5, 'ADDRESS2' => 6, 'ADDRESS3' => 7, 'ZIPCODE' => 8, 'CITY' => 9, 'COUNTRY_ID' => 10, 'CODE' => 11, 'TYPE' => 12, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title_id' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'country_id' => 10, 'code' => 11, 'type' => 12, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
     );
 
     /**
@@ -192,6 +197,7 @@ class AddressSocolissimoTableMap extends TableMap
         $this->addColumn('CITY', 'City', 'VARCHAR', true, 255, null);
         $this->addForeignKey('COUNTRY_ID', 'CountryId', 'INTEGER', 'country', 'ID', true, null, null);
         $this->addColumn('CODE', 'Code', 'VARCHAR', true, 10, null);
+        $this->addColumn('TYPE', 'Type', 'VARCHAR', true, 10, null);
     } // initialize()
 
     /**
@@ -352,6 +358,7 @@ class AddressSocolissimoTableMap extends TableMap
             $criteria->addSelectColumn(AddressSocolissimoTableMap::CITY);
             $criteria->addSelectColumn(AddressSocolissimoTableMap::COUNTRY_ID);
             $criteria->addSelectColumn(AddressSocolissimoTableMap::CODE);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::TYPE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.TITLE_ID');
@@ -365,6 +372,7 @@ class AddressSocolissimoTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.CITY');
             $criteria->addSelectColumn($alias . '.COUNTRY_ID');
             $criteria->addSelectColumn($alias . '.CODE');
+            $criteria->addSelectColumn($alias . '.TYPE');
         }
     }
 

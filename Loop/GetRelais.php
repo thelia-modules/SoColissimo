@@ -32,6 +32,7 @@ use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
+use Thelia\Log\Tlog;
 use Thelia\Model\AddressQuery;
 use Thelia\Model\ConfigQuery;
 
@@ -114,6 +115,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
     {
         foreach ($loopResult->getResultDataCollection() as $item) {
             $loopResultRow = new LoopResultRow();
+
             $distance = $item->distanceEnMetre;
             if (strlen($distance) < 4) {
                 $distance .= " m";
@@ -125,14 +127,12 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
                 $distance = str_replace(".", ",", $distance) . " km";
             }
 
-            $loopResultRow->set("NAME", $item->nom)
-                ->set("LONGITUDE", str_replace(",", ".", $item->coordGeolocalisationLongitude))
-                ->set("LATITUDE", str_replace(",", ".", $item->coordGeolocalisationLatitude))
-                ->set("CODE", $item->identifiant)
-                ->set("ADDRESS", $item->adresse1)
-                ->set("ZIPCODE", $item->codePostal)
-                ->set("CITY", $item->localite)
-                ->set("DISTANCE", $distance);
+            foreach ($item as $key => $value) {
+                $loopResultRow->set($key, $value);
+            }
+            $loopResultRow->set('distance ', $distance);
+
+            Tlog::getInstance()->info($loopResultRow);
 
             $loopResult->addRow($loopResultRow);
         }

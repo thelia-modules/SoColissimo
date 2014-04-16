@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\WebService;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**

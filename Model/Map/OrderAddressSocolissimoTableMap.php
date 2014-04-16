@@ -57,7 +57,7 @@ class OrderAddressSocolissimoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 2;
+    const NUM_COLUMNS = 3;
 
     /**
      * The number of lazy-loaded columns
@@ -67,7 +67,7 @@ class OrderAddressSocolissimoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 2;
+    const NUM_HYDRATE_COLUMNS = 3;
 
     /**
      * the column name for the ID field
@@ -78,6 +78,11 @@ class OrderAddressSocolissimoTableMap extends TableMap
      * the column name for the CODE field
      */
     const CODE = 'order_address_socolissimo.CODE';
+
+    /**
+     * the column name for the TYPE field
+     */
+    const TYPE = 'order_address_socolissimo.TYPE';
 
     /**
      * The default string format for model objects of the related table
@@ -91,12 +96,12 @@ class OrderAddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'Code', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'code', ),
-        self::TYPE_COLNAME       => array(OrderAddressSocolissimoTableMap::ID, OrderAddressSocolissimoTableMap::CODE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'CODE', ),
-        self::TYPE_FIELDNAME     => array('id', 'code', ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id', 'Code', 'Type', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'code', 'type', ),
+        self::TYPE_COLNAME       => array(OrderAddressSocolissimoTableMap::ID, OrderAddressSocolissimoTableMap::CODE, OrderAddressSocolissimoTableMap::TYPE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'CODE', 'TYPE', ),
+        self::TYPE_FIELDNAME     => array('id', 'code', 'type', ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -106,12 +111,12 @@ class OrderAddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'Code' => 1, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'code' => 1, ),
-        self::TYPE_COLNAME       => array(OrderAddressSocolissimoTableMap::ID => 0, OrderAddressSocolissimoTableMap::CODE => 1, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CODE' => 1, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'code' => 1, ),
-        self::TYPE_NUM           => array(0, 1, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'Code' => 1, 'Type' => 2, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'code' => 1, 'type' => 2, ),
+        self::TYPE_COLNAME       => array(OrderAddressSocolissimoTableMap::ID => 0, OrderAddressSocolissimoTableMap::CODE => 1, OrderAddressSocolissimoTableMap::TYPE => 2, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'CODE' => 1, 'TYPE' => 2, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'code' => 1, 'type' => 2, ),
+        self::TYPE_NUM           => array(0, 1, 2, )
     );
 
     /**
@@ -132,6 +137,7 @@ class OrderAddressSocolissimoTableMap extends TableMap
         // columns
         $this->addForeignPrimaryKey('ID', 'Id', 'INTEGER' , 'order_address', 'ID', true, null, null);
         $this->addColumn('CODE', 'Code', 'VARCHAR', true, 10, null);
+        $this->addColumn('TYPE', 'Type', 'VARCHAR', true, 10, null);
     } // initialize()
 
     /**
@@ -281,9 +287,11 @@ class OrderAddressSocolissimoTableMap extends TableMap
         if (null === $alias) {
             $criteria->addSelectColumn(OrderAddressSocolissimoTableMap::ID);
             $criteria->addSelectColumn(OrderAddressSocolissimoTableMap::CODE);
+            $criteria->addSelectColumn(OrderAddressSocolissimoTableMap::TYPE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.CODE');
+            $criteria->addSelectColumn($alias . '.TYPE');
         }
     }
 
