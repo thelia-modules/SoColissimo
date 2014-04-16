@@ -23,9 +23,12 @@
 
 namespace SoColissimo\Controller;
 
+use SoColissimo\WebService\FindById;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Core\HttpFoundation\Response;
 use Thelia\Core\Template\TemplateDefinition;
+use Thelia\Model\ConfigQuery;
 
 /**
  * Class SearchCityController
@@ -36,17 +39,10 @@ class GetSpecificLocation extends BaseFrontController
 {
     public function get($zipcode, $city)
     {
-        $parser = $this->getParser();
-        $parser->setTemplateDefinition(
-            new TemplateDefinition(
-                'module_socolissimo',
-                TemplateDefinition::FRONT_OFFICE
-            )
-        );
 
         return Response::create(
-            $parser->render(
-                "getSpecificLocationSoColissimo.html",
+            $this->render(
+                "getSpecificLocationSoColissimo",
                 array(
                     "_zipcode_"=>$zipcode,
                     "_city_"=>$city)
@@ -56,5 +52,42 @@ class GetSpecificLocation extends BaseFrontController
                 "Content-type"=>"application/json",
             )
         );
+    }
+
+    public function getPointInfo($point_id)
+    {
+        $req = new FindById();
+
+        $req->setId($point_id)
+            ->setLangue("FR")
+            ->setDate(date("d/m/Y"))
+            ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
+            ->setPassword(ConfigQuery::read('socolissimo_pwd'))
+        ;
+
+        $response = $req->exec();
+
+        $response = new JsonResponse($response);
+
+        return $response;
+    }
+
+
+    /**
+     * @return ParserInterface instance parser
+     */
+    protected function getParser($template = null)
+    {
+        $parser = $this->container->get("thelia.parser");
+
+        // Define the template that should be used
+        $parser->setTemplateDefinition(
+            new TemplateDefinition(
+                'module_socolissimo',
+                TemplateDefinition::FRONT_OFFICE
+            )
+        );
+
+        return $parser;
     }
 }
