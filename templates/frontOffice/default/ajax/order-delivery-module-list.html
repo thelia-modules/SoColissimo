@@ -147,10 +147,10 @@
                         var adr_geoloc = "{$ADDRESS1}, {$ZIPCODE} {$CITY}";
                     {/loop}
                     // Get every relay around customer's address
-                    var locations = new Array();
+                    var locations = [];
 
                     {loop type="socolissimo.around" name="delivery-selection-socolissimo"}
-                        locations.push(['{$NAME}', {$LATITUDE}, {$LONGITUDE}, '{$CODE}', '{$ADDRESS}', '{$ZIPCODE}', '{$CITY}', '{$DISTANCE}']);
+                        locations.push(['{$NOM}', {$COORDGEOLOCALISATIONLATITUDE}, {$COORDGEOLOCALISATIONLONGITUDE}, '{$IDENTIFIANT}', '{$ADRESSE1}', '{$CODEPOSTAL}', '{$LOCALITE}', '{$DISTANCE}']);
                     {/loop}
                     updatemap_socolissimo(url_site, adr_geoloc, locations);
                 }

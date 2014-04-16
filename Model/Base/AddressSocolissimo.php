@@ -127,6 +127,12 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
     protected $code;
 
     /**
+     * The value for the type field.
+     * @var        string
+     */
+    protected $type;
+
+    /**
      * @var        CustomerTitle
      */
     protected $aCustomerTitle;
@@ -523,6 +529,16 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
     }
 
     /**
+     * Get the [type] column value.
+     *
+     * @return string
+     */
+    public function getType()
+    {
+        return $this->type;
+    }
+
+    /**
      * Set the value of [id] column.
      *
      * @param  int                                   $v new value
@@ -771,6 +787,26 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
     } // setCode()
 
     /**
+     * Set the value of [type] column.
+     *
+     * @param  string                                $v new value
+     * @return \SoColissimo\Model\AddressSocolissimo The current object (for fluent API support)
+     */
+    public function setType($v)
+    {
+        if ($v !== null) {
+            $v = (string) $v;
+        }
+
+        if ($this->type !== $v) {
+            $this->type = $v;
+            $this->modifiedColumns[AddressSocolissimoTableMap::TYPE] = true;
+        }
+
+        return $this;
+    } // setType()
+
+    /**
      * Indicates whether the columns in this object are only set to default values.
      *
      * This method can be used in conjunction with isModified() to indicate whether an object is both
@@ -842,6 +878,9 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
 
             $col = $row[TableMap::TYPE_NUM == $indexType ? 11 + $startcol : AddressSocolissimoTableMap::translateFieldName('Code', TableMap::TYPE_PHPNAME, $indexType)];
             $this->code = (null !== $col) ? (string) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 12 + $startcol : AddressSocolissimoTableMap::translateFieldName('Type', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->type = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
             $this->setNew(false);
@@ -850,7 +889,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 12; // 12 = AddressSocolissimoTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 13; // 13 = AddressSocolissimoTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \SoColissimo\Model\AddressSocolissimo object", 0, $e);
@@ -1117,6 +1156,9 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
         if ($this->isColumnModified(AddressSocolissimoTableMap::CODE)) {
             $modifiedColumns[':p' . $index++]  = 'CODE';
         }
+        if ($this->isColumnModified(AddressSocolissimoTableMap::TYPE)) {
+            $modifiedColumns[':p' . $index++]  = 'TYPE';
+        }
 
         $sql = sprintf(
             'INSERT INTO address_socolissimo (%s) VALUES (%s)',
@@ -1163,6 +1205,9 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
                         break;
                     case 'CODE':
                         $stmt->bindValue($identifier, $this->code, PDO::PARAM_STR);
+                        break;
+                    case 'TYPE':
+                        $stmt->bindValue($identifier, $this->type, PDO::PARAM_STR);
                         break;
                 }
             }
@@ -1255,6 +1300,9 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
             case 11:
                 return $this->getCode();
                 break;
+            case 12:
+                return $this->getType();
+                break;
             default:
                 return null;
                 break;
@@ -1296,6 +1344,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
             $keys[9] => $this->getCity(),
             $keys[10] => $this->getCountryId(),
             $keys[11] => $this->getCode(),
+            $keys[12] => $this->getType(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1379,6 +1428,9 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
             case 11:
                 $this->setCode($value);
                 break;
+            case 12:
+                $this->setType($value);
+                break;
         } // switch()
     }
 
@@ -1415,6 +1467,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
         if (array_key_exists($keys[9], $arr)) $this->setCity($arr[$keys[9]]);
         if (array_key_exists($keys[10], $arr)) $this->setCountryId($arr[$keys[10]]);
         if (array_key_exists($keys[11], $arr)) $this->setCode($arr[$keys[11]]);
+        if (array_key_exists($keys[12], $arr)) $this->setType($arr[$keys[12]]);
     }
 
     /**
@@ -1438,6 +1491,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
         if ($this->isColumnModified(AddressSocolissimoTableMap::CITY)) $criteria->add(AddressSocolissimoTableMap::CITY, $this->city);
         if ($this->isColumnModified(AddressSocolissimoTableMap::COUNTRY_ID)) $criteria->add(AddressSocolissimoTableMap::COUNTRY_ID, $this->country_id);
         if ($this->isColumnModified(AddressSocolissimoTableMap::CODE)) $criteria->add(AddressSocolissimoTableMap::CODE, $this->code);
+        if ($this->isColumnModified(AddressSocolissimoTableMap::TYPE)) $criteria->add(AddressSocolissimoTableMap::TYPE, $this->type);
         return $criteria;
     }
 
@@ -1511,6 +1565,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
         $copyObj->setCity($this->getCity());
         $copyObj->setCountryId($this->getCountryId());
         $copyObj->setCode($this->getCode());
+        $copyObj->setType($this->getType());
         if ($makeNew) {
             $copyObj->setNew(true);
         }
@@ -1655,6 +1710,7 @@ abstract class AddressSocolissimo implements ActiveRecordInterface
         $this->city = null;
         $this->country_id = null;
         $this->code = null;
+        $this->type = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();
         $this->resetModified();

@@ -18,6 +18,7 @@
         <column name="city" required="true" size="255" type="VARCHAR" />
         <column name="country_id" required="true" type="INTEGER" />
         <column name="code" required="true" size="10" type="VARCHAR" />
+        <column name="type" required="true" size="10" type="VARCHAR" />
         <foreign-key foreignTable="customer_title" name="fk_address_socolissimo_customer_title_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="title_id" />
         </foreign-key>
@@ -28,9 +29,11 @@
     <table name="order_address_socolissimo">
         <column name="id" primaryKey="true" required="true" type="INTEGER" />
         <column name="code" size="10" type="VARCHAR" required="true" />
+        <column name="type" size="10" type="VARCHAR" required="true" />
         <foreign-key foreignTable="order_address" name="fk_order_address_socolissimo_order_address_id" onDelete="CASCADE" onUpdate="CASCADE">
             <reference foreign="id" local="id" />
         </foreign-key>
     </table>
+
     <external-schema filename="local/config/schema.xml" referenceOnly="true" />
 </database>

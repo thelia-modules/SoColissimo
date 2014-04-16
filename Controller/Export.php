@@ -207,7 +207,8 @@ class Export extends BaseAdminController
                                 $relay_id->getCode(),
                                 $customer->getEmail(),
                                 $weight,
-                                $store_name
+                                $store_name,
+                                $relay_id->getType()
                             )
                         )
                     );

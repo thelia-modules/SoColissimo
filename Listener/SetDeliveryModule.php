@@ -64,10 +64,18 @@ class SetDeliveryModule implements EventSubscriberInterface
     public function isModuleSoColissimo(OrderEvent $event)
     {
         if ($this->check_module($event->getDeliveryModule())) {
-            //tmp solution
             $request = $this->getRequest();
+
             $pr_code = $request->get('socolissimo_code');
-            if (!empty($pr_code)) {
+            $dom = $request->get('domicile');
+
+            $request->getSession()->set('SoColissimoDeliveryId', 0);
+            $request->getSession()->set('SoColissimoDomiciile', 0);
+
+            if ($dom) {
+                $request->getSession()->set('SoColissimoDomiciile', 1);
+
+            } elseif (!empty($pr_code)) {
                 $req = new FindById();
 
                 $req->setId($pr_code)
@@ -93,6 +101,7 @@ class SetDeliveryModule implements EventSubscriberInterface
 
                 // France Métropolitaine
                 $address->setCode($pr_code)
+                    ->setType($response->typeDePoint)
                     ->setCompany($response->nom)
                     ->setAddress1($response->adresse1)
                     ->setAddress2($response->adresse2)
@@ -104,8 +113,6 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->setTitleId($customer_name->getTitleId())
                     ->setCountryId($customer_name->getCountryId())
                     ->save();
-            } else {
-                throw new \ErrorException("No pick-up & go store choosed for SoColissimo delivery module");
             }
         }
     }
@@ -114,31 +121,43 @@ class SetDeliveryModule implements EventSubscriberInterface
     {
         if ($this->check_module($event->getOrder()->getDeliveryModuleId())) {
             $request = $this->getRequest();
-            $tmp_address = AddressSoColissimoQuery::create()
-                ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
 
-            if ($tmp_address === null) {
-                throw new \ErrorException("Got an error with SoColissimo module. Please try again to checkout.");
+            if ($request->getSession()->get('SoColissimoDomiciile') == 1) {
+                $savecode = new OrderAddressSocolissimo();
+                $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCode(0)
+                    ->setType('DOM')
+                    ->save();
+            } else {
+                $tmp_address = AddressSoColissimoQuery::create()
+                    ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
+
+                if ($tmp_address === null) {
+                    throw new \ErrorException("Got an error with SoColissimo module. Please try again to checkout.");
+                }
+
+                $savecode = new OrderAddressSocolissimo();
+                $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCode($tmp_address->getCode())
+                    ->setType($tmp_address->getType())
+                    ->save();
+
+                $update = OrderAddressQuery::create()
+                    ->findPK($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCompany($tmp_address->getCompany())
+                    ->setAddress1($tmp_address->getAddress1())
+                    ->setAddress2($tmp_address->getAddress2())
+                    ->setAddress3($tmp_address->getAddress3())
+                    ->setZipcode($tmp_address->getZipcode())
+                    ->setCity($tmp_address->getCity())
+                    ->save();
+
+                $tmp_address->delete();
             }
 
-            $savecode = new OrderAddressSocolissimo();
-            $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
-                ->setCode($tmp_address->getCode())
-                ->save();
-
-            $update = OrderAddressQuery::create()
-                ->findPK($event->getOrder()->getDeliveryOrderAddressId())
-                ->setCompany($tmp_address->getCompany())
-                ->setAddress1($tmp_address->getAddress1())
-                ->setAddress2($tmp_address->getAddress2())
-                ->setAddress3($tmp_address->getAddress3())
-                ->setZipcode($tmp_address->getZipcode())
-                ->setCity($tmp_address->getCity())
-                ->save();
-
-            $tmp_address->delete();
         }
     }
+
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
