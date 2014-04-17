@@ -23,17 +23,15 @@
 
 namespace SoColissimo;
 
+use Propel\Runtime\Connection\ConnectionInterface;
+use SoColissimo\Model\SocolissimoFreeshippingQuery;
+use Thelia\Install\Database;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleQuery;
-use Thelia\Module\BaseModule;
-use Thelia\Module\DeliveryModuleInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Thelia\Exception\OrderException;
-use Propel\Runtime\Connection\ConnectionInterface;
-use Thelia\Install\Database;
-use SoColissimo\Model\SocolissimoFreeshippingQuery;
-class SoColissimo extends BaseModule implements DeliveryModuleInterface
+use Thelia\Module\AbstractDeliveryModule;
+use Thelia\Module\Exception\DeliveryException;
+
+class SoColissimo extends AbstractDeliveryModule
 {
     protected $request;
     protected $dispatcher;
@@ -53,11 +51,48 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
     }
 
     /**
+     * This method is called by the Delivery  loop, to check if the current module has to be displayed to the customer.
+     * Override it to implements your delivery rules/
+     *
+     * If you return true, the delivery method will de displayed to the customer
+     * If you return false, the delivery method will not be displayed
+     *
+     * @param Country $country the country to deliver to.
+     *
+     * @return boolean
+     */
+    public function isValidDelivery(Country $country)
+    {
+        $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
+
+        $areaId = $country->getAreaId();
+
+        $prices = self::getPrices();
+
+        /* check if Colissimo delivers the asked area */
+        if (isset($prices[$areaId]) && isset($prices[$areaId]["slices"])) {
+
+            $areaPrices = $prices[$areaId]["slices"];
+            ksort($areaPrices);
+
+            /* check this weight is not too much */
+            end($areaPrices);
+
+            $maxWeight = key($areaPrices);
+            if ($cartWeight <= $maxWeight) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * @param $areaId
      * @param $weight
      *
      * @return mixed
-     * @throws \Thelia\Exception\OrderException
+     * @throws DeliveryException
      */
     public static function getPostageAmount($areaId, $weight)
     {
@@ -68,7 +103,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
 
             /* check if Colissimo delivers the asked area */
             if (!isset($prices[$areaId]) || !isset($prices[$areaId]["slices"])) {
-                throw new OrderException("SoColissimo delivery unavailable for the chosen delivery country", OrderException::DELIVERY_MODULE_UNAVAILABLE);
+                throw new DeliveryException("SoColissimo delivery unavailable for the chosen delivery country");
             }
 
             $areaPrices = $prices[$areaId]["slices"];
@@ -78,7 +113,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
             end($areaPrices);
             $maxWeight = key($areaPrices);
             if ($weight > $maxWeight) {
-                throw new OrderException(sprintf("SoColissimo delivery unavailable for this cart weight (%s kg)", $weight), OrderException::DELIVERY_MODULE_UNAVAILABLE);
+                throw new DeliveryException(sprintf("SoColissimo delivery unavailable for this cart weight (%s kg)", $weight));
             }
 
             $postage = current($areaPrices);
@@ -102,11 +137,11 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
      *
      * @param  Country                          $country
      * @return mixed
-     * @throws \Thelia\Exception\OrderException
+     * @throws DeliveryException
      */
     public function getPostage(Country $country)
     {
-        $cartWeight = $this->getContainer()->get('request')->getSession()->getCart()->getWeight();
+        $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
 
         $postage = self::getPostageAmount(
             $country->getAreaId(),
@@ -123,7 +158,7 @@ class SoColissimo extends BaseModule implements DeliveryModuleInterface
 
     public function postActivation(ConnectionInterface $con = null)
     {
-        $database = new Database($con->getWrappedConnection());
+        $database = new Database($con);
 
         $database->insertSql(null, array(__DIR__ . '/Config/thelia.sql'));
         if (!file_exists(__DIR__.self::JSON_CONFIG_PATH)) {
