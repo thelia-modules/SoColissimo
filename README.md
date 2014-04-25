@@ -93,9 +93,9 @@ Boucles
 Intégration
 -----------
 Un exemple d'intégration avec une google map vous est proposé avec le thème par default de Thelia.
-Pour l'installer, veuillez copier les fichiers contenus dans dossierDeSoColissimo/templates/frontOffice/default et
-dossierDeSoColissimo/templates/frontOffice/default/ajax respectivement dans le dossier
-dossierDeThelia/templates/frontOffice/default et dossierDeSoColissimo/templates/frontOffice/default/ajax
+Pour l'installer, veuillez copier les fichiers contenus dans dossierDeSoColissimo/templates/frontOffice/default,
+dossierDeSoColissimo/templates/frontOffice/default/assets et dossierDeSoColissimo/templates/frontOffice/default/ajax respectivement dans le dossier
+dossierDeThelia/templates/frontOffice/default, dossierDeThelia/templates/frontOffice/default/assets  et dossierDeSoColissimo/templates/frontOffice/default/ajax
 
 en_US
 =====
