@@ -39,19 +39,15 @@ class GetSpecificLocation extends BaseFrontController
 {
     public function get($zipcode, $city)
     {
-
-        return Response::create(
-            $this->render(
-                "getSpecificLocationSoColissimo",
-                array(
-                    "_zipcode_"=>$zipcode,
-                    "_city_"=>$city)
-            ),
-            200,
+        $content = $this->renderRaw(
+            "getSpecificLocationSoColissimo",
             array(
-                "Content-type"=>"application/json",
+                "_zipcode_"=>$zipcode,
+                "_city_"=>$city
             )
         );
+        $response = new Response($content, 200, $headers = array('Content-Type' => 'application/json'));
+        return $response;
     }
 
     public function getPointInfo($point_id)
