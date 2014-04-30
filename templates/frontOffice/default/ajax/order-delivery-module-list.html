@@ -2,14 +2,14 @@
 
 {assign var="socolissimo" value="0"}
 {loop type="socolissimoid" name="socolissimoid"}
-{assign var="socolissimo" value=$MODULE_ID}
+    {assign var="socolissimo" value=$MODULE_ID}
 {/loop}
 
-    {* Check if soColissimo webservice is up *}
+{* Check if soColissimo webservice is up *}
 {assign var="isSocolissimoUp" value=0}
 {loop name="is.socolissimo.up"  type="socolissimo.around"}{/loop}
 {ifloop rel="is.socolissimo.up"}
-{assign var="isSocolissimoUp" value=1}
+    {assign var="isSocolissimoUp" value=1}
 {/ifloop}
 
 
@@ -19,13 +19,13 @@
     {assign var="isDeliveryMethodChecked" value="0"}
     <div class="radio">
     {form_field form=$form field='delivery-module'}
-    {if $isPost}
-        {if $value == $ID}
+        {if $isPost}
+            {if $value == $ID}
+                {assign var="isDeliveryMethodChecked" value="1"}
+            {/if}
+        {elseif $LOOP_COUNT == 1}
             {assign var="isDeliveryMethodChecked" value="1"}
         {/if}
-    {elseif $LOOP_COUNT == 1}
-        {assign var="isDeliveryMethodChecked" value="1"}
-    {/if}
         {if $ID == $socolissimo}
             <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
             <label for="delivery-method-dom">
@@ -199,7 +199,7 @@
                                 locations = JSON.parse(data);
                                 updatemap_socolissimo(url_site, adr_geoloc, locations);
                             } else {
-                                alert("{intl l="SoColissimo is not unavailable. Please choose another delivery method"}");
+                                alert("{intl l="SO Colissimo is not unavailable. Please choose another delivery method"}");
                             }
 
                         });

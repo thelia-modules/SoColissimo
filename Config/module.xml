@@ -2,10 +2,10 @@
 <module>
     <fullnamespace>SoColissimo\SoColissimo</fullnamespace>
     <descriptive locale="en_US">
-        <title>So Colissimo</title>
+        <title>SO Colissimo</title>
     </descriptive>
     <descriptive locale="fr_FR">
-        <title>So Colissimo</title>
+        <title>SO Colissimo</title>
     </descriptive>
     <version>1.0</version>
     <author>

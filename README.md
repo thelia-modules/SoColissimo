@@ -1,4 +1,4 @@
-SoColissimo Module v1.0
+SO Colissimo Module v1.0
 author: <info@thelia.net>
 
 Summary
@@ -22,14 +22,14 @@ fr_FR
 
 Installation
 ------------
-Pour installer le module SoColissimo, téléchargez l'archive et extrayez la dans le dossier dossierDeThelia/local/modules
+Pour installer le module SO Colissimo, téléchargez l'archive et extrayez la dans le dossier dossierDeThelia/local/modules
 
 Utilisation
 -----------
-Tout d'abord, allez dans votre back-office, onglet Modules, et activez le module SoColissimo.
-Allez ensuite sur la page de configuration de ce dernier, onglet "Configurer SoColissimo", et entrez vos identifiants
-pour le service SoColissimo. 
-Pour importer les fichiers généré via l'export avec Expeditor INET, vous avez besoin de THELIA_INET.FMT présent dans l'archive du module.
+Tout d'abord, allez dans votre back-office, onglet Modules, et activez le module SO Colissimo.
+Allez ensuite sur la page de configuration de ce dernier, onglet "Configurer SO Colissimo", et entrez vos identifiants
+pour le service SO Colissimo.
+Pour importer les fichiers générés via l'export avec Expeditor INET, vous avez besoin de THELIA_INET.FMT présent dans l'archive du module.
 
 Boucles
 -------
@@ -55,7 +55,7 @@ Boucles
     - Arguments:
         Aucun
     - Sorties:
-        1. $MODULE_ID: id du module SoColissimo
+        1. $MODULE_ID: id du module SO Colissimo
     - Utilisation:
         ```{loop name="yourloopname" type="socolissimoid"}<!-- your template -->{/loop}```
 
@@ -66,7 +66,7 @@ Boucles
     - Sorties:
         1. $LONGITUDE: longitude du point relais
         2. $LATITUDE : latitude du point relais
-        3. $CODE     : code spécifique SoColissimo du point relais
+        3. $CODE     : code spécifique SO Colissimo du point relais
         4. $ADDRESS  : adresse du point relais
         5. $ZIPCODE  : code postal du point relais
         6. $CITY     : ville du point relais
@@ -86,7 +86,7 @@ Boucles
     - Arguments:
         Aucun
     - Sorties:
-        Les même sorties que la boucle order, mais avec uniquement les commandes SoColissimo non envoyées.
+        Les même sorties que la boucle order, mais avec uniquement les commandes SO Colissimo non envoyées.
     - Utilisation:
         ```{loop name="yourloopname" type="order.notsent.socolissimo"}<!-- your template -->{/loop}```
 
@@ -101,12 +101,12 @@ en_US
 =====
 Install notes
 -----------
-To install SoColissimo module, download the archive and extract it in pathToThelia/local/modules
+To install SO Colissimo module, download the archive and extract it in pathToThelia/local/modules
 
 How to use
 -----------
-First, go to your back office, tab Modules, and activate the module SoColissimo.
-Then go to Socolissimo configure page, tab "Configure SoColissimo" and enter your Socolissimo id and password.
+First, go to your back office, tab Modules, and activate the module SO Colissimo.
+Then go to SO Colissimo configure page, tab "Configure SO Colissimo" and enter your SO Colissimo id and password.
 To import exported files in Expeditor INET, you need the file THELIA_INET.FMT, that is in the archive.
 
 Loops
@@ -133,7 +133,7 @@ Loops
     - Arguments:
         None
     - Output:
-        1. $MODULE_ID: id of the module SoColissimo
+        1. $MODULE_ID: id of the module SO Colissimo
     - Usage:
         ```{loop name="yourloopname" type="socolissimoid"}<!-- your template -->{/loop}```
 
@@ -164,7 +164,7 @@ Loops
     - Arguments:
         None
     - Output:
-        The same as the loop order, but with not sent Socolissimo orders.
+        The same as the loop order, but with not sent SO Colissimo orders.
     - Usage:
         ```{loop name="yourloopname" type="order.notsent.socolissimo"}<!-- your template -->{/loop}```
 

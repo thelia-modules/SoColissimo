@@ -61,7 +61,7 @@ class EditPrices extends BaseAdminController
                 } elseif (!file_exists($json_path)) {
                     $json_data = array();
                 } else {
-                    throw new \Exception("Can't read SoColissimo".SoColissimo::JSON_PRICE_RESOURCE.". Please change the rights on the file.");
+                    throw new \Exception("Can't read SO Colissimo".SoColissimo::JSON_PRICE_RESOURCE.". Please change the rights on the file.");
                 }
                 if((float) $weight > 0 && $operation == "add"
                   && preg_match("#\d+\.?\d*#", $price)) {
@@ -78,7 +78,7 @@ class EditPrices extends BaseAdminController
                     fwrite($file, json_encode($json_data));;
                     fclose($file);
                 } else {
-                    throw new \Exception("Can't write SoColissimo".SoColissimo::JSON_PRICE_RESOURCE.". Please change the rights on the file.");
+                    throw new \Exception("Can't write SO Colissimo".SoColissimo::JSON_PRICE_RESOURCE.". Please change the rights on the file.");
                 }
             } else {
                 throw new \Exception("Area not found");
