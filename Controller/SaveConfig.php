@@ -31,7 +31,7 @@ class SaveConfig extends BaseAdminController
             $this->redirectToRoute("admin.module.configure", [], ['module_code' => 'SoColissimo', 'current_tab' => 'configure']);
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
-                Translator::getInstance()->trans("SO Colissimo update config"),
+                Translator::getInstance()->trans("So Colissimo update config"),
                 $e->getMessage(),
                 $form,
                 $e
