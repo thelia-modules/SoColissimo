@@ -4,7 +4,7 @@
     <br/>
     <div class="panel panel-default">
         <div class="panel-heading">
-            {intl l="Export expeditor inet file"}
+            {intl l="Export expeditor inet file" d='socolissimo.ai'}
         </div>
         <div class="panel-body">
 
@@ -18,7 +18,7 @@
                     {form_field form=$form field="order_"|cat:$ID}
                         <input type="hidden" name="{$name}" value="true" />
                     {/form_field}
-                    <button type="submit" name="export_order" value="stay" class="form-submit-button btn btn-sm btn-default" title="{intl l='Export'}">{intl l='Export'} <span class="glyphicon glyphicon-ok"></span></button>
+                    <button type="submit" name="export_order" value="stay" class="form-submit-button btn btn-sm btn-default" title="{intl l='Export' d='socolissimo.ai'}">{intl l='Export' d='socolissimo.ai'} <span class="glyphicon glyphicon-ok"></span></button>
                 </form>
                 {/form}
                 <br/>

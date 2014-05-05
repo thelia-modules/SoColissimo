@@ -34,13 +34,13 @@
                 <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
                 <label for="delivery-method-dom">
                     <input type="radio" class="delivery-method" name="{$name}" id="delivery-method-dom" {if $isDeliveryMethodChecked} checked{/if}  value="{$ID}" />
-                    <strong>{intl l="livraison à domicile"}</strong> / {$POSTAGE} {currency attr="symbol"}
+                    <strong>{intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
                 </label>
             </div>
             <div class="radio">
                 <label for="delivery-method-point">
                     <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-point" value="{$ID}" />
-                    <strong>{intl l="A proximité de chez vous"}</strong> / {$POSTAGE} {currency attr="symbol"}
+                    <strong>{intl l="Near you" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
                 </label>
             </div>
         </div>
@@ -122,7 +122,7 @@
                             mapSOC.position = marker;
                         } else {
                             // Sinon on met le centre de la map sur Clermont-Ferrand ;)
-                            alert('{intl l="Actual address can\'t be geolocated"}');
+                            alert("{intl l="Actual address can't be geolocated"}");
                             var myLatLng = new google.maps.LatLng(45.7789, 3.0782);
                             mapSOC.map.setCenter(myLatLng);
                             mapSOC.map.setZoom(3);
@@ -186,13 +186,13 @@
                             ((data.disabledPerson) ? '<img src="' + mapSOC.images["HANDICAPE"] + '" />' : "") +
                             '</div>' +
                             '<table style="width: 100%;">' +
-                                getHoraireRow('{intl l="Monday"}', data.monday) +
-                                getHoraireRow('{intl l="Tuesday"}', data.tuesday) +
-                                getHoraireRow('{intl l="Wednesday"}', data.wednesday) +
-                                getHoraireRow('{intl l="Friday"}', data.friday) +
-                                getHoraireRow('{intl l="Thursday"}', data.thursday) +
-                                getHoraireRow('{intl l="Saturday"}', data.saturday) +
-                                getHoraireRow('{intl l="Sunday"}', data.sunday) +
+                                getHoraireRow('{intl l="Monday" d='socolissimo.fo.default'}', data.monday) +
+                                getHoraireRow('{intl l="Tuesday" d='socolissimo.fo.default'}', data.tuesday) +
+                                getHoraireRow('{intl l="Wednesday" d='socolissimo.fo.default'}', data.wednesday) +
+                                getHoraireRow('{intl l="Friday" d='socolissimo.fo.default'}', data.friday) +
+                                getHoraireRow('{intl l="Thursday" d='socolissimo.fo.default'}', data.thursday) +
+                                getHoraireRow('{intl l="Saturday" d='socolissimo.fo.default'}', data.saturday) +
+                                getHoraireRow('{intl l="Sunday" d='socolissimo.fo.default'}', data.sunday) +
                             '</table>');
                         mapSOC.infowindow.open(mapSOC.map, marker);
                     });
@@ -244,11 +244,11 @@
                     var zipcode = document.getElementById("search-zipcode-socolissimo").value;
                     var city = document.getElementById("search-city-socolissimo").value;
                     if (zipcode == "" || city == "") {
-                        alert("{intl l="Please enter a city and a zipcode"}");
+                        alert("{intl l="Please enter a city and a zipcode" d='socolissimo.fo.default'}");
                         {literal}
                     } else if (!(/\d{5}/.test(zipcode))) {
                         {/literal}
-                        alert("{intl l="Please enter a valid zipcode"}");
+                        alert("{intl l="Please enter a valid zipcode" d='socolissimo.fo.default'}");
                     } else {
                         // Get site base url
                         var url_site = '{url path="/"}module/socolissimo/'
@@ -268,12 +268,12 @@
                                     locations = data.locations;
                                     updatemap_socolissimo(adr_geoloc, locations);
                                 } else {
-                                    alert("{intl l='So Colissimo is not unavailable. Please choose another delivery method'}");
+                                    alert("{intl l='So Colissimo is not unavailable. Please choose another delivery method' d='socolissimo.fo.default'}");
                                 }
                             })
                             .fail(function( jqxhr, textStatus, error ) {
                                 var err = textStatus + ", " + error;
-                                console.log( "Request Failed: " + err );
+                                //console.log( "Request Failed: " + err );
                             });
                     }
                 }
@@ -284,33 +284,33 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                     <div class="panel">
                         <div class="panel-heading clearfix">
-                            {intl l="Search So Colissimo relay in a city"}
+                            {intl l="Search So Colissimo relay in a city" d='socolissimo.fo.default'}
                         </div>
                         <div class="panel-body" style="padding: 5px;">
                             <div class="row">
                                 <div class="col-md-4 col-xs-12">
                                     <label for="search-address-socolissimo" class="control-label hidden">
-                                        {intl l="address"}
+                                        {intl l="address" d='socolissimo.fo.default'}
                                     </label>
-                                    <input type="text" id="search-address-socolissimo" placeholder="{intl l='address'}" class="form-control" style="" onPaste=""
+                                    <input type="text" id="search-address-socolissimo" placeholder="{intl l='address' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
                                     {literal}onkeydown="if (event.keyCode == 13) {return false;}"{/literal}/>
                                 </div>
                                 <div class="col-md-2 col-xs-12">
                                     <label for="search-zipcode-socolissimo" class="control-label hidden">
-                                        {intl l="zipcode"}
+                                        {intl l="zipcode" d='socolissimo.fo.default'}
                                     </label>
-                                    <input type="text" id="search-zipcode-socolissimo" placeholder="{intl l='zipcode'}" class="form-control" style="" onPaste=""
+                                    <input type="text" id="search-zipcode-socolissimo" placeholder="{intl l='zipcode' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
                                         {literal}onkeydown="if (event.keyCode == 13) {search_city_socolissimo();return false;}"{/literal}/>
                                 </div>
                                 <div class="col-md-4 col-xs-12">
                                     <label for="search-city-socolissimo" class="control-label hidden">
-                                        {intl l="city"}
+                                        {intl l="city" d='socolissimo.fo.default'}
                                     </label>
-                                    <input type="text" id="search-city-socolissimo" placeholder="{intl l='city'}" class="form-control" style="" onPaste=""
+                                    <input type="text" id="search-city-socolissimo" placeholder="{intl l='city' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
                                     {literal}onkeydown="if (event.keyCode == 13) {search_city_socolissimo();return false;}"{/literal}/>
                                 </div>
                                 <div class="col-md-2 col-xs-12">
-                                    <input type="button" id="search-city-submit-socolissimo" class="form-submit-button btn btn-sm btn-default" title="{intl l='Search'}" value="{intl l='Search'}">
+                                    <input type="button" id="search-city-submit-socolissimo" class="form-submit-button btn btn-sm btn-default" title="{intl l='Search' d='socolissimo.fo.default'}" value="{intl l='Search' d='socolissimo.fo.default'}">
                                 </div>
                             </div>
                         </div>
@@ -320,30 +320,30 @@
                 <!-- Mon espace cityssimo -->
                 <div class="col-md-4 col-sm-4 col-xs-12">
                     <div style="padding: 5px;">
-                        {images file="assets/img/socolissimo/cit-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="Mon espace cityssimo"}" />{/images}
-                        <p>{intl l="Livraison dans l'une des 31 consignes automatiques Cityssimo 7j/7 et 24h/24."}</p>
+                        {images file="assets/img/socolissimo/cit-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="My cityssimo space" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 31 automatic instructions Cityssimo 7/7 and 24/24h." d='socolissimo.fo.default'}</p>
                         <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="CIT" checked="checked" />
-                        {intl l="include in results"}
+                        {intl l="include in results" d='socolissimo.fo.default'}
                     </div>
                 </div><!-- // Mon espace cityssimo -->
 
                 <!-- Bureau de poste -->
                 <div class="col-md-4 col-sm-4 col-xs-12">
                     <div style="padding: 5px;">
-                        {images file="assets/img/socolissimo/bpr-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="Bureau de poste"}" />{/images}
-                        <p>{intl l="Livraison dans l'un des 10 000 points de retrait La Poste de votre choix en France."}</p>
+                        {images file="assets/img/socolissimo/bpr-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="Post office" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 10,000 collection points La Poste of your choice in France." d='socolissimo.fo.default'}</p>
                         <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="BPR" checked="checked" />
-                        {intl l="include in results"}
+                        {intl l="include in results" d='socolissimo.fo.default'}
                     </div>
                 </div><!-- // Bureau de poste -->
 
                 <!-- Mon commercant -->
                 <div class="col-md-4 col-sm-4 col-xs-12">
                     <div style="padding: 5px;">
-                        {images file="assets/img/socolissimo/a2p-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="Mon commercant"}" />{/images}
-                        <p>{intl l="Livraison dans l’un des 4 200 commerces du réseau PICKUP, Groupe La Poste."}</p>
+                        {images file="assets/img/socolissimo/a2p-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="My trader" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 4200 shops in the PICKUP network, La Poste Group." d='socolissimo.fo.default'}</p>
                         <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="A2P" checked="checked" />
-                        {intl l="include in results"}
+                        {intl l="include in results" d='socolissimo.fo.default'}
                     </div>
                 </div><!-- // Mon commercant -->
 

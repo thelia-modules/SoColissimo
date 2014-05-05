@@ -48,4 +48,8 @@ return array(
     'Sent'=>'Envoyée',
     '*If you choose this option, the exported orders would not be available on this page anymore'=>'*En choisissant cette option, les commandes exportées ne seront plus disponible sur cette page',
     'Change orders status after export'=>'Modifier le status des commandes après l\'export',
+    'So Colissimo update config' => 'Mise à jour de la configuration de So Colissimo ',
+    'So Colissimo url prod' => 'So Colissimo URL en production',
+    'So Colissimo url test' => 'So Colissimo ULR en test',
+    'test mode' => 'Mode test',
 );
