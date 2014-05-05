@@ -88,7 +88,6 @@
                         mapSOC.address = adr_geoloc;
                         mapSOC.locations = locations;
                     }
-                    //console.log("currentSearch", mapSOC.images);
 
                     if (mapSOC.map === null) {
                         // Define MAP
@@ -130,7 +129,6 @@
                     });
 
                     // clean current map
-                    console.log("clean current map", mapSOC.listMarker);
                     $("#table-socolissimo").html("");
                     for (i = 0; i < mapSOC.listMarker.length; i++) {
                         //google.maps.event.removeListener(listMarker[i]);
@@ -263,7 +261,6 @@
                         var locations = [];
                         $.getJSON(url_site)
                             .done(function(data) {
-                                //console.log(data);
                                 if (!$.isEmptyObject(data)) {
                                     locations = data.locations;
                                     updatemap_socolissimo(adr_geoloc, locations);
@@ -273,7 +270,6 @@
                             })
                             .fail(function( jqxhr, textStatus, error ) {
                                 var err = textStatus + ", " + error;
-                                //console.log( "Request Failed: " + err );
                             });
                     }
                 }
