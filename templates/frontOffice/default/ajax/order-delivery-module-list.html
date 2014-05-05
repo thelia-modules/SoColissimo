@@ -5,7 +5,7 @@
 {assign var="socolissimo" value=$MODULE_ID}
 {/loop}
 
-    {* Check if soColissimo webservice is up *}
+{* Check if soColissimo webservice is up *}
 {assign var="isSocolissimoUp" value=0}
 {loop name="is.socolissimo.up"  type="socolissimo.around"}{/loop}
 {ifloop rel="is.socolissimo.up"}
@@ -27,17 +27,22 @@
     {/if}
         {if $ID == $socolissimo}
         <div class="radio">
-            <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
-            <label for="delivery-method-dom">
-                <input type="radio" class="delivery-method" name="{$name}" id="delivery-method-dom" {if $isDeliveryMethodChecked} checked{/if}  value="{$ID}" />
-                <strong>{intl l="livraison à domicile"}</strong> / {$POSTAGE} {currency attr="symbol"}
-            </label>
-        </div>
-        <div class="radio">
-            <label for="delivery-method-point">
-                <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-point" value="{$ID}" />
-                <strong>{intl l="A proximité de chez vous"}</strong> / {$POSTAGE} {currency attr="symbol"}
-            </label>
+            <div>
+                <img src="{image file="assets/img/socolissimo/socolissimo.png" source="SoColissimo"}" alt="So Colissimo" />
+            </div>
+            <div class="radio">
+                <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
+                <label for="delivery-method-dom">
+                    <input type="radio" class="delivery-method" name="{$name}" id="delivery-method-dom" {if $isDeliveryMethodChecked} checked{/if}  value="{$ID}" />
+                    <strong>{intl l="livraison à domicile"}</strong> / {$POSTAGE} {currency attr="symbol"}
+                </label>
+            </div>
+            <div class="radio">
+                <label for="delivery-method-point">
+                    <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-point" value="{$ID}" />
+                    <strong>{intl l="A proximité de chez vous"}</strong> / {$POSTAGE} {currency attr="symbol"}
+                </label>
+            </div>
         </div>
         {else}
         <div class="radio">
@@ -46,10 +51,9 @@
                 <strong>{$TITLE}</strong> / {$POSTAGE} {currency attr="symbol"}
             </label>
         </div>
-        {/if}
+    {/if}
 
     {/form_field}
-
 
     <!-- SOCOLISSIMO -->
     {if $ID == $socolissimo}
@@ -61,11 +65,12 @@
                     "infowindow": null,
                     "geocoder": null,
                     "listMarker": [],
+                    "position": null,
                     "images": {
                         'A2P': '{image file="assets/img/socolissimo/A2P.png" source="SoColissimo"}',
                         'BPR': '{image file="assets/img/socolissimo/BPR.png" source="SoColissimo"}',
                         'CIT': '{image file="assets/img/socolissimo/CIT.png" source="SoColissimo"}',
-                        'HANDICAPE': '{image file="assets/img/socolissimo/HANDICAPE.png" source="SoColissimo"}'
+                        'HANDICAPE': '{image file="assets/img/socolissimo/mobilite-reduite.gif" source="SoColissimo"}'
                     },
                     "address": "",
                     "locations": []
@@ -111,6 +116,10 @@
                                 map: mapSOC.map,
                                 icon: "{image file='assets/img/socolissimo/maison.png' source='SoColissimo'}"
                             });
+                            if (mapSOC.position != null){
+                                mapSOC.position.setMap(null);
+                            }
+                            mapSOC.position = marker;
                         } else {
                             // Sinon on met le centre de la map sur Clermont-Ferrand ;)
                             alert('{intl l="Actual address can\'t be geolocated"}');
@@ -145,10 +154,11 @@
                         }
 
                         buf += '<tr><td><img src="' + mapSOC.images[loc.type] + '">';
+                        buf += '<strong>' + loc.name + '</strong> ';
                         if (loc.disabledPerson == "1"){
-                            buf += '<img src="' + mapSOC.images["HANDICAPE"] + '">';
+                            buf += '<img src="' + mapSOC.images["HANDICAPE"] + '" />';
                         }
-                        buf += '<strong>' + loc.name + '</strong><br> ' + loc.address + '<br>' + loc.zipcode + ' ' + loc.city;
+                        buf += '<br>' + loc.address + '<br>' + loc.zipcode + ' ' + loc.city;
                         buf += ' - ' + loc.distance;
                         buf += '</td><td><div class="radio"><input type="radio" name="socolissimo_code" data-marker='+i+' class="socolissimo_pr" id="pr-socolissimo' + loc.id + '" value="' + loc.id + '" ';
                         buf += '></div></td></tr>';
@@ -167,21 +177,34 @@
 
                 function attachMarker(marker, data) {
                     google.maps.event.addListener(marker, 'click', function() {
-                        $("#pr-socolissimo" + data.identifiant).prop('checked', true);
+                        $("#pr-socolissimo" + data.id).prop('checked', true);
                         verifyRadio();
                         mapSOC.infowindow.setContent('<img src="' + mapSOC.images[data.type] + '">' +
-                            data.name + '<br>' + data.address + '<br>' + data.zipcode+ ' ' + data.city +
-                            '<table>' +
-                            '<tr><td>{intl l="Monday"}</td><td>' + data.monday + '</td></tr>' +
-                            '<tr><td>{intl l="Tuesday"}</td><td>' + data.tuesday + '</td></tr>' +
-                            '<tr><td>{intl l="Wednesday"}</td><td>' + data.wednesday + '</td></tr>' +
-                            '<tr><td>{intl l="Friday"}</td><td>' + data.friday + '</td></tr>' +
-                            '<tr><td>{intl l="Thursday"}</td><td>' + data.thursday + '</td></tr>' +
-                            '<tr><td>{intl l="Saturday"}</td><td>' + data.saturday + '</td></tr>' +
-                            '<tr><td>{intl l="Sunday"}</td><td>' + data.sunday + '</td></tr>' +
+                            '<strong>' + data.name + '</strong>' +
+                            '<address style="margin: 0">' + data.address + '<br>' + data.zipcode+ ' ' + data.city + '</address>' +
+                            '<div>' + data.distance + ' ' +
+                            ((data.disabledPerson) ? '<img src="' + mapSOC.images["HANDICAPE"] + '" />' : "") +
+                            '</div>' +
+                            '<table style="width: 100%;">' +
+                                getHoraireRow('{intl l="Monday"}', data.monday) +
+                                getHoraireRow('{intl l="Tuesday"}', data.tuesday) +
+                                getHoraireRow('{intl l="Wednesday"}', data.wednesday) +
+                                getHoraireRow('{intl l="Friday"}', data.friday) +
+                                getHoraireRow('{intl l="Thursday"}', data.thursday) +
+                                getHoraireRow('{intl l="Saturday"}', data.saturday) +
+                                getHoraireRow('{intl l="Sunday"}', data.sunday) +
                             '</table>');
                         mapSOC.infowindow.open(mapSOC.map, marker);
                     });
+                }
+
+                function getHoraireRow(lib, data){
+                    var newData = data.replace("00:00-00:00", "", "g").replace(" ", "", "g");
+                    var ret = "";
+                    if (newData != ""){
+                        ret = '<tr><th>' + lib + ' </th><td> ' + newData + '</td></tr>';
+                    }
+                    return ret;
                 }
 
                 function initialize_so() {
@@ -358,6 +381,8 @@
         }
         if(typeof(google) == 'undefined') {
             loadScript();
+        } else {
+            initialize();
         }
         function initialize()
         {
