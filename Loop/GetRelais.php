@@ -45,7 +45,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
 {
     /**
      * this method returns an array ***Thanks cap'tain obvious \(^.^)/***
-     *
+     *->
      * @return array
      */
     public function buildArray()
@@ -53,6 +53,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         // Find the address ... To find ! \m/
         $zipcode = $this->getZipcode();
         $city = $this->getCity();
+        $address = $this->getAddress();
 
         $address = array(
             "zipcode"=>$zipcode,
@@ -116,7 +117,13 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         foreach ($loopResult->getResultDataCollection() as $item) {
             $loopResultRow = new LoopResultRow();
 
-            $distance = $item->distanceEnMetre;
+            //Tlog::getInstance()->addDebug(print_r($item, true));
+            foreach ($item as $key => $value) {
+                $loopResultRow->set($key, $value);
+            }
+
+            // format distance
+            $distance = (string) $loopResultRow->get("distanceEnMetre");
             if (strlen($distance) < 4) {
                 $distance .= " m";
             } else {
@@ -126,11 +133,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
                 }
                 $distance = str_replace(".", ",", $distance) . " km";
             }
-
-            foreach ($item as $key => $value) {
-                $loopResultRow->set($key, $value);
-            }
-            $loopResultRow->set('distance ', $distance);
+            $loopResultRow->set('distance', $distance);
 
             $loopResult->addRow($loopResultRow);
         }
@@ -174,7 +177,8 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
     {
         return new ArgumentCollection(
             Argument::createAnyTypeArgument("zipcode", ""),
-            Argument::createAnyTypeArgument("city","")
+            Argument::createAnyTypeArgument("city",""),
+            Argument::createAnyTypeArgument("address","")
         );
     }
 

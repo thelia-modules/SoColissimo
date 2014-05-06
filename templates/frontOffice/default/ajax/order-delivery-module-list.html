@@ -5,7 +5,7 @@
 {assign var="socolissimo" value=$MODULE_ID}
 {/loop}
 
-    {* Check if soColissimo webservice is up *}
+{* Check if soColissimo webservice is up *}
 {assign var="isSocolissimoUp" value=0}
 {loop name="is.socolissimo.up"  type="socolissimo.around"}{/loop}
 {ifloop rel="is.socolissimo.up"}
@@ -17,7 +17,6 @@
 
 {if ($ID == $socolissimo and $isSocolissimoUp) or $ID != $socolissimo}
     {assign var="isDeliveryMethodChecked" value="0"}
-    <div class="radio">
     {form_field form=$form field='delivery-module'}
     {if $isPost}
         {if $value == $ID}
@@ -27,128 +26,187 @@
         {assign var="isDeliveryMethodChecked" value="1"}
     {/if}
         {if $ID == $socolissimo}
-            <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
-            <label for="delivery-method-dom">
-                <input type="radio" class="delivery-method" name="{$name}" id="delivery-method-dom" {if $isDeliveryMethodChecked} checked{/if}  value="{$ID}" />
-                <strong>{intl l="livraison à domicile"}</strong> / {$POSTAGE} {currency attr="symbol"}
-            </label>
+        <div class="radio">
+            <div>
+                <img src="{image file="assets/img/socolissimo/socolissimo.png" source="SoColissimo"}" alt="So Colissimo" />
             </div>
             <div class="radio">
-            <label for="delivery-method-point">
-                <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-point" value="{$ID}" />
-                <strong>{intl l="A proximité de chez vous"}</strong> / {$POSTAGE} {currency attr="symbol"}
-            </label>
+                <input type="hidden" name="domicile" value="1" id="socolissimo_dom"/>
+                <label for="delivery-method-dom">
+                    <input type="radio" class="delivery-method" name="{$name}" id="delivery-method-dom" {if $isDeliveryMethodChecked} checked{/if}  value="{$ID}" />
+                    <strong>{intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
+                </label>
+            </div>
+            <div class="radio">
+                <label for="delivery-method-point">
+                    <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-point" value="{$ID}" />
+                    <strong>{intl l="Near you" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
+                </label>
+            </div>
+        </div>
         {else}
+        <div class="radio">
             <label for="delivery-method-{$ID}">
                 <input type="radio" name="{$name}" class="delivery-method" id="delivery-method-{$ID}"{if $isDeliveryMethodChecked} checked{/if} value="{$ID}" />
                 <strong>{$TITLE}</strong> / {$POSTAGE} {currency attr="symbol"}
             </label>
-        {/if}
+        </div>
+    {/if}
 
     {/form_field}
 
-
     <!-- SOCOLISSIMO -->
     {if $ID == $socolissimo}
+    <div id="point-socolissimo">
         <div id="google-map-socolissimo" {if !$isDeliveryMethodChecked} style="display: none;" {/if}>
             <script>
+                var mapSOC = {
+                    "map": null,
+                    "infowindow": null,
+                    "geocoder": null,
+                    "listMarker": [],
+                    "position": null,
+                    "images": {
+                        'A2P': '{image file="assets/img/socolissimo/A2P.png" source="SoColissimo"}',
+                        'BPR': '{image file="assets/img/socolissimo/BPR.png" source="SoColissimo"}',
+                        'CIT': '{image file="assets/img/socolissimo/CIT.png" source="SoColissimo"}',
+                        'HANDICAPE': '{image file="assets/img/socolissimo/mobilite-reduite.gif" source="SoColissimo"}'
+                    },
+                    "address": "",
+                    "locations": []
+                };
 
-                function updatemap_socolissimo(url_site, adr_geoloc, locations) {
-                    document.getElementById('socolissimomap').innerHTML = "";
-                    var images = {
-                        'A2P': "{image file="assets/img/socolissimo/A2P.png"}",
-                        'BPR': "{image file="assets/img/socolissimo/BPR.png"}",
-                        'CIT': "{image file="assets/img/socolissimo/CIT.png"}"
-                    };
-                    // Define MAP
-                    var mapOptions = {
-                        zoom: 13,
-                        mapTypeId: google.maps.MapTypeId.ROADMAP
+                function updatemap_socolissimo(adr_geoloc, locations) {
+
+                    var buf = "",
+                        marker,
+                        loc,
+                        i;
+
+                    // save current search
+                    if (adr_geoloc !== undefined && locations !== undefined) {
+                        mapSOC.address = adr_geoloc;
+                        mapSOC.locations = locations;
                     }
-                    // On va créer la map dans la div qui a l'id relaymap
-                    var map = new google.maps.Map(document.getElementById('socolissimomap'), mapOptions);
-                    // Then, display everything on the map
-                    var geocoder = new google.maps.Geocoder();
+
+                    if (mapSOC.map === null) {
+                        // Define MAP
+                        var mapOptions = {
+                            zoom: 13,
+                            mapTypeId: google.maps.MapTypeId.ROADMAP
+                        }
+                        // On va créer la map dans la div qui a l'id relaymap
+                        mapSOC.map = new google.maps.Map(document.getElementById('socolissimomap'), mapOptions);
+                        mapSOC.infowindow = new google.maps.InfoWindow({
+                            size: new google.maps.Size(50,50)
+                        });
+                        mapSOC.geocoder = new google.maps.Geocoder();
+                    }
+
                     // We get latitude and longitude for the customer's adress
                     var b = [];
-                    b['address'] = adr_geoloc;
-                    geocoder.geocode(b, function (results, status) {
+                    b['address'] = mapSOC.address;
+                    mapSOC.geocoder.geocode(b, function (results, status) {
                         if (status == google.maps.GeocoderStatus.OK) {
                             // Et on centre la map sur cette position
-                            map.setCenter(results[0].geometry.location);
+                            mapSOC.map.setCenter(results[0].geometry.location);
                             marker = new google.maps.Marker({
                                 position: new google.maps.LatLng(results[0].geometry.location.lat(), results[0].geometry.location.lng()),
-                                map: map,
-                                icon: "{image file="assets/img/socolissimo/maison.png"}"
+                                map: mapSOC.map,
+                                icon: "{image file='assets/img/socolissimo/maison.png' source='SoColissimo'}"
                             });
-
-                        }
-                        else {
+                            if (mapSOC.position != null){
+                                mapSOC.position.setMap(null);
+                            }
+                            mapSOC.position = marker;
+                        } else {
                             // Sinon on met le centre de la map sur Clermont-Ferrand ;)
-                            alert('{intl l="Actual address can\'t be geolocated"}');
+                            alert("{intl l="Actual address can't be geolocated"}");
                             var myLatLng = new google.maps.LatLng(45.7789, 3.0782);
-                            map.setCenter(myLatLng);
-                            map.setZoom(3);
+                            mapSOC.map.setCenter(myLatLng);
+                            mapSOC.map.setZoom(3);
                         }
                     });
 
-                    var infowindow = new google.maps.InfoWindow();
+                    // clean current map
+                    $("#table-socolissimo").html("");
+                    for (i = 0; i < mapSOC.listMarker.length; i++) {
+                        //google.maps.event.removeListener(listMarker[i]);
+                        mapSOC.listMarker[i].setMap(null);
+                    }
+                    mapSOC.listMarker = [];
 
-                    var marker, i;
+                    // get current
+                    var services = {};
+                    $("input.toggle-type-socolissimo:checked").each(function(){
+                        services[this.value] = true;
+                    });
 
                     // Pour chaque point relais dans locations on crée un nouveau marker
                     // And Complete table-relais
-                    var buf = "";
-                    for (i = 0; i < locations.length; i++) {
-                        buf += '<tr><td><b>' + locations[i].name + '</b><br> ' + locations[i].address + '<br>' + locations[i].zipcode + ' ' + locations[i].city;
-                        buf += '- ' + locations[i].distance;
-                        buf += '</td><td><div class="radio"><input type="radio" name="socolissimo_code" data-marker='+i+' class="socolissimo_pr" id="pr-socolissimo' + locations[i].id + '" value="' + locations[i].id + '" ';
+                    for (i = 0; i < mapSOC.locations.length; i++) {
+                        loc = mapSOC.locations[i];
+
+                        if (! services[loc.type]){
+                            continue;
+                        }
+
+                        buf += '<tr><td><img src="' + mapSOC.images[loc.type] + '">';
+                        buf += '<strong>' + loc.name + '</strong> ';
+                        if (loc.disabledPerson == "1"){
+                            buf += '<img src="' + mapSOC.images["HANDICAPE"] + '" />';
+                        }
+                        buf += '<br>' + loc.address + '<br>' + loc.zipcode + ' ' + loc.city;
+                        buf += ' - ' + loc.distance;
+                        buf += '</td><td><div class="radio"><input type="radio" name="socolissimo_code" data-marker='+i+' class="socolissimo_pr" id="pr-socolissimo' + loc.id + '" value="' + loc.id + '" ';
                         buf += '></div></td></tr>';
 
                         marker = new google.maps.Marker({
-                            position: new google.maps.LatLng(locations[i].lat, locations[i].lng),
-                            map: map,
-                            icon: images[locations[i].type]
+                            position: new google.maps.LatLng(loc.lat, loc.lng),
+                            map: mapSOC.map,
+                            icon: mapSOC.images[loc.type]
                         });
 
-                        listeMarker[i] = marker;
-
-                        // Lors du clic sur un point relai on affiche une bulle avec les informations
-                        google.maps.event.addListener(marker, 'click', (function (marker, i) {
-                            return function(){
-                                $.ajax({
-                                    url: "{url path="/module/socolissimo/point/"}"+locations[i].id
-                                }).done(function(data){
-                                    infowindow.setContent(
-                                            "<img src=\"" + images[data.typeDePoint] + "\">" +
-                                                    data.nom + '<br>' + data.adresse1 + '<br>' + data.codePostal + ' ' + data.localite +
-                                                    '<table>' +
-                                                    '<tr><td>Lundi</td><td>' + data.horairesOuvertureLundi + '</td></tr>' +
-                                                    '<tr><td>Mardi</td><td>' + data.horairesOuvertureMardi + '</td></tr>' +
-                                                    '<tr><td>Mercredi</td><td>' + data.horairesOuvertureMercredi + '</td></tr>' +
-                                                    '<tr><td>Jeudi</td><td>' + data.horairesOuvertureJeudi + '</td></tr>' +
-                                                    '<tr><td>Vendredi</td><td>' + data.horairesOuvertureVendredi + '</td></tr>' +
-                                                    '<tr><td>Samedi</td><td>' + data.horairesOuvertureSamedi + '</td></tr>' +
-                                                    '<tr><td>Dimanche</td><td>' + data.horairesOuvertureDimanche + '</td></tr>' +
-                                                    '</table>'
-                                    );
-                                    // $("input[name=socolissimo_code]:checked").removeAttr('checked');
-                                    $("#pr-socolissimo" + data.identifiant).prop('checked', true);
-                                    zizanieDansLesRadio();
-                                    infowindow.open(map, marker);
-                                });
-                            }
-                        })(marker, i));
+                        mapSOC.listMarker.push(marker);
+                        attachMarker(marker, loc);
                     }
                     document.getElementById("table-socolissimo").innerHTML = buf;
                 }
 
+                function attachMarker(marker, data) {
+                    google.maps.event.addListener(marker, 'click', function() {
+                        $("#pr-socolissimo" + data.id).prop('checked', true);
+                        verifyRadio();
+                        mapSOC.infowindow.setContent('<img src="' + mapSOC.images[data.type] + '">' +
+                            '<strong>' + data.name + '</strong>' +
+                            '<address style="margin: 0">' + data.address + '<br>' + data.zipcode+ ' ' + data.city + '</address>' +
+                            '<div>' + data.distance + ' ' +
+                            ((data.disabledPerson) ? '<img src="' + mapSOC.images["HANDICAPE"] + '" />' : "") +
+                            '</div>' +
+                            '<table style="width: 100%;">' +
+                                getHoraireRow('{intl l="Monday" d='socolissimo.fo.default'}', data.monday) +
+                                getHoraireRow('{intl l="Tuesday" d='socolissimo.fo.default'}', data.tuesday) +
+                                getHoraireRow('{intl l="Wednesday" d='socolissimo.fo.default'}', data.wednesday) +
+                                getHoraireRow('{intl l="Friday" d='socolissimo.fo.default'}', data.friday) +
+                                getHoraireRow('{intl l="Thursday" d='socolissimo.fo.default'}', data.thursday) +
+                                getHoraireRow('{intl l="Saturday" d='socolissimo.fo.default'}', data.saturday) +
+                                getHoraireRow('{intl l="Sunday" d='socolissimo.fo.default'}', data.sunday) +
+                            '</table>');
+                        mapSOC.infowindow.open(mapSOC.map, marker);
+                    });
+                }
+
+                function getHoraireRow(lib, data){
+                    var newData = data.replace("00:00-00:00", "", "g").replace(" ", "", "g");
+                    var ret = "";
+                    if (newData != ""){
+                        ret = '<tr><th>' + lib + ' </th><td> ' + newData + '</td></tr>';
+                    }
+                    return ret;
+                }
 
                 function initialize_so() {
-                    // Get site base url
-                    var url_site = '{url path="/"}';
                     // Get customer address
-
                     {loop type="address" name="delivery-selection-socolissimo" customer="current" default="true"}
                     var adr_geoloc = "{$ADDRESS1}, {$ZIPCODE} {$CITY}";
                     {/loop}
@@ -172,75 +230,134 @@
                         'thursday': '{$horairesOuvertureJeudi}',
                         'friday': '{$horairesOuvertureVendredi}',
                         'saturday': '{$horairesOuvertureSamedi}',
-                        'sunday': '{$horairesOuvertureDimanche}'
+                        'sunday': '{$horairesOuvertureDimanche}',
+                        'disabledPerson': '{$accesPersonneMobiliteReduite}'
                     });
                     {/loop}
-                    updatemap_socolissimo(url_site, adr_geoloc, locations);
+                    updatemap_socolissimo(adr_geoloc, locations);
                 }
 
                 function search_city_socolissimo() {
+                    var address = document.getElementById("search-address-socolissimo").value;
                     var zipcode = document.getElementById("search-zipcode-socolissimo").value;
                     var city = document.getElementById("search-city-socolissimo").value;
                     if (zipcode == "" || city == "") {
-                        alert("{intl l="Please enter a city and a zipcode"}");
+                        alert("{intl l="Please enter a city and a zipcode" d='socolissimo.fo.default'}");
                         {literal}
                     } else if (!(/\d{5}/.test(zipcode))) {
                         {/literal}
-                        alert("{intl l="Please enter a valid zipcode"}");
+                        alert("{intl l="Please enter a valid zipcode" d='socolissimo.fo.default'}");
                     } else {
                         // Get site base url
-                        var url_site = '{url path="/"}';
+                        var url_site = '{url path="/"}module/socolissimo/'
+                            + encodeURIComponent(zipcode) + '/'
+                            + encodeURIComponent(city);
+                        if (address != ""){
+                            url_site += '/' + encodeURIComponent(address);
+                        }
                         // Get search address
-                        var adr_geoloc = zipcode + " " + city;
+                        var adr_geoloc = address + " " + zipcode + " " + city;
                         // Get every relay around customer's address
                         var locations = [];
-                        $.get(url_site + "module/socolissimo/" + zipcode + "/" + city, function (data) {
-                            if (!$.isEmptyObject(data)) {
-                                locations = JSON.parse(data);
-                                updatemap_socolissimo(url_site, adr_geoloc, locations);
-                            } else {
-                                alert("{intl l="SoColissimo is not unavailable. Please choose another delivery method"}");
-                            }
-
-                        });
+                        $.getJSON(url_site)
+                            .done(function(data) {
+                                if (!$.isEmptyObject(data)) {
+                                    locations = data.locations;
+                                    updatemap_socolissimo(adr_geoloc, locations);
+                                } else {
+                                    alert("{intl l='So Colissimo is not unavailable. Please choose another delivery method' d='socolissimo.fo.default'}");
+                                }
+                            })
+                            .fail(function( jqxhr, textStatus, error ) {
+                                var err = textStatus + ", " + error;
+                            });
                     }
                 }
 
-                // Search city pseudo-form
-                //document.getElementById("search-city-submit-socolissimo").onclick = search_city_socolissimo;
             </script>
-            <div class="clearfix">
-                <div id="socolissimomap" class="pull-left" style="width: 450px; height: 420px;"></div>
-                <div class="pull-left" style="height: 420px; overflow-y: scroll; width: 638px;">
-                    <table class="table table-bordered table-striped" id="table-socolissimo" >
-                    </table>
-                </div>
+            <div class="row">
+                <!-- Search city -->
+                <div class="col-md-12 col-sm-12 col-xs-12">
+                    <div class="panel">
+                        <div class="panel-heading clearfix">
+                            {intl l="Search So Colissimo relay in a city" d='socolissimo.fo.default'}
+                        </div>
+                        <div class="panel-body" style="padding: 5px;">
+                            <div class="row">
+                                <div class="col-md-4 col-xs-12">
+                                    <label for="search-address-socolissimo" class="control-label hidden">
+                                        {intl l="address" d='socolissimo.fo.default'}
+                                    </label>
+                                    <input type="text" id="search-address-socolissimo" placeholder="{intl l='address' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
+                                    {literal}onkeydown="if (event.keyCode == 13) {return false;}"{/literal}/>
+                                </div>
+                                <div class="col-md-2 col-xs-12">
+                                    <label for="search-zipcode-socolissimo" class="control-label hidden">
+                                        {intl l="zipcode" d='socolissimo.fo.default'}
+                                    </label>
+                                    <input type="text" id="search-zipcode-socolissimo" placeholder="{intl l='zipcode' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
+                                        {literal}onkeydown="if (event.keyCode == 13) {search_city_socolissimo();return false;}"{/literal}/>
+                                </div>
+                                <div class="col-md-4 col-xs-12">
+                                    <label for="search-city-socolissimo" class="control-label hidden">
+                                        {intl l="city" d='socolissimo.fo.default'}
+                                    </label>
+                                    <input type="text" id="search-city-socolissimo" placeholder="{intl l='city' d='socolissimo.fo.default'}" class="form-control" style="" onPaste=""
+                                    {literal}onkeydown="if (event.keyCode == 13) {search_city_socolissimo();return false;}"{/literal}/>
+                                </div>
+                                <div class="col-md-2 col-xs-12">
+                                    <input type="button" id="search-city-submit-socolissimo" class="form-submit-button btn btn-sm btn-default" title="{intl l='Search' d='socolissimo.fo.default'}" value="{intl l='Search' d='socolissimo.fo.default'}">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div><!-- // Search city -->
+
+                <!-- Mon espace cityssimo -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div style="padding: 5px;">
+                        {images file="assets/img/socolissimo/cit-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="My cityssimo space" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 31 automatic instructions Cityssimo 7/7 and 24/24h." d='socolissimo.fo.default'}</p>
+                        <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="CIT" checked="checked" />
+                        {intl l="include in results" d='socolissimo.fo.default'}
+                    </div>
+                </div><!-- // Mon espace cityssimo -->
+
+                <!-- Bureau de poste -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div style="padding: 5px;">
+                        {images file="assets/img/socolissimo/bpr-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="Post office" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 10,000 collection points La Poste of your choice in France." d='socolissimo.fo.default'}</p>
+                        <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="BPR" checked="checked" />
+                        {intl l="include in results" d='socolissimo.fo.default'}
+                    </div>
+                </div><!-- // Bureau de poste -->
+
+                <!-- Mon commercant -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div style="padding: 5px;">
+                        {images file="assets/img/socolissimo/a2p-small.png" source="SoColissimo"}<img src="{$asset_url}" alt="{intl l="My trader" d='socolissimo.fo.default'}" />{/images}
+                        <p>{intl l="Delivery in one of the 4200 shops in the PICKUP network, La Poste Group." d='socolissimo.fo.default'}</p>
+                        <input type="checkbox" name="toggle-type-socolissimo" class="toggle-type-socolissimo" value="A2P" checked="checked" />
+                        {intl l="include in results" d='socolissimo.fo.default'}
+                    </div>
+                </div><!-- // Mon commercant -->
+
             </div>
-            <!-- Search city -->
-{*            <div class="panel" style="width: 440px;">
-                <div class="panel-heading clearfix">
-                    {intl l="Search socolissimo relay in a city"}
-                </div>
-                <div class="panel-body" style="padding: 5px;">
-                    <div class="form-group">
-                        <label for="search-city-socolissimo" class="control-label">
-                            {intl l="city"} :
-                        </label>
-                        <input type="text" id="search-city-socolissimo" placeholder="{intl l='city'}" class="form-control" style="width: 400px;" onPaste="" {literal}onkeydown="if (event.keyCode == 13) {search_city_relais();return false;}"{/literal}/>
-                    </div>
-                    <div class="form-group">
-                        <label for="search-zipcode-socolissimo" class="control-label">
-                            {intl l="zipcode"} :
-                        </label>
+            <div class="row">
+                <!-- Map -->
+                <div class="col-md-7 col-xs-12" style="padding-right: 0;">
+                    <div id="socolissimomap" style="width: 100%; height: 420px;"></div>
+                </div><!-- // Map -->
 
-                        <input type="text" id="search-zipcode-socolissimo" placeholder="{intl l='zipcode'}" class="form-control" style="width: 400px;" onPaste="" {literal}onkeydown="if (event.keyCode == 13) {search_city_relais();return false;}"{/literal}/>
+                <!-- Liste -->
+                <div class="col-md-5 col-xs-12" style="padding-left: 0">
+                    <div style="height: 420px; overflow-y: scroll;">
+                        <table class="table table-bordered table-striped" id="table-socolissimo" ></table>
                     </div>
+                </div><!-- // Liste -->
+            </div>
 
-                    <div class="form-group">
-                        <input type="button" id="search-city-submit-socolissimo" class="form-submit-button btn btn-sm btn-default" title="{intl l='Search'}" value="{intl l='Search'}">
-                    </div>
-                </div>
-            </div>*}
             <!-- --- -->
         </div>
     {/if}
@@ -260,11 +377,14 @@
         }
         if(typeof(google) == 'undefined') {
             loadScript();
+        } else {
+            initialize();
         }
-        var listeMarker = [];
         function initialize()
         {
             initialize_so();
+            // Search city pseudo-form
+            document.getElementById("search-city-submit-socolissimo").onclick = search_city_socolissimo;
         }
 
         function verifyRadio()
@@ -286,14 +406,20 @@
                 }
             });
 
+            $(".toggle-type-socolissimo").on('change', function(){
+                updatemap_socolissimo();
+            });
+
             $("#delivery-method-point").on('click', function(){
                 $("#socolissimo_dom").val(0);
-                $("#google-map-socolissimo").show();
+                $("#google-map-socolissimo").show(function(){
+                    google.maps.event.trigger(mapSOC.map, 'resize');
+                });
             });
 
             $("#delivery-method").on('click', '.socolissimo_pr', function(){
                 markerId = $(this).data('marker');
-                google.maps.event.trigger(listeMarker[markerId], 'click');
+                google.maps.event.trigger(mapSOC.listMarker[markerId], 'click');
                 verifyRadio();
             });
         });

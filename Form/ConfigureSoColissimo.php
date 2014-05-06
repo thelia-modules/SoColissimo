@@ -92,7 +92,7 @@ class ConfigureSoColissimo extends BaseForm
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_prod'),
-                    'label'       => $translator->trans("socolissimo url prod"),
+                    'label'       => $translator->trans("So Colissimo url prod"),
                     'label_attr'  => ['for' => 'socolissimo_url_prod']
                 ]
             )
@@ -107,7 +107,7 @@ class ConfigureSoColissimo extends BaseForm
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_test'),
-                    'label'       => $translator->trans("socolissimo url test"),
+                    'label'       => $translator->trans("So Colissimo url test"),
                     'label_attr'  => ['for' => 'socolissimo_url_test']
                 ]
             )

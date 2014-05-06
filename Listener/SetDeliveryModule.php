@@ -133,7 +133,7 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
 
                 if ($tmp_address === null) {
-                    throw new \ErrorException("Got an error with SoColissimo module. Please try again to checkout.");
+                    throw new \ErrorException("Got an error with So Colissimo module. Please try again to checkout.");
                 }
 
                 $savecode = new OrderAddressSocolissimo();
