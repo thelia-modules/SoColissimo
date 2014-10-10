@@ -114,6 +114,10 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->setCountryId($customer_name->getCountryId())
                     ->save();
             }
+            else {
+                
+                throw new \ErrorException("No relay chosen for Socolissimo delivery module");
+            }
         }
     }
 
