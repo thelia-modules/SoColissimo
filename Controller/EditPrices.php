@@ -92,14 +92,26 @@ class EditPrices extends BaseAdminController
             throw new \ErrorException("Arguments are missing or invalid");
         }
 
-        $this->redirectToRoute(
-            "admin.module.configure",
-            array(),
-            array (
-                'current_tab'=>'price_slices_tab',
-                'module_code'=>"SoColissimo",
-                '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'
-            )
-        );
+        if (SoColissimo::checkVersion('<', '2.1.0')) {
+            $this->redirectToRoute(
+                "admin.module.configure",
+                array(),
+                array (
+                    'current_tab'=>'price_slices_tab',
+                    'module_code'=>"SoColissimo",
+                    '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'
+                )
+            );
+        } else {
+            return $this->generateRedirectFromRoute(
+                "admin.module.configure",
+                array(),
+                array (
+                    'current_tab'=>'price_slices_tab',
+                    'module_code'=>"SoColissimo",
+                    '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction'
+                )
+            );
+        }
     }
 }

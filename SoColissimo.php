@@ -23,6 +23,7 @@
 
 namespace SoColissimo;
 
+use Thelia\Core\Thelia;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleQuery;
@@ -70,7 +71,14 @@ class SoColissimo extends AbstractDeliveryModule
      */
     public function isValidDelivery(Country $country)
     {
-        $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
+        if (SoColissimo::checkVersion('<', '2.1.0')) {
+            $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
+        } else {
+            $cartWeight = $this->getRequest()
+                ->getSession()
+                ->getSessionCart($this->getContainer()->get("event_dispatcher"))
+                ->getWeight();
+        }
 
         $areaId = $country->getAreaId();
 
@@ -147,7 +155,14 @@ class SoColissimo extends AbstractDeliveryModule
      */
     public function getPostage(Country $country)
     {
-        $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
+        if (SoColissimo::checkVersion('<', '2.1.0')) {
+            $cartWeight = $this->getRequest()->getSession()->getCart()->getWeight();
+        } else {
+            $cartWeight = $this->getRequest()
+                ->getSession()
+                ->getSessionCart($this->getContainer()->get("event_dispatcher"))
+                ->getWeight();
+        }
 
         $postage = self::getPostageAmount(
             $country->getAreaId(),
@@ -178,5 +193,19 @@ class SoColissimo extends AbstractDeliveryModule
     public static function getModCode()
     {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
+    }
+
+    /**
+     * @param $compare
+     * @param $version
+     * @return mixed
+     */
+    public static function checkVersion($compare, $version)
+    {
+        $theliaVersion = Thelia::THELIA_VERSION;
+
+        $theliaVersion = explode('-', $theliaVersion);
+
+        return version_compare($theliaVersion[0], $version, $compare);
     }
 }

@@ -23,6 +23,7 @@
 
 namespace SoColissimo\Controller;
 
+use SoColissimo\SoColissimo;
 use Thelia\Controller\Admin\BaseAdminController;
 use SoColissimo\Form\ConfigureSoColissimo;
 use Thelia\Core\Translation\Translator;
@@ -51,11 +52,20 @@ class SaveConfig extends BaseAdminController
             ConfigQuery::write('socolissimo_url_test', $vform->get('url_test')->getData(), 1, 1);
             ConfigQuery::write('socolissimo_test_mode', $vform->get('test_mode')->getData(), 1, 1);
 
-            $this->redirectToRoute(
-                "admin.module.configure",
-                [],
-                ['module_code' => 'SoColissimo', 'current_tab' => 'configure']
-            );
+            if (SoColissimo::checkVersion('<', '2.1.0')) {
+                $this->redirectToRoute(
+                    "admin.module.configure",
+                    [],
+                    ['module_code' => 'SoColissimo', 'current_tab' => 'configure']
+                );
+            } else {
+                return $this->generateRedirectFromRoute(
+                    "admin.module.configure",
+                    [],
+                    ['module_code' => 'SoColissimo', 'current_tab' => 'configure']
+                );
+            }
+
 
         } catch (\Exception $e) {
             $this->setupFormErrorContext(
