@@ -23,28 +23,29 @@
 
 namespace SoColissimo;
 
-
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleQuery;
-use Thelia\Module\BaseModule;
-use Thelia\Module\DeliveryModuleInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Thelia\Exception\OrderException;
 use Propel\Runtime\Connection\ConnectionInterface;
 use SoColissimo\Model\SocolissimoFreeshippingQuery;
 use Thelia\Install\Database;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
 
+/**
+ * Class SoColissimo
+ * @package SoColissimo
+ */
 class SoColissimo extends AbstractDeliveryModule
 {
     protected $request;
+
     protected $dispatcher;
 
     private static $prices = null;
 
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
+
     const JSON_CONFIG_PATH = "/Config/config.json";
 
     public static function getPrices()
@@ -77,7 +78,6 @@ class SoColissimo extends AbstractDeliveryModule
 
         /* check if Colissimo delivers the asked area */
         if (isset($prices[$areaId]) && isset($prices[$areaId]["slices"])) {
-
             $areaPrices = $prices[$areaId]["slices"];
             ksort($areaPrices);
 
@@ -179,5 +179,4 @@ class SoColissimo extends AbstractDeliveryModule
     {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
     }
-
 }

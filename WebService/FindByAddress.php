@@ -51,13 +51,28 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class FindByAddress extends BaseSoColissimoWebService
 {
-    protected $address=null;
-    protected $zip_code=null;
-    protected $city=null;
-    protected $country_code=null;
-    protected $request_id=null;
-    protected $lang=null;
-    protected $option_inter=null;
+    /** @var string */
+    protected $address = null;
+
+    /** @var string */
+    protected $zip_code = null;
+
+    /** @var string */
+    protected $city = null;
+
+    /** @var string */
+    protected $country_code = null;
+
+    /** @var string */
+    protected $request_id = null;
+
+    /** @var string */
+    protected $lang = null;
+
+    /** @var string */
+    protected $option_inter = null;
+
+    /** @var string */
     protected $shipping_date=null;
 
     public function __construct()
@@ -65,18 +80,26 @@ class FindByAddress extends BaseSoColissimoWebService
         parent::__construct("findRDVPointRetraitAcheminement");
     }
 
+    /**
+     * @param \stdClass $response
+     * @return bool
+     */
     public function isError(\stdClass $response)
     {
         return isset($response->return->errorCode) && $response->return->errorCode != 0;
     }
 
+    /**
+     * @param \stdClass $response
+     * @return string
+     */
     public function getError(\stdClass $response)
     {
         return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
     }
 
     /**
-     * @param  \stdClass                                                $response
+     * @param  \stdClass $response
      * @return array
      * @throws \Symfony\Component\Config\Definition\Exception\Exception
      */

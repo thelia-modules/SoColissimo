@@ -23,7 +23,6 @@
 
 namespace SoColissimo\Loop;
 
-use SoColissimo\SoColissimo;
 use SoColissimo\WebService\FindByAddress;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
@@ -32,7 +31,6 @@ use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
 use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
-use Thelia\Log\Tlog;
 use Thelia\Model\AddressQuery;
 use Thelia\Model\ConfigQuery;
 
@@ -45,8 +43,9 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
 {
     /**
      * this method returns an array ***Thanks cap'tain obvious \(^.^)/***
-     *->
-     * @return array
+     *
+     * @return array|mixed
+     * @throws \ErrorException
      */
     public function buildArray()
     {
@@ -177,9 +176,8 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
     {
         return new ArgumentCollection(
             Argument::createAnyTypeArgument("zipcode", ""),
-            Argument::createAnyTypeArgument("city",""),
-            Argument::createAnyTypeArgument("address","")
+            Argument::createAnyTypeArgument("city", ""),
+            Argument::createAnyTypeArgument("address", "")
         );
     }
-
 }

@@ -26,7 +26,6 @@ namespace SoColissimo\Listener;
 use SoColissimo\WebService\FindById;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
-
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\OrderAddressQuery;
@@ -44,18 +43,29 @@ use SoColissimo\Model\OrderAddressSocolissimo;
  */
 class SetDeliveryModule implements EventSubscriberInterface
 {
+    /** @var Request */
     protected $request;
 
+    /**
+     * @param Request $request
+     */
     public function __construct(Request $request)
     {
         $this->request = $request;
     }
 
+    /**
+     * @return Request
+     */
     public function getRequest()
     {
         return $this->request;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     protected function check_module($id)
     {
         return $id == SoColissimo::getModCode();
@@ -186,5 +196,4 @@ class SetDeliveryModule implements EventSubscriberInterface
 
         );
     }
-
 }

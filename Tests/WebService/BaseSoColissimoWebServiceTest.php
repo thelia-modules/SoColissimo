@@ -33,9 +33,7 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase
     public function testCall()
     {
         $instance = new \SoColissimo\WebService\FindByAddress();
-
-        $this->assertInstanceOf("\\SoapClient",$instance->getSoap());
-
+        $this->assertInstanceOf("\\SoapClient", $instance->getSoap());
     }
 
     /**
@@ -167,6 +165,6 @@ class BaseSoColissimoWebServiceTest extends \PHPUnit_Framework_TestCase
         ;
         $response = $instance->exec();
 
-        $this->assertInstanceOf("\\stdclass",$response);
+        $this->assertInstanceOf("\\stdclass", $response);
     }
 }

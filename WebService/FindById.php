@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\WebService;
+
 use Symfony\Component\Config\Definition\Exception\Exception;
 
 /**
@@ -40,10 +41,14 @@ use Symfony\Component\Config\Definition\Exception\Exception;
  */
 class FindById extends BaseSoColissimoWebService
 {
+    /** @var string */
     protected $id;
+
     /** @var  string if belgique: R12, else empty */
     protected $reseau;
+
     protected $langue;
+
     protected $date;
 
     public function __construct()
@@ -51,11 +56,19 @@ class FindById extends BaseSoColissimoWebService
         parent::__construct("findPointRetraitAcheminementByID");
     }
 
+    /**
+     * @param \stdClass $response
+     * @return bool
+     */
     public function isError(\stdClass $response)
     {
         return isset($response->return->errorCode) && $response->return->errorCode != 0;
     }
 
+    /**
+     * @param \stdClass $response
+     * @return string
+     */
     public function getError(\stdClass $response)
     {
         return isset($response->return->errorMessage) ? $response->return->errorMessage : "Unknown error";
@@ -75,5 +88,4 @@ class FindById extends BaseSoColissimoWebService
 
         return $points;
     }
-
 }

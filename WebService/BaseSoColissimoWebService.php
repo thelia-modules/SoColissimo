@@ -39,12 +39,17 @@ use Thelia\Model\ConfigQuery;
  */
 abstract class BaseSoColissimoWebService extends BaseWebService
 {
+    /** @var null|string */
+    protected $account_number = null;
 
-    protected $account_number=null;
-    protected $password=null;
-    protected $filter_relay=null;
+    /** @var null|string */
+    protected $password = null;
+
+    /** @var null|string */
+    protected $filter_relay = null;
+
     /** @var string Weight in grammes !*/
-    protected $weight=null;
+    protected $weight = null;
 
     public function __construct($function)
     {

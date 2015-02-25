@@ -30,15 +30,20 @@ namespace SoColissimo\Format;
  */
 class CSV
 {
+    /** @var string */
     protected $separator;
-    protected $lines=array();
 
+    /** @var array */
+    protected $lines = array();
+
+    /** @var string */
     const CRLF = "\r\n";
+
     /**
      * @param $separator
      * @param array $lines
      */
-    public function __construct($separator, array $lines=array())
+    public function __construct($separator, array $lines = array())
     {
         $this->separator = $separator;
 
@@ -54,7 +59,7 @@ class CSV
      * @param  array $lines
      * @return CSV
      */
-    public static function create($separator, array $lines=array())
+    public static function create($separator, array $lines = array())
     {
         return new static($separator, $lines);
     }
