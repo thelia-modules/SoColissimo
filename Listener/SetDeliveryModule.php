@@ -24,9 +24,10 @@
 namespace SoColissimo\Listener;
 
 use SoColissimo\WebService\FindById;
+use Symfony\Component\DependencyInjection\Container;
+use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Thelia\Core\Event\TheliaEvents;
-
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\OrderAddressQuery;
@@ -44,18 +45,34 @@ use SoColissimo\Model\OrderAddressSocolissimo;
  */
 class SetDeliveryModule implements EventSubscriberInterface
 {
+    /** @var Request */
     protected $request;
 
-    public function __construct(Request $request)
+    /** @var ContainerAwareEventDispatcher */
+    protected $dispatcher;
+
+    /**
+     * @param Request $request
+     */
+    public function __construct(Request $request, ContainerAwareEventDispatcher $dispatcher)
     {
         $this->request = $request;
+
+        $this->dispatcher = $dispatcher;
     }
 
+    /**
+     * @return Request
+     */
     public function getRequest()
     {
         return $this->request;
     }
 
+    /**
+     * @param $id
+     * @return bool
+     */
     protected function check_module($id)
     {
         return $id == SoColissimo::getModCode();
@@ -122,20 +139,16 @@ class SetDeliveryModule implements EventSubscriberInterface
         if ($this->check_module($event->getOrder()->getDeliveryModuleId())) {
             $request = $this->getRequest();
 
-            if ($request->getSession()->get('SoColissimoDomiciile') == 1) {
+            $tmp_address = AddressSoColissimoQuery::create()
+                ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
+
+            if ($request->getSession()->get('SoColissimoDomiciile') == 1 || $tmp_address === null) {
                 $savecode = new OrderAddressSocolissimo();
                 $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
                     ->setCode(0)
                     ->setType('DOM')
                     ->save();
             } else {
-                $tmp_address = AddressSoColissimoQuery::create()
-                    ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
-
-                if ($tmp_address === null) {
-                    throw new \ErrorException("Got an error with So Colissimo module. Please try again to checkout.");
-                }
-
                 $savecode = new OrderAddressSocolissimo();
                 $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
                     ->setCode($tmp_address->getCode())
@@ -186,5 +199,4 @@ class SetDeliveryModule implements EventSubscriberInterface
 
         );
     }
-
 }

@@ -38,11 +38,17 @@ use Thelia\Core\Translation\Translator;
 
 class CheckRightsLoop extends BaseLoop implements ArraySearchLoopInterface
 {
+    /**
+     * @return ArgumentCollection
+     */
     protected function getArgDefinitions()
     {
         return new ArgumentCollection();
     }
 
+    /**
+     * @return array
+     */
     public function buildArray()
     {
         $ret = array();
@@ -57,10 +63,16 @@ class CheckRightsLoop extends BaseLoop implements ArraySearchLoopInterface
             while (false !== ($file = readdir($handle))) {
                 if (strlen($file) > 5 && substr($file, -5) === ".json") {
                     if (!is_readable($dir.$file)) {
-                        $ret[] = array("ERRMES"=>Translator::getInstance()->trans("Can't read file"), "ERRFILE"=>"Colissimo/Config/".$file);
+                        $ret[] = array(
+                            "ERRMES" => Translator::getInstance()->trans("Can't read file"),
+                            "ERRFILE" => "Colissimo/Config/" . $file
+                        );
                     }
                     if (!is_writable($dir.$file)) {
-                        $ret[] = array("ERRMES"=>Translator::getInstance()->trans("Can't write file"), "ERRFILE"=>"Colissimo/Config/".$file);
+                        $ret[] = array(
+                            "ERRMES" => Translator::getInstance()->trans("Can't write file"),
+                            "ERRFILE"=>"Colissimo/Config/" . $file
+                        );
                     }
                 }
             }
@@ -68,6 +80,11 @@ class CheckRightsLoop extends BaseLoop implements ArraySearchLoopInterface
 
         return $ret;
     }
+
+    /**
+     * @param LoopResult $loopResult
+     * @return LoopResult
+     */
     public function parseResults(LoopResult $loopResult)
     {
         foreach ($loopResult->getResultDataCollection() as $arr) {

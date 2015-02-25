@@ -27,6 +27,7 @@ use SoColissimo\WebService\FindById;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Front\BaseFrontController;
 use Thelia\Core\HttpFoundation\Response;
+use Thelia\Core\Template\ParserInterface;
 use Thelia\Core\Template\TemplateDefinition;
 use Thelia\Model\ConfigQuery;
 
@@ -37,7 +38,13 @@ use Thelia\Model\ConfigQuery;
  */
 class GetSpecificLocation extends BaseFrontController
 {
-    public function get($zipcode, $city, $address="")
+    /**
+     * @param $zipcode
+     * @param $city
+     * @param string $address
+     * @return Response
+     */
+    public function get($zipcode, $city, $address = "")
     {
         $content = $this->renderRaw(
             "getSpecificLocationSoColissimo",
@@ -51,6 +58,10 @@ class GetSpecificLocation extends BaseFrontController
         return $response;
     }
 
+    /**
+     * @param $point_id
+     * @return mixed|JsonResponse
+     */
     public function getPointInfo($point_id)
     {
         $req = new FindById();
@@ -69,8 +80,8 @@ class GetSpecificLocation extends BaseFrontController
         return $response;
     }
 
-
     /**
+     * @param null $template
      * @return ParserInterface instance parser
      */
     protected function getParser($template = null)

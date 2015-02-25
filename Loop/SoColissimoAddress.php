@@ -27,6 +27,7 @@ use SoColissimo\Model\AddressSocolissimoQuery;
 use Thelia\Core\Template\Loop\Address;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
+
 /**
  * Class SoColissimoDelivery
  * @package SoColissimo\Loop
@@ -34,13 +35,23 @@ use Thelia\Core\Template\Element\LoopResultRow;
  */
 class SoColissimoAddress extends Address
 {
+    /** @var bool */
     protected $exists = false;
+
+    /** @var bool */
     protected $timestampable = false;
 
+    /**
+     * @param $id
+     */
     protected function setExists($id)
     {
         $this->exists = AddressSocolissimoQuery::create()->findPK($id) !== null;
     }
+
+    /**
+     * @return AddressSocolissimoQuery|\Thelia\Model\AddressQuery
+     */
     public function buildModelCriteria()
     {
         $id = $this->getId();
@@ -50,6 +61,11 @@ class SoColissimoAddress extends Address
                 AddressSoColissimoQuery::create()->filterById($id[0]) :
                 parent::buildModelCriteria();
     }
+
+    /**
+     * @param LoopResult $loopResult
+     * @return LoopResult
+     */
     public function parseResults(LoopResult $loopResult)
     {
         if (!$this->exists) {
@@ -58,7 +74,8 @@ class SoColissimoAddress extends Address
             /** @var \SoColissimo\Model\AddressSocolissimo $address */
             foreach ($loopResult->getResultDataCollection() as $address) {
                 $loopResultRow = new LoopResultRow();
-                $loopResultRow->set("TITLE", $address->getTitleId())
+                $loopResultRow
+                    ->set("TITLE", $address->getTitleId())
                     ->set("COMPANY", $address->getCompany())
                     ->set("FIRSTNAME", $address->getFirstname())
                     ->set("LASTNAME", $address->getLastname())
@@ -67,8 +84,8 @@ class SoColissimoAddress extends Address
                     ->set("ADDRESS3", $address->getAddress3())
                     ->set("ZIPCODE", $address->getZipcode())
                     ->set("CITY", $address->getCity())
-                    ->set("COUNTRY", $address->getCountryId())
-                ; $loopResult->addRow($loopResultRow);
+                    ->set("COUNTRY", $address->getCountryId());
+                $loopResult->addRow($loopResultRow);
             }
 
             return $loopResult;

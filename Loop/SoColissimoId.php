@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Loop;
+
 use SoColissimo\SoColissimo;
 use Thelia\Core\Template\Element\ArraySearchLoopInterface;
 use Thelia\Core\Template\Element\BaseLoop;
@@ -67,5 +68,4 @@ class SoColissimoId extends BaseLoop implements ArraySearchLoopInterface
     {
         return new ArgumentCollection();
     }
-
 }

@@ -27,12 +27,18 @@ use SoColissimo\Model\SoColissimoFreeshipping;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
-
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
 
+/**
+ * Class FreeShipping
+ * @package SoColissimo\Controller
+ */
 class FreeShipping extends BaseAdminController
 {
+    /**
+     * @return mixed|null|\Symfony\Component\HttpFoundation\Response|static
+     */
     public function set()
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {

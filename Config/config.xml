@@ -22,6 +22,7 @@
     <services>
         <service id="hook.order.module.socolissimo" class="SoColissimo\Listener\SetDeliveryModule" scope="request">
             <argument type="service" id="request"/>
+            <argument type="service" id="event_dispatcher"/>
             <tag name="kernel.event_subscriber"/>
         </service>
         <service id="send.socolissimo.mail" class="SoColissimo\Listener\SendMail" scope="request">

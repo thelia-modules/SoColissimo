@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\WebService;
+
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 
 /**
@@ -36,10 +37,17 @@ use Symfony\Component\Serializer\Exception\InvalidArgumentException;
  */
 abstract class BaseWebService
 {
+    /** @var \SoapClient */
     protected $soap;
+
+    /** @var null */
     protected $web_function;
 
-    public function __construct($wsdl, $web_function=null)
+    /**
+     * @param $wsdl
+     * @param null $web_function
+     */
+    public function __construct($wsdl, $web_function = null)
     {
         $this->soap = new \SoapClient($wsdl);
         $this->web_function=$web_function;
@@ -51,9 +59,9 @@ abstract class BaseWebService
      */
     private function getProprietyRealName($name)
     {
-        $propriety_real_name = substr($name,3);
+        $propriety_real_name = substr($name, 3);
 
-        if (preg_match("#^[A-Z]$#", substr($propriety_real_name, 0,1))) {
+        if (preg_match("#^[A-Z]$#", substr($propriety_real_name, 0, 1))) {
             $propriety_real_name = strtolower(substr($propriety_real_name, 0, 1)).substr($propriety_real_name, 1);
             $propriety_real_name = preg_replace_callback(
                 "#([A-Z])#",
@@ -79,9 +87,9 @@ abstract class BaseWebService
         if (method_exists($this, $name)) {
             return call_user_func($this->$name, $arguments);
         } else {
-            if (substr($name,0,3) === "get") {
+            if (substr($name, 0, 3) === "get") {
                 if (!empty($arguments)) {
-                    throw new InvalidArgumentException("The function ".$name." in ".get_class($this)." doesn't take any argument.");
+                    throw new InvalidArgumentException("The function " . $name . " in " . get_class($this) . " doesn't take any argument.");
                 }
 
                 $real_name = $this->getProprietyRealName($name);
@@ -89,9 +97,9 @@ abstract class BaseWebService
                     return $this->$real_name;
                 }
 
-            } elseif (substr($name,0,3) === "set") {
+            } elseif (substr($name, 0, 3) === "set") {
                 if (count($arguments) !== 1) {
-                    throw new InvalidArgumentException("The function ".$name." in ".get_class($this)."  take only one argument.");
+                    throw new InvalidArgumentException("The function " . $name . " in " . get_class($this) . "  take only one argument.");
                 }
 
                 $real_name = $this->getProprietyRealName($name);
@@ -130,7 +138,7 @@ abstract class BaseWebService
         /*
          * Clear array
          */
-        foreach ($args as $key=>$value) {
+        foreach ($args as $key => $value) {
             if (empty($value)) {
                 unset($args[$key]);
             }
@@ -157,7 +165,7 @@ abstract class BaseWebService
      */
     protected function getSoapNames(array $names)
     {
-        foreach ($names as $name=>$value) {
+        foreach ($names as $name => $value) {
             $real_name = $this->getSoapName($name);
             $names[$real_name] = $value;
             if ($name !== $real_name) {

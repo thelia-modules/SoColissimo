@@ -7,9 +7,7 @@ SET FOREIGN_KEY_CHECKS = 0;
 -- socolissimo_freeshipping
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `socolissimo_freeshipping`;
-
-CREATE TABLE `socolissimo_freeshipping`
+CREATE TABLE IF NOT EXISTS `socolissimo_freeshipping`
 (
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `active` TINYINT(1) NOT NULL,
@@ -22,9 +20,7 @@ CREATE TABLE `socolissimo_freeshipping`
 -- address_socolissimo
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `address_socolissimo`;
-
-CREATE TABLE `address_socolissimo`
+CREATE TABLE IF NOT EXISTS `address_socolissimo`
 (
     `id` INTEGER NOT NULL,
     `title_id` INTEGER NOT NULL,
@@ -58,9 +54,7 @@ CREATE TABLE `address_socolissimo`
 -- order_address_socolissimo
 -- ---------------------------------------------------------------------
 
-DROP TABLE IF EXISTS `order_address_socolissimo`;
-
-CREATE TABLE `order_address_socolissimo`
+CREATE TABLE IF NOT EXISTS `order_address_socolissimo`
 (
     `id` INTEGER NOT NULL,
     `code` VARCHAR(10) NOT NULL,

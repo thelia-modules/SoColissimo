@@ -23,7 +23,6 @@
 
 namespace SoColissimo\Form;
 
-use SoColissimo\SoColissimo;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 use Thelia\Core\Translation\Translator;
@@ -131,5 +130,4 @@ class ConfigureSoColissimo extends BaseForm
     {
         return "configuresocolissimo";
     }
-
 }

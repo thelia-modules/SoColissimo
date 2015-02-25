@@ -40,16 +40,26 @@ use Thelia\Model\MessageQuery;
 class SendMail implements EventSubscriberInterface
 {
 
+    /** @var ParserInterface */
     protected $parser;
 
+    /** @var MailerFactory */
     protected $mailer;
 
+    /**
+     * @param ParserInterface $parser
+     * @param MailerFactory $mailer
+     */
     public function __construct(ParserInterface $parser, MailerFactory $mailer)
     {
         $this->parser = $parser;
         $this->mailer = $mailer;
     }
 
+    /**
+     * @param OrderEvent $event
+     * @throws \Exception
+     */
     public function updateStatus(OrderEvent $event)
     {
         $order = $event->getOrder();
@@ -59,7 +69,6 @@ class SendMail implements EventSubscriberInterface
             $contact_email = ConfigQuery::read('store_email');
 
             if ($contact_email) {
-
                 $message = MessageQuery::create()
                     ->filterByName('mail_socolissimo')
                     ->findOne();

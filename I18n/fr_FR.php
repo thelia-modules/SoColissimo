@@ -52,4 +52,5 @@ return array(
     'So Colissimo url prod' => 'So Colissimo URL en production',
     'So Colissimo url test' => 'So Colissimo ULR en test',
     'test mode' => 'Mode test',
+    'See command' => 'Voir la commande'
 );

@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Form;
+
 use Propel\Runtime\ActiveQuery\Criteria;
 use SoColissimo\SoColissimo;
 use Thelia\Form\BaseForm;
@@ -77,7 +78,10 @@ class ExportOrder extends BaseForm
             ->find();
 
         $this->formBuilder
-            ->add('new_status_id', 'choice',array(
+            ->add(
+                'new_status_id',
+                'choice',
+                array(
                     'label' => Translator::getInstance()->trans('server'),
                     'choices' => array(
                         "nochange" => Translator::getInstance()->trans("Do not change"),
@@ -90,6 +94,7 @@ class ExportOrder extends BaseForm
                     'data'=>'nochange'
                 )
             );
+
         /** @var \Thelia\Model\Order $order */
         foreach ($query as $order) {
             $this->formBuilder->add("order_".$order->getId(), "checkbox", array(
@@ -106,5 +111,4 @@ class ExportOrder extends BaseForm
     {
         return "exportsocolissimoorder";
     }
-
 }

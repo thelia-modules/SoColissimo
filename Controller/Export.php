@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Controller;
+
 use Propel\Runtime\ActiveQuery\Criteria;
 use SoColissimo\Form\ExportOrder;
 use SoColissimo\Format\CSV;
@@ -69,7 +70,7 @@ class Export extends BaseAdminController
 
             // Check status_id
             $status_id = $vform->get("new_status_id")->getData();
-            if (!preg_match("#^nochange|processing|sent$#",$status_id)) {
+            if (!preg_match("#^nochange|processing|sent$#", $status_id)) {
                 throw new Exception("Bad value for new_status_id field");
             }
 
@@ -229,7 +230,7 @@ class Export extends BaseAdminController
                 }
             }
         } catch (\Exception $e) {
-            return Response::create($e->getMessage(),500);
+            return Response::create($e->getMessage(), 500);
         }
 
         return Response::create(
