@@ -104,7 +104,10 @@
                                     {intl l="REF" d='socolissimo.ai'}
                                 </th>
                                 <th class="object-title">
-                                    {intl l="Date" d='socolissimo.ai'}
+                                    {intl l="Customer"}
+                                </th>
+                                <th class="object-title">
+                                    {intl l="Date"}
                                 </th>
                                 <th class="object-title">
                                     {intl l="Total taxed amount" d='socolissimo.ai'}
@@ -122,6 +125,12 @@
                                                 <label for="{$label_attr.for}">
                                                     {$label}
                                                 </label>
+                                                <a href="{url path="/admin/order/update/$ID"}">{intl l="See command" d="socolissimo.ai"}</a>
+                                            </td>
+                                            <td>
+                                                {loop type="customer" name="customer" current="false" backend_context="on" id=$CUSTOMER}
+                                                    <a href="{url path="/admin/customer/update?customer_id=$ID"}">({$REF}) {$FIRSTNAME} {$LASTNAME}</a>
+                                                {/loop}
                                             </td>
                                             <td>
                                                 {$CREATE_DATE|date_format}

@@ -22,6 +22,7 @@ return array(
     'Edit a price slice' => 'Modifier une tranche de prix',
     'Edit this price slice' => 'Modifier cette tranche de prix',
     'Export' => 'Export',
+    'See command' => 'Voir la commande',
     'Export expeditor inet file' => 'Export du fichier expeditor inet',
     'PRODUCTION' => 'PRODUCTION',
     'Please change the access rights' => 'Merci de modifier les droits d\'accès',
