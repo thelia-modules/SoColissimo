@@ -224,9 +224,9 @@
                         dialog_body  = "<input type=\"hidden\" name=\"operation\" value=\"add\"/>
                         <input type=\"hidden\" name=\"area\" value=\"{$ID}\" />
                         <label for=\"weight_{$ID}\">{intl l="Weight up to ... (kg)" d='socolissimo.ai' d='socolissimo.ai'}</label></label>
-                        <input type=\"number\" id=\"weight_{$ID}\" name=\"weight\" value=\"1\" class=\"form-control\" pattern=\"\\d+\\.?\\d*\" required/>
+                        <input type=\"number\" id=\"weight_{$ID}\" name=\"weight\" value=\"1\" class=\"form-control\" pattern=\"\\d+\\.?\\d*\" step=\"0.01\" required/>
                         <label for=\"price_{$ID}\">{intl l="Price (€)" d='socolissimo.ai'}</label></label>
-                        <input type=\"number\" id=\"price_{$ID}\" name=\"price\" value=\"1\" class=\"form-control\" pattern=\"\\d+\\.?\\d*\" required/>"
+                        <input type=\"number\" id=\"price_{$ID}\" name=\"price\" value=\"1\" class=\"form-control\" pattern=\"\\d+\\.?\\d*\" step=\"0.01\" required/>"
 
                         form_action="{url path="/admin/module/socolissimo/prices"}"
 
@@ -262,7 +262,7 @@
                                 <input type=\"hidden\" name=\"area\" value=\"{$ID}\"/>
                                 <input type=\"hidden\" name=\"weight\" value=\"{$MAX_WEIGHT}\"/>
                                 <label for=\"price_edit_{$ID}_{$MAX_WEIGHT}\">{intl l='Price (€)' d='socolissimo.ai'}</label>
-                                <input type=\"number\" id=\"price_edit_{$ID}_{$MAX_WEIGHT}\" class=\"form-control\" name=\"price\" value=\"{$PRICE}\" pattern=\"\\d+\\.?\\d*\" required/>"
+                                <input type=\"number\" id=\"price_edit_{$ID}_{$MAX_WEIGHT}\" class=\"form-control\" name=\"price\" value=\"{$PRICE}\" pattern=\"\\d+\\.?\\d*\" step=\"0.01\" required/>"
 
                                 form_action="{url path="/admin/module/socolissimo/prices"}"
                                 dialog_ok_label     = {intl l="Edit" d='socolissimo.ai'}
