@@ -35,6 +35,7 @@
         <hook id="socolissimo.hook.front" class="SoColissimo\Hook\FrontHook" scope="request">
             <tag name="hook.event_listener" event="order-delivery.extra" />
             <tag name="hook.event_listener" event="order-invoice.delivery-address" />
+            <tag name="hook.event_listener" event="main.head-bottom" />
         </hook>
     </hooks>
 

@@ -35,4 +35,10 @@ class FrontHook extends BaseHook {
         $content = $this->render("delivery-address.html", $event->getArguments());
         $event->add($content);
     }
+
+    public function onMainHeadBottom(HookRenderEvent $event)
+    {
+        $content = $this->addCSS('assets/css/styles.css');
+        $event->add($content);
+    }
 } 
