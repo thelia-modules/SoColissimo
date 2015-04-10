@@ -37,5 +37,6 @@ return array(
     'Your default address' => 'Your default address',
     'Choose this delivery mode' => 'Choose this delivery mode',
     'Your cellphone number is invalid.' => 'Your cellphone number is invalid.',
-    'No relay points were selected' => 'No relay points were selected'
+    'No relay points were selected' => 'No relay points were selected',
+    'Other available address' => 'Other available address'
 );

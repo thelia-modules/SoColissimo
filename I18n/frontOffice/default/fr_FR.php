@@ -36,5 +36,6 @@ return array(
     'Your default address' => 'Votre adresse par défaut',
     'Choose this delivery mode' => 'Choisir ce mode de livraison',
     'Your cellphone number is invalid.' => 'Votre numéro de téléphone portable est invalide.',
-    'No relay points were selected' => 'Aucun point relais n\'a été sélectionné'
+    'No relay points were selected' => 'Aucun point relais n\'a été sélectionné',
+    'Other available address' => 'Autre adresse disponible'
 );
