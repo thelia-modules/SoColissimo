@@ -26,6 +26,7 @@ namespace SoColissimo;
 
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
+use Thelia\Model\ModuleImageQuery;
 use Thelia\Model\ModuleQuery;
 use Thelia\Module\BaseModule;
 use Thelia\Module\DeliveryModuleInterface;
@@ -173,6 +174,12 @@ class SoColissimo extends AbstractDeliveryModule
         ConfigQuery::write('socolissimo_url_prod', "https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
         ConfigQuery::write('socolissimo_url_test', "https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
         ConfigQuery::write('socolissimo_test_mode', 1, 1, 1);
+
+        /* insert the images from image folder if first module activation */
+        $module = $this->getModuleModel();
+        if (ModuleImageQuery::create()->filterByModule($module)->count() == 0) {
+            $this->deployImageFolder($module, sprintf('%s/images', __DIR__), $con);
+        }
     }
 
     public static function getModCode()
