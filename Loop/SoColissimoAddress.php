@@ -68,6 +68,7 @@ class SoColissimoAddress extends Address
                     ->set("ZIPCODE", $address->getZipcode())
                     ->set("CITY", $address->getCity())
                     ->set("COUNTRY", $address->getCountryId())
+                    ->set("CELLPHONE", $address->getCellphone())
                 ; $loopResult->addRow($loopResultRow);
             }
 
