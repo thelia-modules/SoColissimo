@@ -39,6 +39,7 @@ CREATE TABLE `address_socolissimo`
     `country_id` INTEGER NOT NULL,
     `code` VARCHAR(10) NOT NULL,
     `type` VARCHAR(10) NOT NULL,
+    `cellphone` VARCHAR(20),
     PRIMARY KEY (`id`),
     INDEX `FI_address_socolissimo_customer_title_id` (`title_id`),
     INDEX `FI_address_socolissimo_country_id` (`country_id`),
