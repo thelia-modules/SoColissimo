@@ -498,7 +498,20 @@
         }
     }
 
+    function displayContent () {
+        $("#google-map-socolissimo").closest('tr').show(function () {
+            $('.btn-checkout-next').hide();
+            if (typeof initialize_so == 'function') {
+                google.maps.event.trigger(mapSOC.map, 'resize');
+            }
+        });
+    }
+
     $(function(){
+
+        if ($("#delivery-method_{$module}").is(':checked')) {
+            displayContent();
+        }
 
         $('[name="socolissimo-appointment"]').on('click', function(){
             var $cellphoneInput = $('[name="socolissimo-cellphone"]');
@@ -525,12 +538,7 @@
                 $("#google-map-socolissimo").closest('tr').hide();
                 $('.btn-checkout-next').show();
             } else {
-                $("#google-map-socolissimo").closest('tr').show(function () {
-                    $('.btn-checkout-next').hide();
-                    if (typeof initialize_so == 'function') {
-                        google.maps.event.trigger(mapSOC.map, 'resize');
-                    }
-                });
+                displayContent();
             }
         });
 
