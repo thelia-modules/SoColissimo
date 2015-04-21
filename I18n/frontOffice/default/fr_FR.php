@@ -26,4 +26,16 @@ return array(
     'home delivery' => 'Livraison à domicile',
     'include in results' => 'inclure dans la recherche',
     'zipcode' => 'code postal',
+    'My home' => 'mon domicile',
+    'My appointment' => 'mon rendez-vous',
+    'Delivery to you or a personal address of your choice.' => '<p>Livraison chez vous ou à une adresse personnelle de votre choix avec tentative de remise en mains propres ou en boîte aux lettres.</p>
+                                                                <p>En cas d\'absence, remise en bureau de poste.</p>',
+    'Service is currently available only in Paris.' => '<p>Service uniquement disponible sur Paris actuellement. Pour un supplément de 4€ choisissez d\'être livré chez vous quand vous êtes présent !</p>
+            <p>Le matin de l\'arrivée du colis dans l\'agence de distribution, vous recevrez un SMS pour vous demander le créneau horaire souhaité entre 17h00 et 21h30 du lundi au vendredi.</p>',
+    'Cellphone number' => 'Numéro de téléphone portable',
+    'Your default address' => 'Votre adresse par défaut',
+    'Choose this delivery mode' => 'Choisir ce mode de livraison',
+    'Your cellphone number is invalid.' => 'Votre numéro de téléphone portable est invalide.',
+    'No relay points were selected' => 'Aucun point relais n\'a été sélectionné',
+    'Other available address' => 'Autre adresse disponible'
 );

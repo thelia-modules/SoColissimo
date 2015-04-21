@@ -8,6 +8,7 @@ use Propel\Runtime\Propel;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\ActiveQuery\ModelCriteria;
 use Propel\Runtime\ActiveRecord\ActiveRecordInterface;
+use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
@@ -24,6 +25,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * TableMap class name
      */
     const TABLE_MAP = '\\SoColissimo\\Model\\Map\\OrderAddressSocolissimoTableMap';
+
 
     /**
      * attribute to determine if this object has previously been saved.
@@ -291,9 +293,9 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * $book->importFrom('JSON', '{"Id":9012,"Title":"Don Juan","ISBN":"0140422161","Price":12.99,"PublisherId":1234,"AuthorId":5678}');
      * </code>
      *
-     * @param mixed  $parser A AbstractParser instance,
+     * @param mixed $parser A AbstractParser instance,
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
-     * @param string $data   The source data to import from
+     * @param string $data The source data to import from
      *
      * @return OrderAddressSocolissimo The current object, for fluid interface
      */
@@ -343,38 +345,41 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Get the [id] column value.
      *
-     * @return int
+     * @return   int
      */
     public function getId()
     {
+
         return $this->id;
     }
 
     /**
      * Get the [code] column value.
      *
-     * @return string
+     * @return   string
      */
     public function getCode()
     {
+
         return $this->code;
     }
 
     /**
      * Get the [type] column value.
      *
-     * @return string
+     * @return   string
      */
     public function getType()
     {
+
         return $this->type;
     }
 
     /**
      * Set the value of [id] column.
      *
-     * @param  int                                        $v new value
-     * @return \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
+     * @param      int $v new value
+     * @return   \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -391,14 +396,15 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
             $this->aOrderAddress = null;
         }
 
+
         return $this;
     } // setId()
 
     /**
      * Set the value of [code] column.
      *
-     * @param  string                                     $v new value
-     * @return \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
      */
     public function setCode($v)
     {
@@ -411,14 +417,15 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
             $this->modifiedColumns[OrderAddressSocolissimoTableMap::CODE] = true;
         }
 
+
         return $this;
     } // setCode()
 
     /**
      * Set the value of [type] column.
      *
-     * @param  string                                     $v new value
-     * @return \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
+     * @param      string $v new value
+     * @return   \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
      */
     public function setType($v)
     {
@@ -430,6 +437,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
             $this->type = $v;
             $this->modifiedColumns[OrderAddressSocolissimoTableMap::TYPE] = true;
         }
+
 
         return $this;
     } // setType()
@@ -519,10 +527,10 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      *
      * This will only work if the object has been saved and has a valid primary key set.
      *
-     * @param  boolean             $deep (optional) Whether to also de-associated any related objects.
-     * @param  ConnectionInterface $con  (optional) The ConnectionInterface connection to use.
+     * @param      boolean $deep (optional) Whether to also de-associated any related objects.
+     * @param      ConnectionInterface $con (optional) The ConnectionInterface connection to use.
      * @return void
-     * @throws PropelException     - if this object is deleted, unsaved or doesn't have pk match in db
+     * @throws PropelException - if this object is deleted, unsaved or doesn't have pk match in db
      */
     public function reload($deep = false, ConnectionInterface $con = null)
     {
@@ -558,7 +566,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Removes this object from datastore and sets delete attribute.
      *
-     * @param  ConnectionInterface $con
+     * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
      * @see OrderAddressSocolissimo::setDeleted()
@@ -601,8 +609,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * method.  This method wraps all precipitate database operations in a
      * single transaction.
      *
-     * @param  ConnectionInterface $con
-     * @return int                 The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @param      ConnectionInterface $con
+     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see doSave()
      */
@@ -652,8 +660,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * If the object is new, it inserts it; otherwise an update is performed.
      * All related objects are also updated in this method.
      *
-     * @param  ConnectionInterface $con
-     * @return int                 The number of rows affected by this insert/update and any referring fk objects' save() operations.
+     * @param      ConnectionInterface $con
+     * @return int             The number of rows affected by this insert/update and any referring fk objects' save() operations.
      * @throws PropelException
      * @see save()
      */
@@ -696,7 +704,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Insert the row in the database.
      *
-     * @param ConnectionInterface $con
+     * @param      ConnectionInterface $con
      *
      * @throws PropelException
      * @see doSave()
@@ -705,6 +713,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     {
         $modifiedColumns = array();
         $index = 0;
+
 
          // check the columns in natural order for more readable SQL queries
         if ($this->isColumnModified(OrderAddressSocolissimoTableMap::ID)) {
@@ -750,7 +759,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Update the row in the database.
      *
-     * @param ConnectionInterface $con
+     * @param      ConnectionInterface $con
      *
      * @return Integer Number of updated rows
      * @see doSave()
@@ -766,12 +775,12 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Retrieves a field from the object by name passed in as a string.
      *
-     * @param  string $name name
-     * @param  string $type The type of fieldname the $name is of:
-     *                      one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                      TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
-     *                      Defaults to TableMap::TYPE_PHPNAME.
-     * @return mixed  Value of field.
+     * @param      string $name name
+     * @param      string $type The type of fieldname the $name is of:
+     *                     one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
+     *                     TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
+     *                     Defaults to TableMap::TYPE_PHPNAME.
+     * @return mixed Value of field.
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
@@ -785,7 +794,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * Retrieves a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param  int   $pos position in xml schema
+     * @param      int $pos position in xml schema
      * @return mixed Value of field at $pos
      */
     public function getByPosition($pos)
@@ -812,12 +821,12 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * You can specify the key type of the array by passing one of the class
      * type constants.
      *
-     * @param string  $keyType                (optional) One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME,
-     *                                        TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
-     *                                        Defaults to TableMap::TYPE_PHPNAME.
-     * @param boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
-     * @param array   $alreadyDumpedObjects   List of objects to skip to avoid recursion
-     * @param boolean $includeForeignObjects  (optional) Whether to include hydrated related objects. Default to FALSE.
+     * @param     string  $keyType (optional) One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME,
+     *                    TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
+     *                    Defaults to TableMap::TYPE_PHPNAME.
+     * @param     boolean $includeLazyLoadColumns (optional) Whether to include lazy loaded columns. Defaults to TRUE.
+     * @param     array $alreadyDumpedObjects List of objects to skip to avoid recursion
+     * @param     boolean $includeForeignObjects (optional) Whether to include hydrated related objects. Default to FALSE.
      *
      * @return array an associative array containing the field names (as keys) and field values
      */
@@ -850,12 +859,12 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Sets a field from the object by name passed in as a string.
      *
-     * @param  string $name
-     * @param  mixed  $value field value
-     * @param  string $type  The type of fieldname the $name is of:
-     *                       one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                       TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
-     *                       Defaults to TableMap::TYPE_PHPNAME.
+     * @param      string $name
+     * @param      mixed  $value field value
+     * @param      string $type The type of fieldname the $name is of:
+     *                     one of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
+     *                     TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
+     *                     Defaults to TableMap::TYPE_PHPNAME.
      * @return void
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
@@ -869,8 +878,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * Sets a field from the object by Position as specified in the xml schema.
      * Zero-based.
      *
-     * @param  int   $pos   position in xml schema
-     * @param  mixed $value field value
+     * @param      int $pos position in xml schema
+     * @param      mixed $value field value
      * @return void
      */
     public function setByPosition($pos, $value)
@@ -901,8 +910,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      * The default key type is the column's TableMap::TYPE_PHPNAME.
      *
-     * @param  array  $arr     An array to populate the object from.
-     * @param  string $keyType The type of keys the array uses.
+     * @param      array  $arr     An array to populate the object from.
+     * @param      string $keyType The type of keys the array uses.
      * @return void
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
@@ -926,6 +935,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
         if ($this->isColumnModified(OrderAddressSocolissimoTableMap::ID)) $criteria->add(OrderAddressSocolissimoTableMap::ID, $this->id);
         if ($this->isColumnModified(OrderAddressSocolissimoTableMap::CODE)) $criteria->add(OrderAddressSocolissimoTableMap::CODE, $this->code);
         if ($this->isColumnModified(OrderAddressSocolissimoTableMap::TYPE)) $criteria->add(OrderAddressSocolissimoTableMap::TYPE, $this->type);
+
         return $criteria;
     }
 
@@ -947,7 +957,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
 
     /**
      * Returns the primary key for this object (row).
-     * @return int
+     * @return   int
      */
     public function getPrimaryKey()
     {
@@ -957,7 +967,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Generic method to set the primary key (id column).
      *
-     * @param  int  $key Primary key.
+     * @param       int $key Primary key.
      * @return void
      */
     public function setPrimaryKey($key)
@@ -971,6 +981,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      */
     public function isPrimaryKeyNull()
     {
+
         return null === $this->getId();
     }
 
@@ -980,9 +991,9 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param  object          $copyObj  An object of \SoColissimo\Model\OrderAddressSocolissimo (or compatible) type.
-     * @param  boolean         $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @param  boolean         $makeNew  Whether to reset autoincrement PKs and make the object new.
+     * @param      object $copyObj An object of \SoColissimo\Model\OrderAddressSocolissimo (or compatible) type.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
      */
     public function copyInto($copyObj, $deepCopy = false, $makeNew = true)
@@ -1003,8 +1014,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param  boolean                                    $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return \SoColissimo\Model\OrderAddressSocolissimo Clone of current object.
+     * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
+     * @return                 \SoColissimo\Model\OrderAddressSocolissimo Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1020,8 +1031,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Declares an association between this object and a ChildOrderAddress object.
      *
-     * @param  ChildOrderAddress                          $v
-     * @return \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
+     * @param                  ChildOrderAddress $v
+     * @return                 \SoColissimo\Model\OrderAddressSocolissimo The current object (for fluent API support)
      * @throws PropelException
      */
     public function setOrderAddress(ChildOrderAddress $v = null)
@@ -1039,6 +1050,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
             $v->setOrderAddressSocolissimo($this);
         }
 
+
         return $this;
     }
 
@@ -1046,8 +1058,8 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     /**
      * Get the associated ChildOrderAddress object
      *
-     * @param  ConnectionInterface $con Optional Connection object.
-     * @return ChildOrderAddress   The associated ChildOrderAddress object.
+     * @param      ConnectionInterface $con Optional Connection object.
+     * @return                 ChildOrderAddress The associated ChildOrderAddress object.
      * @throws PropelException
      */
     public function getOrderAddress(ConnectionInterface $con = null)
@@ -1083,7 +1095,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
      * objects with circular references (even in PHP 5.3). This is currently necessary
      * when using Propel in certain daemon or large-volume/high-memory operations.
      *
-     * @param boolean $deep Whether to also clear the references on all referrer objects.
+     * @param      boolean $deep Whether to also clear the references on all referrer objects.
      */
     public function clearAllReferences($deep = false)
     {
@@ -1178,6 +1190,7 @@ abstract class OrderAddressSocolissimo implements ActiveRecordInterface
     {
 
     }
+
 
     /**
      * Derived method to catches calls to undefined methods.

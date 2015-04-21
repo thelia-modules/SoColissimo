@@ -19,6 +19,7 @@
         <column name="country_id" required="true" type="INTEGER" />
         <column name="code" required="true" size="10" type="VARCHAR" />
         <column name="type" required="true" size="10" type="VARCHAR" />
+        <column name="cellphone" required="false" size="20" type="VARCHAR" />
         <foreign-key foreignTable="customer_title" name="fk_address_socolissimo_customer_title_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="title_id" />
         </foreign-key>

@@ -66,15 +66,75 @@ class SetDeliveryModule implements EventSubscriberInterface
         if ($this->check_module($event->getDeliveryModule())) {
             $request = $this->getRequest();
 
+            $dom = $request->get('socolissimo-home');
+            $rdv = $request->get('socolissimo-appointment');
             $pr_code = $request->get('socolissimo_code');
-            $dom = $request->get('domicile');
 
             $request->getSession()->set('SoColissimoDeliveryId', 0);
-            $request->getSession()->set('SoColissimoDomiciile', 0);
+            $request->getSession()->set('SoColissimoDomicile', 0);
+            $request->getSession()->set('SoColissimoRdv', 0);
 
             if ($dom) {
-                $request->getSession()->set('SoColissimoDomiciile', 1);
+                $request->getSession()->set('SoColissimoDomicile', 1);
 
+                $customer_name = AddressQuery::create()
+                    ->findPk($event->getDeliveryAddress());
+
+                $address = AddressSocolissimoQuery::create()
+                    ->findPk($event->getDeliveryAddress());
+
+                $request->getSession()->set('SoColissimoDeliveryId', $event->getDeliveryAddress());
+                if ($address === null) {
+                    $address = new AddressSocolissimo();
+                    $address->setId($event->getDeliveryAddress());
+                }
+
+                // France Métropolitaine
+                $address->setCode($pr_code)
+                    ->setType("DOM")
+                    ->setCompany($customer_name->getCompany())
+                    ->setAddress1($customer_name->getAddress1())
+                    ->setAddress2($customer_name->getAddress2())
+                    ->setAddress3($customer_name->getAddress3())
+                    ->setZipcode($customer_name->getZipcode())
+                    ->setCity($customer_name->getCity())
+                    ->setFirstname($customer_name->getFirstname())
+                    ->setLastname($customer_name->getLastname())
+                    ->setTitleId($customer_name->getTitleId())
+                    ->setCountryId($customer_name->getCountryId())
+                    ->setCellphone(null)
+                    ->save();
+
+            } elseif ($rdv) {
+                $request->getSession()->set('SoColissimoRdv', 1);
+
+                $customer_name = AddressQuery::create()
+                    ->findPk($event->getDeliveryAddress());
+
+                $address = AddressSocolissimoQuery::create()
+                    ->findPk($event->getDeliveryAddress());
+
+                $request->getSession()->set('SoColissimoDeliveryId', $event->getDeliveryAddress());
+                if ($address === null) {
+                    $address = new AddressSocolissimo();
+                    $address->setId($event->getDeliveryAddress());
+                }
+
+                // France Métropolitaine
+                $address->setCode($pr_code)
+                    ->setType("RDV")
+                    ->setCompany($customer_name->getCompany())
+                    ->setAddress1($customer_name->getAddress1())
+                    ->setAddress2($customer_name->getAddress2())
+                    ->setAddress3($customer_name->getAddress3())
+                    ->setZipcode($customer_name->getZipcode())
+                    ->setCity($customer_name->getCity())
+                    ->setFirstname($customer_name->getFirstname())
+                    ->setLastname($customer_name->getLastname())
+                    ->setTitleId($customer_name->getTitleId())
+                    ->setCountryId($customer_name->getCountryId())
+                    ->setCellphone($request->get('socolissimo-cellphone'))
+                    ->save();
             } elseif (!empty($pr_code)) {
                 $req = new FindById();
 
@@ -122,12 +182,58 @@ class SetDeliveryModule implements EventSubscriberInterface
         if ($this->check_module($event->getOrder()->getDeliveryModuleId())) {
             $request = $this->getRequest();
 
-            if ($request->getSession()->get('SoColissimoDomiciile') == 1) {
+            if ($request->getSession()->get('SoColissimoDomicile') == 1) {
+                $tmp_address = AddressSoColissimoQuery::create()
+                    ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
+
+                if ($tmp_address === null) {
+                    throw new \ErrorException("Got an error with So Colissimo module. Please try again to checkout.");
+                }
+
                 $savecode = new OrderAddressSocolissimo();
                 $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
                     ->setCode(0)
-                    ->setType('DOM')
+                    ->setType($tmp_address->getType())
                     ->save();
+
+                $update = OrderAddressQuery::create()
+                    ->findPK($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCompany($tmp_address->getCompany())
+                    ->setAddress1($tmp_address->getAddress1())
+                    ->setAddress2($tmp_address->getAddress2())
+                    ->setAddress3($tmp_address->getAddress3())
+                    ->setZipcode($tmp_address->getZipcode())
+                    ->setCity($tmp_address->getCity())
+                    ->save();
+
+                $tmp_address->delete();
+
+            } elseif ($request->getSession()->get('SoColissimoRdv') == 1) {
+                $tmp_address = AddressSoColissimoQuery::create()
+                    ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
+
+                if ($tmp_address === null) {
+                    throw new \ErrorException("Got an error with So Colissimo module. Please try again to checkout.");
+                }
+
+                $savecode = new OrderAddressSocolissimo();
+                $savecode->setId($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCode(0)
+                    ->setType($tmp_address->getType())
+                    ->save();
+
+                $update = OrderAddressQuery::create()
+                    ->findPK($event->getOrder()->getDeliveryOrderAddressId())
+                    ->setCompany($tmp_address->getCompany())
+                    ->setAddress1($tmp_address->getAddress1())
+                    ->setAddress2($tmp_address->getAddress2())
+                    ->setAddress3($tmp_address->getAddress3())
+                    ->setZipcode($tmp_address->getZipcode())
+                    ->setCity($tmp_address->getCity())
+                    ->setPhone($tmp_address->getCellphone())
+                    ->save();
+
+                $tmp_address->delete();
             } else {
                 $tmp_address = AddressSoColissimoQuery::create()
                     ->findPk($request->getSession()->get('SoColissimoDeliveryId'));

@@ -36,6 +36,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimoQuery orderByCountryId($order = Criteria::ASC) Order by the country_id column
  * @method     ChildAddressSocolissimoQuery orderByCode($order = Criteria::ASC) Order by the code column
  * @method     ChildAddressSocolissimoQuery orderByType($order = Criteria::ASC) Order by the type column
+ * @method     ChildAddressSocolissimoQuery orderByCellphone($order = Criteria::ASC) Order by the cellphone column
  *
  * @method     ChildAddressSocolissimoQuery groupById() Group by the id column
  * @method     ChildAddressSocolissimoQuery groupByTitleId() Group by the title_id column
@@ -50,6 +51,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimoQuery groupByCountryId() Group by the country_id column
  * @method     ChildAddressSocolissimoQuery groupByCode() Group by the code column
  * @method     ChildAddressSocolissimoQuery groupByType() Group by the type column
+ * @method     ChildAddressSocolissimoQuery groupByCellphone() Group by the cellphone column
  *
  * @method     ChildAddressSocolissimoQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
  * @method     ChildAddressSocolissimoQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
@@ -79,6 +81,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     ChildAddressSocolissimo findOneByCountryId(int $country_id) Return the first ChildAddressSocolissimo filtered by the country_id column
  * @method     ChildAddressSocolissimo findOneByCode(string $code) Return the first ChildAddressSocolissimo filtered by the code column
  * @method     ChildAddressSocolissimo findOneByType(string $type) Return the first ChildAddressSocolissimo filtered by the type column
+ * @method     ChildAddressSocolissimo findOneByCellphone(string $cellphone) Return the first ChildAddressSocolissimo filtered by the cellphone column
  *
  * @method     array findById(int $id) Return ChildAddressSocolissimo objects filtered by the id column
  * @method     array findByTitleId(int $title_id) Return ChildAddressSocolissimo objects filtered by the title_id column
@@ -93,6 +96,7 @@ use SoColissimo\Model\Thelia\Model\CustomerTitle;
  * @method     array findByCountryId(int $country_id) Return ChildAddressSocolissimo objects filtered by the country_id column
  * @method     array findByCode(string $code) Return ChildAddressSocolissimo objects filtered by the code column
  * @method     array findByType(string $type) Return ChildAddressSocolissimo objects filtered by the type column
+ * @method     array findByCellphone(string $cellphone) Return ChildAddressSocolissimo objects filtered by the cellphone column
  *
  */
 abstract class AddressSocolissimoQuery extends ModelCriteria
@@ -101,9 +105,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Initializes internal state of \SoColissimo\Model\Base\AddressSocolissimoQuery object.
      *
-     * @param string $dbName     The database name
-     * @param string $modelName  The phpName of a model, e.g. 'Book'
-     * @param string $modelAlias The alias for the model in this query, e.g. 'b'
+     * @param     string $dbName The database name
+     * @param     string $modelName The phpName of a model, e.g. 'Book'
+     * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
     public function __construct($dbName = 'thelia', $modelName = '\\SoColissimo\\Model\\AddressSocolissimo', $modelAlias = null)
     {
@@ -113,8 +117,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Returns a new ChildAddressSocolissimoQuery object.
      *
-     * @param string   $modelAlias The alias of a model in the query
-     * @param Criteria $criteria   Optional Criteria to build the query from
+     * @param     string $modelAlias The alias of a model in the query
+     * @param     Criteria $criteria Optional Criteria to build the query from
      *
      * @return ChildAddressSocolissimoQuery
      */
@@ -143,7 +147,7 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $obj  = $c->findPk(12, $con);
      * </code>
      *
-     * @param mixed               $key Primary key to use for the query
+     * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
      * @return ChildAddressSocolissimo|array|mixed the result, formatted by the current formatter
@@ -174,14 +178,14 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * Find object by primary key using raw SQL to go fast.
      * Bypass doSelect() and the object formatter by using generated code.
      *
-     * @param mixed               $key Primary key to use for the query
-     * @param ConnectionInterface $con A connection object
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildAddressSocolissimo A model object, or null if the key is not found
+     * @return   ChildAddressSocolissimo A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, TITLE_ID, COMPANY, FIRSTNAME, LASTNAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY_ID, CODE, TYPE FROM address_socolissimo WHERE ID = :p0';
+        $sql = 'SELECT ID, TITLE_ID, COMPANY, FIRSTNAME, LASTNAME, ADDRESS1, ADDRESS2, ADDRESS3, ZIPCODE, CITY, COUNTRY_ID, CODE, TYPE, CELLPHONE FROM address_socolissimo WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -204,8 +208,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Find object by primary key.
      *
-     * @param mixed               $key Primary key to use for the query
-     * @param ConnectionInterface $con A connection object
+     * @param     mixed $key Primary key to use for the query
+     * @param     ConnectionInterface $con A connection object
      *
      * @return ChildAddressSocolissimo|array|mixed the result, formatted by the current formatter
      */
@@ -225,8 +229,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * <code>
      * $objs = $c->findPks(array(12, 56, 832), $con);
      * </code>
-     * @param array               $keys Primary keys to use for the query
-     * @param ConnectionInterface $con  an optional connection object
+     * @param     array $keys Primary keys to use for the query
+     * @param     ConnectionInterface $con an optional connection object
      *
      * @return ObjectCollection|array|mixed the list of results, formatted by the current formatter
      */
@@ -247,24 +251,26 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Filter the query by primary key
      *
-     * @param mixed $key Primary key to use for the query
+     * @param     mixed $key Primary key to use for the query
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
+
         return $this->addUsingAlias(AddressSocolissimoTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
      * Filter the query by a list of primary keys
      *
-     * @param array $keys The list of primary key to use for the query
+     * @param     array $keys The list of primary key to use for the query
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
+
         return $this->addUsingAlias(AddressSocolissimoTableMap::ID, $keys, Criteria::IN);
     }
 
@@ -278,11 +284,11 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterById(array('min' => 12)); // WHERE id > 12
      * </code>
      *
-     * @param mixed  $id         The value to use as filter.
-     *                           Use scalar values for equality.
-     *                           Use array values for in_array() equivalent.
-     *                           Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     mixed $id The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -321,11 +327,11 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      *
      * @see       filterByCustomerTitle()
      *
-     * @param mixed  $titleId    The value to use as filter.
-     *                           Use scalar values for equality.
-     *                           Use array values for in_array() equivalent.
-     *                           Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     mixed $titleId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -361,9 +367,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByCompany('%fooValue%'); // WHERE company LIKE '%fooValue%'
      * </code>
      *
-     * @param string $company    The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $company The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -390,9 +396,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByFirstname('%fooValue%'); // WHERE firstname LIKE '%fooValue%'
      * </code>
      *
-     * @param string $firstname  The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $firstname The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -419,9 +425,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByLastname('%fooValue%'); // WHERE lastname LIKE '%fooValue%'
      * </code>
      *
-     * @param string $lastname   The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $lastname The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -448,9 +454,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByAddress1('%fooValue%'); // WHERE address1 LIKE '%fooValue%'
      * </code>
      *
-     * @param string $address1   The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $address1 The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -477,9 +483,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByAddress2('%fooValue%'); // WHERE address2 LIKE '%fooValue%'
      * </code>
      *
-     * @param string $address2   The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $address2 The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -506,9 +512,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByAddress3('%fooValue%'); // WHERE address3 LIKE '%fooValue%'
      * </code>
      *
-     * @param string $address3   The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $address3 The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -535,9 +541,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByZipcode('%fooValue%'); // WHERE zipcode LIKE '%fooValue%'
      * </code>
      *
-     * @param string $zipcode    The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $zipcode The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -564,9 +570,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByCity('%fooValue%'); // WHERE city LIKE '%fooValue%'
      * </code>
      *
-     * @param string $city       The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $city The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -596,11 +602,11 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      *
      * @see       filterByCountry()
      *
-     * @param mixed  $countryId  The value to use as filter.
-     *                           Use scalar values for equality.
-     *                           Use array values for in_array() equivalent.
-     *                           Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     mixed $countryId The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -636,9 +642,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByCode('%fooValue%'); // WHERE code LIKE '%fooValue%'
      * </code>
      *
-     * @param string $code       The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $code The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -665,9 +671,9 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      * $query->filterByType('%fooValue%'); // WHERE type LIKE '%fooValue%'
      * </code>
      *
-     * @param string $type       The value to use as filter.
-     *                           Accepts wildcards (* and % trigger a LIKE)
-     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param     string $type The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -686,10 +692,39 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     }
 
     /**
+     * Filter the query on the cellphone column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByCellphone('fooValue');   // WHERE cellphone = 'fooValue'
+     * $query->filterByCellphone('%fooValue%'); // WHERE cellphone LIKE '%fooValue%'
+     * </code>
+     *
+     * @param     string $cellphone The value to use as filter.
+     *              Accepts wildcards (* and % trigger a LIKE)
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildAddressSocolissimoQuery The current query, for fluid interface
+     */
+    public function filterByCellphone($cellphone = null, $comparison = null)
+    {
+        if (null === $comparison) {
+            if (is_array($cellphone)) {
+                $comparison = Criteria::IN;
+            } elseif (preg_match('/[\%\*]/', $cellphone)) {
+                $cellphone = str_replace('*', '%', $cellphone);
+                $comparison = Criteria::LIKE;
+            }
+        }
+
+        return $this->addUsingAlias(AddressSocolissimoTableMap::CELLPHONE, $cellphone, $comparison);
+    }
+
+    /**
      * Filter the query by a related \SoColissimo\Model\Thelia\Model\CustomerTitle object
      *
      * @param \SoColissimo\Model\Thelia\Model\CustomerTitle|ObjectCollection $customerTitle The related object(s) to use as filter
-     * @param string                                                         $comparison    Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -713,8 +748,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the CustomerTitle relation
      *
-     * @param string $relationAlias optional alias for the relation
-     * @param string $joinType      Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -747,11 +782,11 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param string $relationAlias optional alias for the relation,
-     *                              to be used as main alias in the secondary query
-     * @param string $joinType      Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \SoColissimo\Model\Thelia\Model\CustomerTitleQuery A secondary query class using the current class as primary query
+     * @return   \SoColissimo\Model\Thelia\Model\CustomerTitleQuery A secondary query class using the current class as primary query
      */
     public function useCustomerTitleQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -763,8 +798,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Filter the query by a related \SoColissimo\Model\Thelia\Model\Country object
      *
-     * @param \SoColissimo\Model\Thelia\Model\Country|ObjectCollection $country    The related object(s) to use as filter
-     * @param string                                                   $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     * @param \SoColissimo\Model\Thelia\Model\Country|ObjectCollection $country The related object(s) to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -788,8 +823,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Adds a JOIN clause to the query using the Country relation
      *
-     * @param string $relationAlias optional alias for the relation
-     * @param string $joinType      Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -822,11 +857,11 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
      *
      * @see useQuery()
      *
-     * @param string $relationAlias optional alias for the relation,
-     *                              to be used as main alias in the secondary query
-     * @param string $joinType      Accepted values are null, 'left join', 'right join', 'inner join'
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return \SoColissimo\Model\Thelia\Model\CountryQuery A secondary query class using the current class as primary query
+     * @return   \SoColissimo\Model\Thelia\Model\CountryQuery A secondary query class using the current class as primary query
      */
     public function useCountryQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -838,7 +873,7 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param ChildAddressSocolissimo $addressSocolissimo Object to remove from the list of results
+     * @param   ChildAddressSocolissimo $addressSocolissimo Object to remove from the list of results
      *
      * @return ChildAddressSocolissimoQuery The current query, for fluid interface
      */
@@ -854,8 +889,8 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Deletes all rows from the address_socolissimo table.
      *
-     * @param  ConnectionInterface $con the connection to use
-     * @return int                 The number of affected rows (if supported by underlying database driver).
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).
      */
     public function doDeleteAll(ConnectionInterface $con = null)
     {
@@ -886,13 +921,13 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
     /**
      * Performs a DELETE on the database, given a ChildAddressSocolissimo or Criteria object OR a primary key value.
      *
-     * @param  mixed               $values Criteria or ChildAddressSocolissimo object or primary key or array of primary keys
-     *                                     which is used to create the DELETE statement
-     * @param  ConnectionInterface $con    the connection to use
-     * @return int                 The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                                    if supported by native driver or if emulated using Propel.
-     * @throws PropelException     Any exceptions caught during processing will be
-     *                                    rethrown wrapped into a PropelException.
+     * @param mixed               $values Criteria or ChildAddressSocolissimo object or primary key or array of primary keys
+     *              which is used to create the DELETE statement
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     *                if supported by native driver or if emulated using Propel.
+     * @throws PropelException Any exceptions caught during processing will be
+     *         rethrown wrapped into a PropelException.
      */
      public function delete(ConnectionInterface $con = null)
      {
@@ -911,6 +946,7 @@ abstract class AddressSocolissimoQuery extends ModelCriteria
             // use transaction because $criteria could contain info
             // for more than one table or we could emulating ON DELETE CASCADE, etc.
             $con->beginTransaction();
+
 
         AddressSocolissimoTableMap::removeInstanceFromPool($criteria);
 

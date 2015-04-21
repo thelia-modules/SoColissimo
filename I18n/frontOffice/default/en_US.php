@@ -27,4 +27,16 @@ return array(
     'home delivery' => 'home delivery',
     'include in results' => 'include in results',
     'zipcode' => 'zipcode',
+    'My home' => 'my home',
+    'My appointment' => 'my appointment',
+    'Delivery to you or a personal address of your choice.' => 'Delivery home or a home address of your choice with attempted personal delivery or mailbox.<br>
+                                                                In case of absence, back in the post office .',
+    'Service is currently available only in Paris.' => 'Service is currently available only on Paris. For an extra € 4 choose to be delivered to you when you are present !<br>
+            The morning of the arrival of the package in the distribution agency, you will receive an SMS asking you the desired time slot between 17:00 and 21:30 from Monday to Friday.',
+    'Cellphone number' => 'Cellphone number',
+    'Your default address' => 'Your default address',
+    'Choose this delivery mode' => 'Choose this delivery mode',
+    'Your cellphone number is invalid.' => 'Your cellphone number is invalid.',
+    'No relay points were selected' => 'No relay points were selected',
+    'Other available address' => 'Other available address'
 );

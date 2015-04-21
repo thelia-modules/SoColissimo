@@ -112,7 +112,7 @@ class Export extends BaseAdminController
                      * Retrieve address with the order
                      */
                     $address = OrderAddressQuery::create()
-                        ->findPk($order->getInvoiceOrderAddressId());
+                        ->findPk($order->getDeliveryOrderAddressId());
 
                     if ($address === null) {
                         throw new Exception("Could not find the order's invoice address");

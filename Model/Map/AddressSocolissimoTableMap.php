@@ -14,6 +14,7 @@ use Propel\Runtime\Map\TableMapTrait;
 use SoColissimo\Model\AddressSocolissimo;
 use SoColissimo\Model\AddressSocolissimoQuery;
 
+
 /**
  * This class defines the structure of the 'address_socolissimo' table.
  *
@@ -57,7 +58,7 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 13;
+    const NUM_COLUMNS = 14;
 
     /**
      * The number of lazy-loaded columns
@@ -67,7 +68,7 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 13;
+    const NUM_HYDRATE_COLUMNS = 14;
 
     /**
      * the column name for the ID field
@@ -135,6 +136,11 @@ class AddressSocolissimoTableMap extends TableMap
     const TYPE = 'address_socolissimo.TYPE';
 
     /**
+     * the column name for the CELLPHONE field
+     */
+    const CELLPHONE = 'address_socolissimo.CELLPHONE';
+
+    /**
      * The default string format for model objects of the related table
      */
     const DEFAULT_STRING_FORMAT = 'YAML';
@@ -146,12 +152,12 @@ class AddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'TitleId', 'Company', 'Firstname', 'Lastname', 'Address1', 'Address2', 'Address3', 'Zipcode', 'City', 'CountryId', 'Code', 'Type', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'titleId', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'countryId', 'code', 'type', ),
-        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID, AddressSocolissimoTableMap::TITLE_ID, AddressSocolissimoTableMap::COMPANY, AddressSocolissimoTableMap::FIRSTNAME, AddressSocolissimoTableMap::LASTNAME, AddressSocolissimoTableMap::ADDRESS1, AddressSocolissimoTableMap::ADDRESS2, AddressSocolissimoTableMap::ADDRESS3, AddressSocolissimoTableMap::ZIPCODE, AddressSocolissimoTableMap::CITY, AddressSocolissimoTableMap::COUNTRY_ID, AddressSocolissimoTableMap::CODE, AddressSocolissimoTableMap::TYPE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'TITLE_ID', 'COMPANY', 'FIRSTNAME', 'LASTNAME', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'ZIPCODE', 'CITY', 'COUNTRY_ID', 'CODE', 'TYPE', ),
-        self::TYPE_FIELDNAME     => array('id', 'title_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'country_id', 'code', 'type', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        self::TYPE_PHPNAME       => array('Id', 'TitleId', 'Company', 'Firstname', 'Lastname', 'Address1', 'Address2', 'Address3', 'Zipcode', 'City', 'CountryId', 'Code', 'Type', 'Cellphone', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'titleId', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'countryId', 'code', 'type', 'cellphone', ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID, AddressSocolissimoTableMap::TITLE_ID, AddressSocolissimoTableMap::COMPANY, AddressSocolissimoTableMap::FIRSTNAME, AddressSocolissimoTableMap::LASTNAME, AddressSocolissimoTableMap::ADDRESS1, AddressSocolissimoTableMap::ADDRESS2, AddressSocolissimoTableMap::ADDRESS3, AddressSocolissimoTableMap::ZIPCODE, AddressSocolissimoTableMap::CITY, AddressSocolissimoTableMap::COUNTRY_ID, AddressSocolissimoTableMap::CODE, AddressSocolissimoTableMap::TYPE, AddressSocolissimoTableMap::CELLPHONE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'TITLE_ID', 'COMPANY', 'FIRSTNAME', 'LASTNAME', 'ADDRESS1', 'ADDRESS2', 'ADDRESS3', 'ZIPCODE', 'CITY', 'COUNTRY_ID', 'CODE', 'TYPE', 'CELLPHONE', ),
+        self::TYPE_FIELDNAME     => array('id', 'title_id', 'company', 'firstname', 'lastname', 'address1', 'address2', 'address3', 'zipcode', 'city', 'country_id', 'code', 'type', 'cellphone', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -161,12 +167,12 @@ class AddressSocolissimoTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'TitleId' => 1, 'Company' => 2, 'Firstname' => 3, 'Lastname' => 4, 'Address1' => 5, 'Address2' => 6, 'Address3' => 7, 'Zipcode' => 8, 'City' => 9, 'CountryId' => 10, 'Code' => 11, 'Type' => 12, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'titleId' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'countryId' => 10, 'code' => 11, 'type' => 12, ),
-        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID => 0, AddressSocolissimoTableMap::TITLE_ID => 1, AddressSocolissimoTableMap::COMPANY => 2, AddressSocolissimoTableMap::FIRSTNAME => 3, AddressSocolissimoTableMap::LASTNAME => 4, AddressSocolissimoTableMap::ADDRESS1 => 5, AddressSocolissimoTableMap::ADDRESS2 => 6, AddressSocolissimoTableMap::ADDRESS3 => 7, AddressSocolissimoTableMap::ZIPCODE => 8, AddressSocolissimoTableMap::CITY => 9, AddressSocolissimoTableMap::COUNTRY_ID => 10, AddressSocolissimoTableMap::CODE => 11, AddressSocolissimoTableMap::TYPE => 12, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'TITLE_ID' => 1, 'COMPANY' => 2, 'FIRSTNAME' => 3, 'LASTNAME' => 4, 'ADDRESS1' => 5, 'ADDRESS2' => 6, 'ADDRESS3' => 7, 'ZIPCODE' => 8, 'CITY' => 9, 'COUNTRY_ID' => 10, 'CODE' => 11, 'TYPE' => 12, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'title_id' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'country_id' => 10, 'code' => 11, 'type' => 12, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'TitleId' => 1, 'Company' => 2, 'Firstname' => 3, 'Lastname' => 4, 'Address1' => 5, 'Address2' => 6, 'Address3' => 7, 'Zipcode' => 8, 'City' => 9, 'CountryId' => 10, 'Code' => 11, 'Type' => 12, 'Cellphone' => 13, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'titleId' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'countryId' => 10, 'code' => 11, 'type' => 12, 'cellphone' => 13, ),
+        self::TYPE_COLNAME       => array(AddressSocolissimoTableMap::ID => 0, AddressSocolissimoTableMap::TITLE_ID => 1, AddressSocolissimoTableMap::COMPANY => 2, AddressSocolissimoTableMap::FIRSTNAME => 3, AddressSocolissimoTableMap::LASTNAME => 4, AddressSocolissimoTableMap::ADDRESS1 => 5, AddressSocolissimoTableMap::ADDRESS2 => 6, AddressSocolissimoTableMap::ADDRESS3 => 7, AddressSocolissimoTableMap::ZIPCODE => 8, AddressSocolissimoTableMap::CITY => 9, AddressSocolissimoTableMap::COUNTRY_ID => 10, AddressSocolissimoTableMap::CODE => 11, AddressSocolissimoTableMap::TYPE => 12, AddressSocolissimoTableMap::CELLPHONE => 13, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'TITLE_ID' => 1, 'COMPANY' => 2, 'FIRSTNAME' => 3, 'LASTNAME' => 4, 'ADDRESS1' => 5, 'ADDRESS2' => 6, 'ADDRESS3' => 7, 'ZIPCODE' => 8, 'CITY' => 9, 'COUNTRY_ID' => 10, 'CODE' => 11, 'TYPE' => 12, 'CELLPHONE' => 13, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'title_id' => 1, 'company' => 2, 'firstname' => 3, 'lastname' => 4, 'address1' => 5, 'address2' => 6, 'address3' => 7, 'zipcode' => 8, 'city' => 9, 'country_id' => 10, 'code' => 11, 'type' => 12, 'cellphone' => 13, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, )
     );
 
     /**
@@ -198,6 +204,7 @@ class AddressSocolissimoTableMap extends TableMap
         $this->addForeignKey('COUNTRY_ID', 'CountryId', 'INTEGER', 'country', 'ID', true, null, null);
         $this->addColumn('CODE', 'Code', 'VARCHAR', true, 10, null);
         $this->addColumn('TYPE', 'Type', 'VARCHAR', true, 10, null);
+        $this->addColumn('CELLPHONE', 'Cellphone', 'VARCHAR', false, 20, null);
     } // initialize()
 
     /**
@@ -218,7 +225,7 @@ class AddressSocolissimoTableMap extends TableMap
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
+     *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      */
     public static function getPrimaryKeyHashFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
@@ -238,12 +245,13 @@ class AddressSocolissimoTableMap extends TableMap
      * @param array  $row       resultset row.
      * @param int    $offset    The 0-based offset for reading from the resultset row.
      * @param string $indexType One of the class type constants TableMap::TYPE_PHPNAME, TableMap::TYPE_STUDLYPHPNAME
-     *                          TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
+     *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM
      *
      * @return mixed The primary key of the row
      */
     public static function getPrimaryKeyFromRow($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
+
             return (int) $row[
                             $indexType == TableMap::TYPE_NUM
                             ? 0 + $offset
@@ -259,8 +267,8 @@ class AddressSocolissimoTableMap extends TableMap
      * relative to a location on the PHP include_path.
      * (e.g. path.to.MyClass -> 'path/to/MyClass.php')
      *
-     * @param  boolean $withPrefix Whether or not to return the path with the class name
-     * @return string  path.to.ClassName
+     * @param boolean $withPrefix Whether or not to return the path with the class name
+     * @return string path.to.ClassName
      */
     public static function getOMClass($withPrefix = true)
     {
@@ -277,8 +285,8 @@ class AddressSocolissimoTableMap extends TableMap
      *                           TableMap::TYPE_COLNAME, TableMap::TYPE_FIELDNAME, TableMap::TYPE_NUM.
      *
      * @throws PropelException Any exceptions caught during processing will be
-     *                         rethrown wrapped into a PropelException.
-     * @return array           (AddressSocolissimo object, last column rank)
+     *         rethrown wrapped into a PropelException.
+     * @return array (AddressSocolissimo object, last column rank)
      */
     public static function populateObject($row, $offset = 0, $indexType = TableMap::TYPE_NUM)
     {
@@ -302,10 +310,10 @@ class AddressSocolissimoTableMap extends TableMap
      * The returned array will contain objects of the default type or
      * objects that inherit from the default.
      *
-     * @param  DataFetcherInterface $dataFetcher
+     * @param DataFetcherInterface $dataFetcher
      * @return array
-     * @throws PropelException      Any exceptions caught during processing will be
-     *                                          rethrown wrapped into a PropelException.
+     * @throws PropelException Any exceptions caught during processing will be
+     *         rethrown wrapped into a PropelException.
      */
     public static function populateObjects(DataFetcherInterface $dataFetcher)
     {
@@ -338,10 +346,10 @@ class AddressSocolissimoTableMap extends TableMap
      * XML schema will not be added to the select list and only loaded
      * on demand.
      *
-     * @param  Criteria        $criteria object containing the columns to add.
-     * @param  string          $alias    optional table alias
+     * @param Criteria $criteria object containing the columns to add.
+     * @param string   $alias    optional table alias
      * @throws PropelException Any exceptions caught during processing will be
-     *                                  rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function addSelectColumns(Criteria $criteria, $alias = null)
     {
@@ -359,6 +367,7 @@ class AddressSocolissimoTableMap extends TableMap
             $criteria->addSelectColumn(AddressSocolissimoTableMap::COUNTRY_ID);
             $criteria->addSelectColumn(AddressSocolissimoTableMap::CODE);
             $criteria->addSelectColumn(AddressSocolissimoTableMap::TYPE);
+            $criteria->addSelectColumn(AddressSocolissimoTableMap::CELLPHONE);
         } else {
             $criteria->addSelectColumn($alias . '.ID');
             $criteria->addSelectColumn($alias . '.TITLE_ID');
@@ -373,6 +382,7 @@ class AddressSocolissimoTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.COUNTRY_ID');
             $criteria->addSelectColumn($alias . '.CODE');
             $criteria->addSelectColumn($alias . '.TYPE');
+            $criteria->addSelectColumn($alias . '.CELLPHONE');
         }
     }
 
@@ -381,7 +391,7 @@ class AddressSocolissimoTableMap extends TableMap
      * This method is not needed for general use but a specific application could have a need.
      * @return TableMap
      * @throws PropelException Any exceptions caught during processing will be
-     *                         rethrown wrapped into a PropelException.
+     *         rethrown wrapped into a PropelException.
      */
     public static function getTableMap()
     {
@@ -402,13 +412,13 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * Performs a DELETE on the database, given a AddressSocolissimo or Criteria object OR a primary key value.
      *
-     * @param  mixed               $values Criteria or AddressSocolissimo object or primary key or array of primary keys
-     *                                     which is used to create the DELETE statement
-     * @param  ConnectionInterface $con    the connection to use
-     * @return int                 The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
-     *                                    if supported by native driver or if emulated using Propel.
-     * @throws PropelException     Any exceptions caught during processing will be
-     *                                    rethrown wrapped into a PropelException.
+     * @param mixed               $values Criteria or AddressSocolissimo object or primary key or array of primary keys
+     *              which is used to create the DELETE statement
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
+     *                if supported by native driver or if emulated using Propel.
+     * @throws PropelException Any exceptions caught during processing will be
+     *         rethrown wrapped into a PropelException.
      */
      public static function doDelete($values, ConnectionInterface $con = null)
      {
@@ -441,8 +451,8 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * Deletes all rows from the address_socolissimo table.
      *
-     * @param  ConnectionInterface $con the connection to use
-     * @return int                 The number of affected rows (if supported by underlying database driver).
+     * @param ConnectionInterface $con the connection to use
+     * @return int The number of affected rows (if supported by underlying database driver).
      */
     public static function doDeleteAll(ConnectionInterface $con = null)
     {
@@ -452,11 +462,11 @@ class AddressSocolissimoTableMap extends TableMap
     /**
      * Performs an INSERT on the database, given a AddressSocolissimo or Criteria object.
      *
-     * @param  mixed               $criteria Criteria or AddressSocolissimo object containing data that is used to create the INSERT statement.
-     * @param  ConnectionInterface $con      the ConnectionInterface connection to use
-     * @return mixed               The new primary key.
-     * @throws PropelException     Any exceptions caught during processing will be
-     *                                      rethrown wrapped into a PropelException.
+     * @param mixed               $criteria Criteria or AddressSocolissimo object containing data that is used to create the INSERT statement.
+     * @param ConnectionInterface $con the ConnectionInterface connection to use
+     * @return mixed           The new primary key.
+     * @throws PropelException Any exceptions caught during processing will be
+     *         rethrown wrapped into a PropelException.
      */
     public static function doInsert($criteria, ConnectionInterface $con = null)
     {
@@ -469,6 +479,7 @@ class AddressSocolissimoTableMap extends TableMap
         } else {
             $criteria = $criteria->buildCriteria(); // build Criteria from AddressSocolissimo object
         }
+
 
         // Set the correct dbName
         $query = AddressSocolissimoQuery::create()->mergeWith($criteria);
