@@ -2,7 +2,12 @@
 # It "suspends judgement" for fkey relationships until are tables are set.
 SET FOREIGN_KEY_CHECKS = 0;
 
-INSERT INTO `socolissimo_freeshipping`(`active`, `created_at`, `updated_at`) VALUES (0, NOW(), NOW());
+-- add domicile and relais delivery mode
+INSERT INTO `socolissimo_delivery_mode` (`id`, `title`, `code`, `freeshipping_active`, `freeshipping_from`)
+VALUES
+	(1, 'Domicile', 'dom', 0, NULL),
+	(2, 'Point relais', 'pr', 0, NULL);
+
 -- ---------------------------------------------------------------------
 -- Mail templates for socolissimo
 -- ---------------------------------------------------------------------

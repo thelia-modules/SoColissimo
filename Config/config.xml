@@ -6,7 +6,8 @@
 
     <loops>
         <loop class="SoColissimo\Loop\CheckRightsLoop" name="socolissimo.check.rights" />
-        <loop class="SoColissimo\Loop\Price" name="socolissimo" />
+        <loop class="SoColissimo\Loop\SoColissimoDeliveryMode" name="socolissimo.delivery.mode" />
+        <loop class="SoColissimo\Loop\SoColissimoPrice" name="socolissimo" />
         <loop class="SoColissimo\Loop\SoColissimoId" name="socolissimoid" />
         <loop class="SoColissimo\Loop\GetRelais" name="socolissimo.around" />
         <loop class="SoColissimo\Loop\SoColissimoAddress" name="address.socolissimo" />
@@ -17,6 +18,8 @@
         <form name="socolissimo.freeshipping.form" class="SoColissimo\Form\FreeShipping" />
         <form name="socolissimo.configure" class="SoColissimo\Form\ConfigureSoColissimo" />
         <form name="socolissimo.export.inet" class="SoColissimo\Form\ExportOrder" />
+        <form name="socolissimo.add.price.form" class="SoColissimo\Form\AddPriceForm" />
+        <form name="socolissimo.update.price.form" class="SoColissimo\Form\UpdatePriceForm" />
     </forms>
 
     <services>
@@ -28,6 +31,11 @@
             <argument type="service" id="thelia.parser" />
             <argument type="service" id="mailer"/>
             <tag name="kernel.event_subscriber"/>
+        </service>
+        <service id="socolissimo.price.smarty.plugin" class="SoColissimo\Smarty\Plugins\SocolissimoDeliveryPrice" scope="request">
+            <argument type="service" id="request" />
+            <argument type="service" id="event_dispatcher"/>
+            <tag name="thelia.parser.register_plugin" />
         </service>
     </services>
 

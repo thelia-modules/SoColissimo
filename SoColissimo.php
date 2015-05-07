@@ -23,17 +23,18 @@
 
 namespace SoColissimo;
 
-
+use Propel\Runtime\ActiveQuery\Criteria;
+use Propel\Runtime\Exception\PropelException;
+use SoColissimo\Model\SocolissimoDeliveryMode;
+use SoColissimo\Model\SocolissimoDeliveryModeQuery;
+use SoColissimo\Model\SocolissimoPrice;
+use SoColissimo\Model\SocolissimoPriceQuery;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleImageQuery;
 use Thelia\Model\ModuleQuery;
-use Thelia\Module\BaseModule;
-use Thelia\Module\DeliveryModuleInterface;
-use Symfony\Component\HttpFoundation\Request;
-use Thelia\Exception\OrderException;
 use Propel\Runtime\Connection\ConnectionInterface;
-use SoColissimo\Model\SocolissimoFreeshippingQuery;
 use Thelia\Install\Database;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
@@ -47,15 +48,6 @@ class SoColissimo extends AbstractDeliveryModule
 
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
     const JSON_CONFIG_PATH = "/Config/config.json";
-
-    public static function getPrices()
-    {
-        if (null === self::$prices) {
-            self::$prices = json_decode(file_get_contents(sprintf('%s%s', __DIR__, self::JSON_PRICE_RESOURCE)), true);
-        }
-
-        return self::$prices;
-    }
 
     /**
      * This method is called by the Delivery  loop, to check if the current module has to be displayed to the customer.
@@ -74,21 +66,17 @@ class SoColissimo extends AbstractDeliveryModule
 
         $areaId = $country->getAreaId();
 
-        $prices = self::getPrices();
+        $prices = SocolissimoPriceQuery::create()
+            ->filterByAreaId($areaId)
+            ->filterByWeightMax($cartWeight, Criteria::GREATER_EQUAL)
+        ->findOne();
 
-        /* check if Colissimo delivers the asked area */
-        if (isset($prices[$areaId]) && isset($prices[$areaId]["slices"])) {
+        $freeShipping = SocolissimoDeliveryModeQuery::create()
+            ->findOneByFreeshippingActive(1);
 
-            $areaPrices = $prices[$areaId]["slices"];
-            ksort($areaPrices);
-
-            /* check this weight is not too much */
-            end($areaPrices);
-
-            $maxWeight = key($areaPrices);
-            if ($cartWeight <= $maxWeight) {
-                return true;
-            }
+        /* check if Colissimo delivers the asked area*/
+        if (null !== $prices || null !== $freeShipping) {
+            return true;
         }
 
         return false;
@@ -97,41 +85,56 @@ class SoColissimo extends AbstractDeliveryModule
     /**
      * @param $areaId
      * @param $weight
+     * @param $cartAmount
+     * @param $deliverModeCode
      *
      * @return mixed
      * @throws DeliveryException
      */
-    public static function getPostageAmount($areaId, $weight)
+    public static function getPostageAmount($areaId, $weight, $cartAmount = 0, $deliverModeCode = null)
     {
-        $freeshipping = SocolissimoFreeshippingQuery::create()->getLast();
-        $postage=0;
-        if (!$freeshipping) {
-            $prices = self::getPrices();
+        if ($deliverModeCode === null) {
+            $deliveryMode = SocolissimoDeliveryModeQuery::create()->find()->getFirst();
+        } else {
+            $deliveryMode = SocolissimoDeliveryModeQuery::create()->findOneByCode($deliverModeCode);
+        }
 
-            /* check if Colissimo delivers the asked area */
-            if (!isset($prices[$areaId]) || !isset($prices[$areaId]["slices"])) {
+        $freeshipping = $deliveryMode->getFreeshippingActive();
+        $freeshippingFrom = $deliveryMode->getFreeshippingFrom();
+
+        $postage=0;
+
+        if (!$freeshipping) {
+            $areaPrices = SocolissimoPriceQuery::create()
+                ->filterByDeliveryModeId($deliveryMode->getId())
+                ->filterByAreaId($areaId)
+                ->orderByWeightMax();
+
+            $lastPrice = $areaPrices->find()
+                ->getLast();
+
+            /* check if SoColissimo delivers the asked area */
+            if (null === $lastPrice) {
                 throw new DeliveryException("SoColissimo delivery unavailable for the chosen delivery country");
             }
 
-            $areaPrices = $prices[$areaId]["slices"];
-            ksort($areaPrices);
-
             /* check this weight is not too much */
-            end($areaPrices);
-            $maxWeight = key($areaPrices);
+            $maxWeight = $lastPrice->getWeightMax();
             if ($weight > $maxWeight) {
                 throw new DeliveryException(sprintf("SoColissimo delivery unavailable for this cart weight (%s kg)", $weight));
             }
 
-            $postage = current($areaPrices);
-
-            while (prev($areaPrices)) {
-                if ($weight > key($areaPrices)) {
-                    break;
-                }
-
-                $postage = current($areaPrices);
+            //If a min price for freeshipping is define and the amount of cart reach this montant return 0
+            if (null !== $freeshippingFrom && $freeshippingFrom <= $cartAmount) {
+                return $postage;
             }
+
+            //Get the closest price from top
+            $priceForWeight = $areaPrices->filterByWeightMax($weight, Criteria::GREATER_EQUAL)
+                ->find()
+                ->getFirst();
+
+            $postage = $priceForWeight->getPrice();
         }
 
         return $postage;
@@ -148,11 +151,27 @@ class SoColissimo extends AbstractDeliveryModule
      */
     public function getPostage(Country $country)
     {
-        $cartWeight = $this->getRequest()->getSession()->getSessionCart($this->getDispatcher())->getWeight();
+        $request = $this->getRequest();
+
+        $cartWeight = $request->getSession()->getSessionCart($this->getDispatcher())->getWeight();
+        $cartAmount = $request->getSession()->getSessionCart($this->getDispatcher())->getTaxedAmount($country);
+
+        $dom = $request->get('socolissimo-home');
+        $rdv = $request->get('socolissimo-appointment');
+        $pr_code = $request->get('socolissimo_code');
+
+        $deliveryModeCode = null;
+        if ($dom || $rdv) {
+            $deliveryModeCode = "dom";
+        } elseif (!empty($pr_code)) {
+            $deliveryModeCode = "pr";
+        }
 
         $postage = self::getPostageAmount(
             $country->getAreaId(),
-            $cartWeight
+            $cartWeight,
+            $cartAmount,
+            $deliveryModeCode
         );
 
         return $postage;
@@ -163,11 +182,81 @@ class SoColissimo extends AbstractDeliveryModule
         return 'SoColissimo';
     }
 
+    public static function getPrices(SocolissimoDeliveryMode $deliveryMode)
+    {
+        self::$prices = null;
+
+        $fileName = sprintf('%s%s', __DIR__, "/Config/prices_".$deliveryMode->getCode().".json");
+
+        // If delivery mode file doesn't exist take global price
+        if (!file_exists($fileName)) {
+            $fileName = sprintf('%s%s', __DIR__, self::JSON_PRICE_RESOURCE);
+            // If global price doesn't exist throw exception
+            if (!file_exists($fileName)) {
+                throw new Exception("Prices configuration not found.");
+            }
+        }
+
+        if (null === self::$prices) {
+            self::$prices = json_decode(file_get_contents($fileName), true);
+        }
+        return self::$prices;
+    }
+
+    public static function importJsonPrice(SocolissimoDeliveryMode $deliveryMode, ConnectionInterface $con)
+    {
+        $areaPrices = self::getPrices($deliveryMode);
+
+        $priceExist = SocolissimoPriceQuery::create()
+            ->filterByDeliveryModeId($deliveryMode->getId())
+            ->findOne();
+
+        //If at least one price exist doesn't import the xml (or it will erase the user price)
+        if (null !== $priceExist) {
+            return;
+        }
+
+        $con->beginTransaction();
+        try {
+            foreach ($areaPrices as $areaId => $area) {
+                foreach ($area['slices'] as $weight => $price) {
+                    $slice = (new SocolissimoPrice())
+                        ->setAreaId($areaId)
+                        ->setWeightMax($weight)
+                        ->setPrice($price)
+                        ->setDeliveryModeId($deliveryMode->getId());
+                    $slice->save();
+
+                }
+                $con->commit();
+            }
+        } catch (PropelException $e) {
+            $con->rollback();
+            throw $e;
+        }
+    }
+
     public function postActivation(ConnectionInterface $con = null)
     {
         $database = new Database($con);
 
-        $database->insertSql(null, [__DIR__ . '/Config/thelia.sql', __DIR__ . '/Config/insert.sql']);
+        try {
+            // Security to not erase user config on reactivation
+            SocolissimoDeliveryModeQuery::create()->findOne();
+        } catch (\Exception $e) {
+            $database->insertSql(null, [__DIR__ . '/Config/thelia.sql', __DIR__ . '/Config/insert.sql']);
+        }
+
+        try {
+            $deliveryModes = SocolissimoDeliveryModeQuery::create()
+                ->find();
+
+            foreach ($deliveryModes as $deliveryMode) {
+                self::importJsonPrice($deliveryMode, $con);
+            }
+        } catch (\Exception $e) {
+            throw $e;
+        }
 
         ConfigQuery::write('socolissimo_login', null, 1, 1);
         ConfigQuery::write('socolissimo_pwd', null, 1, 1);

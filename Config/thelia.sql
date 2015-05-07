@@ -4,21 +4,6 @@
 SET FOREIGN_KEY_CHECKS = 0;
 
 -- ---------------------------------------------------------------------
--- socolissimo_freeshipping
--- ---------------------------------------------------------------------
-
-DROP TABLE IF EXISTS `socolissimo_freeshipping`;
-
-CREATE TABLE `socolissimo_freeshipping`
-(
-    `id` INTEGER NOT NULL AUTO_INCREMENT,
-    `active` TINYINT(1) NOT NULL,
-    `created_at` DATETIME,
-    `updated_at` DATETIME,
-    PRIMARY KEY (`id`)
-) ENGINE=InnoDB;
-
--- ---------------------------------------------------------------------
 -- address_socolissimo
 -- ---------------------------------------------------------------------
 
@@ -72,6 +57,50 @@ CREATE TABLE `order_address_socolissimo`
         REFERENCES `order_address` (`id`)
         ON UPDATE CASCADE
         ON DELETE CASCADE
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- socolissimo_delivery_mode
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `socolissimo_delivery_mode`;
+
+CREATE TABLE `socolissimo_delivery_mode`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `title` VARCHAR(255),
+    `code` VARCHAR(55) NOT NULL,
+    `freeshipping_active` TINYINT(1),
+    `freeshipping_from` FLOAT,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB;
+
+-- ---------------------------------------------------------------------
+-- socolissimo_price
+-- ---------------------------------------------------------------------
+
+DROP TABLE IF EXISTS `socolissimo_price`;
+
+CREATE TABLE `socolissimo_price`
+(
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `area_id` INTEGER NOT NULL,
+    `delivery_mode_id` INTEGER NOT NULL,
+    `weight_max` FLOAT NOT NULL,
+    `price` FLOAT NOT NULL,
+    PRIMARY KEY (`id`),
+    INDEX `FI_socolissimo_price_area_id` (`area_id`),
+    INDEX `FI_socolissimo_price_delivery_mode_id` (`delivery_mode_id`),
+    CONSTRAINT `fk_socolissimo_price_area_id`
+        FOREIGN KEY (`area_id`)
+        REFERENCES `area` (`id`)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT,
+    CONSTRAINT `fk_socolissimo_price_delivery_mode_id`
+        FOREIGN KEY (`delivery_mode_id`)
+        REFERENCES `socolissimo_delivery_mode` (`id`)
+        ON UPDATE RESTRICT
+        ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
 # This restores the fkey checks, after having unset them earlier

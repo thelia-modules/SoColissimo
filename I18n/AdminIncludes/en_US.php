@@ -27,6 +27,7 @@ return array(
     'Please change the access rights' => 'Please change the access rights',
     'Price (€)' => 'Price (€)',
     'Price slices' => 'Price slices',
+    'Price slices for %mode' => 'Price slices for %mode',
     'Processing' => 'Processing',
     'REF' => 'REF',
     'Reverse selection' => 'Reverse selection',
@@ -38,4 +39,5 @@ return array(
     'Uncheck all' => 'Uncheck all',
     'Weight up to ... (kg)' => 'Weight up to ... (kg)',
     'operations' => 'operations',
+    "No price for this area" => "No price for this area"
 );
