@@ -3,7 +3,7 @@
 namespace SoColissimo\Smarty\Plugins;
 
 use SoColissimo\SoColissimo;
-use Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Model\CountryQuery;
 use Thelia\Module\Exception\DeliveryException;
@@ -17,7 +17,7 @@ class SocolissimoDeliveryPrice extends AbstractSmartyPlugin
 
     public function __construct(
         Request $request,
-        ContainerAwareEventDispatcher $dispatcher = null
+        EventDispatcherInterface $dispatcher = null
     ) {
         $this->request = $request;
         $this->dispatcher = $dispatcher;
