@@ -27,6 +27,7 @@ return array(
     'Please change the access rights' => 'Merci de modifier les droits d\'accès',
     'Price (€)' => 'Prix (€)',
     'Price slices' => 'Tranches de prix',
+    'Price slices for \"%mode\"' => 'Tranches de prix pour \"%mode\"',
     'Processing' => 'En cours',
     'REF' => 'REF',
     'Reverse selection' => 'Inverser la sélection',
@@ -36,6 +37,9 @@ return array(
     'TEST' => 'TEST',
     'Total taxed amount' => 'Montant total des taxes',
     'Uncheck all' => 'Tous décocher',
-    'Weight up to ... (kg)' => 'Poids supèrieur à ... (kg)',
+    'Weight up to ... (kg)' => 'Poids inférieur à ... (kg)',
     'operations' => 'Opérations',
+    "No price for this area" => "Aucun prix pour cette zone",
+    'Activate total free shipping ' => 'Activer les frais de port gratuits',
+    'Or activate free shipping from (€) :' => 'Ou activer les frais de port gratuits à partir de (€)',
 );

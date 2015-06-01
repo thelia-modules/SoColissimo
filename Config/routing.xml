@@ -3,13 +3,23 @@
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
         xsi:schemaLocation="http://symfony.com/schema/routing http://symfony.com/schema/routing/routing-1.0.xsd">
 
-	<route id="socolissimo.edit.prices" path="/admin/module/socolissimo/prices" methods="post">
-		<default key="_controller">SoColissimo\Controller\EditPrices::editprices</default>
+	<route id="socolissimo.add.price" path="/admin/module/socolissimo/add/price" methods="post">
+		<default key="_controller">SoColissimo\Controller\PriceController::addPrice</default>
+	</route>
+    <route id="socolissimo.update.price" path="/admin/module/socolissimo/update/price" methods="post">
+		<default key="_controller">SoColissimo\Controller\PriceController::updatePrice</default>
+	</route>
+    <route id="socolissimo.delete.price" path="/admin/module/socolissimo/delete/price" methods="post">
+		<default key="_controller">SoColissimo\Controller\PriceController::deletePrice</default>
 	</route>
 
-    <route id="socolissimo.edit.freeshipping" path="/admin/module/socolissimo/freeshipping" methods="post">
-        <default key="_controller">SoColissimo\Controller\FreeShipping::set</default>
+    <route id="socolissimo.toggle.freeshipping" path="/admin/module/socolissimo/freeshipping" methods="post">
+        <default key="_controller">SoColissimo\Controller\FreeShipping::toggleFreeShippingActivation</default>
     </route>
+    <route id="socolissimo.edit.freeshippingfrom" path="/admin/module/socolissimo/freeshipping_from" methods="post">
+        <default key="_controller">SoColissimo\Controller\FreeShipping::setFreeShippingFrom</default>
+    </route>
+
 
     <route id="socolissimo.configure" path="/admin/module/socolissimo/configure" methods="post">
         <default key="_controller">SoColissimo\Controller\SaveConfig::save</default>

@@ -51,10 +51,9 @@ class FreeShipping extends BaseForm
      */
     protected function buildForm()
     {
-        $freeshipping = SocolissimoFreeshippingQuery::create()->getLast();
         $this->formBuilder
+            ->add("delivery_mode", "integer")
             ->add("freeshipping", "checkbox", array(
-                'data'=>$freeshipping,
                 'label'=>Translator::getInstance()->trans("Activate free shipping: ")
             ))
         ;

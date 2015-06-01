@@ -23,7 +23,7 @@
 
 namespace SoColissimo\Controller;
 
-use SoColissimo\Model\SoColissimoFreeshipping;
+use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\HttpFoundation\Response;
@@ -33,7 +33,7 @@ use Thelia\Core\Security\AccessManager;
 
 class FreeShipping extends BaseAdminController
 {
-    public function set()
+    public function toggleFreeShippingActivation()
     {
         if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
             return $response;
@@ -44,15 +44,48 @@ class FreeShipping extends BaseAdminController
 
         try {
             $vform = $this->validateForm($form);
-            $data = $vform->get('freeshipping')->getData();
+            $freeshipping = $vform->get('freeshipping')->getData();
+            $deliveryModeId = $vform->get('delivery_mode')->getData();
 
-            $save = new SoColissimoFreeshipping();
-            $save->setActive(!empty($data))->save();
+            $deliveryMode = SocolissimoDeliveryModeQuery::create()->findOneById($deliveryModeId);
+            $deliveryMode->setFreeshippingActive($freeshipping)
+                ->save();
             $response = Response::create('');
         } catch (\Exception $e) {
             $response = JsonResponse::create(array("error"=>$e->getMessage()), 500);
         }
 
         return $response;
+    }
+
+    public function setFreeShippingFrom()
+    {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
+        $data = $this->getRequest()->request;
+        $deliveryMode = SocolissimoDeliveryModeQuery::create()->findOneById($data->get('delivery-mode'));
+
+        $price = $data->get("price") === "" ? null : $data->get("price");
+
+        if ($price < 0) {
+            $price = null;
+        }
+
+        $deliveryMode->setFreeshippingFrom($price)
+            ->save();
+
+        return $this->generateRedirectFromRoute(
+            "admin.module.configure",
+            array(),
+            array (
+                'current_tab'=>'prices_slices_tab_'.$data->get('delivery-mode'),
+                'module_code'=>"SoColissimo",
+                '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction',
+                'price_error_id' => null,
+                'price_error' => null
+            )
+        );
     }
 }

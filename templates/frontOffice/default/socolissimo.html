@@ -4,10 +4,12 @@
     <td colspan="3">
         <div id="point-socolissimo">
             <div id="google-map-socolissimo">
-
-            <div class="panel panel-default">
+                {* Domicile *}
+                {socolissimoDeliveryPrice delivery-mode="dom" country=$country}
+                {if $isValidMode !== false}
+                <div class="panel panel-default">
                 <div class="panel-heading">
-                    {intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
+                    {intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
                 </div>
                 <div class="panel-body">
                     <div class="container-fluid">
@@ -107,14 +109,18 @@
                     </div>
                 </div>
             </div>
+            {/if}
 
+            {* Point relais *}
             {* Check if soColissimo webservice is up *}
             {assign var="isSocolissimoUp" value=0}
+            {socolissimoDeliveryPrice delivery-mode="pr" country=$country}<h1>{$isValidMode}</h1>
+            {if $isValidMode !== false}
             {loop name="is.socolissimo.up"  type="socolissimo.around"}{/loop}
             {ifloop rel="is.socolissimo.up"}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        {intl l="Near you" d='socolissimo.fo.default'}</strong> / {$POSTAGE} {currency attr="symbol"}
+                        {intl l="Near you" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
                     </div>
                     <div class="panel-body">
                         <script>
@@ -470,7 +476,8 @@
                     </div>
                 </div>
             {/ifloop}
-        </div>
+            {/if}
+            </div>
         </div>
     </td>
 </tr>
