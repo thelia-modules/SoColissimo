@@ -22,6 +22,7 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Controller;
+
 use Propel\Runtime\ActiveQuery\Criteria;
 use SoColissimo\Form\ExportOrder;
 use SoColissimo\Format\CSV;
@@ -228,14 +229,16 @@ class Export extends BaseAdminController
 
                 }
             }
+
         } catch (\Exception $e) {
             return Response::create($e->getMessage(),500);
         }
 
         return Response::create(
-            $csv->parse(),
+            utf8_decode($csv->parse()),
             200,
             array(
+                "Content-Encoding"=>"ISO-8889-1",
                 "Content-Type"=>"application/csv-tab-delimited-table",
                 "Content-disposition"=>"filename=export.csv"
             )
