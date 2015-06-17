@@ -12,6 +12,7 @@
         <loop class="SoColissimo\Loop\GetRelais" name="socolissimo.around" />
         <loop class="SoColissimo\Loop\SoColissimoAddress" name="address.socolissimo" />
         <loop class="SoColissimo\Loop\NotSentOrders" name="order.notsent.socolissimo" />
+        <loop class="SoColissimo\Loop\SoColissimoOrderAddressLoop" name="socolissimo.order_address" />
     </loops>
 
     <forms>
@@ -44,6 +45,9 @@
             <tag name="hook.event_listener" event="order-delivery.extra" />
             <tag name="hook.event_listener" event="order-invoice.delivery-address" />
             <tag name="hook.event_listener" event="main.head-bottom" />
+        </hook>
+        <hook id="socolissimo.hook.pdf" class="SoColissimo\Hook\PdfHook" scope="request">
+            <tag name="hook.event_listener" event="invoice.after-delivery-module" type="pdf" method="onInvoiceAfterDeliveryModule" />
         </hook>
     </hooks>
 
