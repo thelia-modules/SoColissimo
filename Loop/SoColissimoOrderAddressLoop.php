@@ -58,7 +58,11 @@ class SoColissimoOrderAddressLoop extends BaseLoop implements PropelSearchLoopIn
     public function buildModelCriteria()
     {
         $query = OrderAddressSocolissimoQuery::create();
-        !(is_null($id = $this->getId())) and $query->filterById(intval($id));
+
+        if (!is_null($id = $this->getId())) {
+            $query->filterById(intval($id));
+        }
+
         return $query;
     }
 

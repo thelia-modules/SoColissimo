@@ -21,11 +21,18 @@ class PdfHook extends BaseHook
 {
     public function onInvoiceAfterDeliveryModule(HookRenderEvent $event)
     {
-            (SoColissimo::getModuleId() == $event->getArgument('module_id'))
-        and !(is_null($order = OrderQuery::create()->findOneById($event->getArgument('order'))))
-        and $event->add($this->render(
-            'delivery_mode_infos.html',
-            ['delivery_address_id' => $order->getDeliveryOrderAddressId()]
-        ));
+        // No So Colissimo information if the delivery module is not SoColissimo
+        if (SoColissimo::getModuleId() == $event->getArgument('module_id')) {
+            return;
+        }
+
+        $order = OrderQuery::create()->findOneById($event->getArgument('order'));
+
+        if (!is_null($order)) {
+            $event->add($this->render(
+                'delivery_mode_infos.html',
+                ['delivery_address_id' => $order->getDeliveryOrderAddressId()]
+            ));
+        }
     }
 }
