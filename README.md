@@ -89,6 +89,16 @@ Boucles
         Les même sorties que la boucle order, mais avec uniquement les commandes So Colissimo non envoyées.
     - Utilisation:
         ```{loop name="yourloopname" type="order.notsent.socolissimo"}<!-- your template -->{/loop}```
+        
+7. socolissimo.order_address
+	- Argument :
+		1. id | obligatoire | ID de la OrderAddressSoColissimo que l'on veut retrouver grâce à la boucle.
+	- Sorties :
+		1. $ID : ID de la OrderAddressSoColissimo.
+		2. $CODE : code de la OrderAddressSoColissimo.
+		3. $TYPE : type de la OrderAddressSoColissimo.
+	- Utilisation:
+		```{loop name="yourloopname" type="socolissimo.order_address"}<!-- your template -->{/loop}```
 
 Intégration
 -----------
@@ -167,6 +177,16 @@ Loops
         The same as the loop order, but with not sent So Colissimo orders.
     - Usage:
         ```{loop name="yourloopname" type="order.notsent.socolissimo"}<!-- your template -->{/loop}```
+        
+7. socolissimo.order_address
+	- Arguments:
+		1. id | obligatoire | ID of the OrderAddressSoColissimo that should be retrieved by the loop.
+	- Outputs:
+		1. $ID : OrderAddressSoColissimo ID.
+		2. $CODE : OrderAddressSoColissimo code.
+		3. $TYPE : OrderAddressSoColissimo type.
+	- Usage:
+		```{loop name="yourloopname" type="socolissimo.order_address"}<!-- your template -->{/loop}```
 
 
 Integration
