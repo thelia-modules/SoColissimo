@@ -101,6 +101,9 @@
                                     {intl l="REF" d='socolissimo.ai'}
                                 </th>
                                 <th class="object-title">
+                                    {intl l="Customer"}
+                                </th>
+                                <th class="object-title">
                                     {intl l="Date" d='socolissimo.ai'}
                                 </th>
                                 <th class="object-title">
@@ -117,8 +120,16 @@
                                         <tr>
                                             <td>
                                                 <label for="{$label_attr.for}">
-                                                    {$label}
+                                                    <a href="{url path='/admin/order/update/%order_id' order_id={$ID}}">{$label}</a>
                                                 </label>
+                                            </td>
+                                            <td>
+                                                {loop name='order-customer' type='customer' id={$CUSTOMER} current=false}
+                                                    <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$ID}}">{$FIRSTNAME} {$LASTNAME}</a>
+                                                {/loop}
+                                                {elseloop rel='order-customer'}
+                                                    <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$CUSTOMER}}">{intl l='Unknown customer' d='socolissimo.ai'}</a>
+                                                {/elseloop}
                                             </td>
                                             <td>
                                                 {$CREATE_DATE|date_format}

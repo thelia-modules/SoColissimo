@@ -42,4 +42,5 @@ return array(
     "No price for this area" => "Aucun prix pour cette zone",
     'Activate total free shipping ' => 'Activer les frais de port gratuits',
     'Or activate free shipping from (€) :' => 'Ou activer les frais de port gratuits à partir de (€)',
+    'Unknown customer' => 'Client inconnu',
 );
