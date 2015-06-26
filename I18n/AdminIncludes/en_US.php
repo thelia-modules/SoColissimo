@@ -39,5 +39,6 @@ return array(
     'Uncheck all' => 'Uncheck all',
     'Weight up to ... (kg)' => 'Weight up to ... (kg)',
     'operations' => 'operations',
-    "No price for this area" => "No price for this area"
+    "No price for this area" => "No price for this area",
+    'Unknown customer' => 'Unknown customer',
 );
