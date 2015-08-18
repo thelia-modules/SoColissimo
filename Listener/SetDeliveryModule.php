@@ -206,8 +206,6 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->setCity($tmp_address->getCity())
                     ->save();
 
-                $tmp_address->delete();
-
             } elseif ($request->getSession()->get('SoColissimoRdv') == 1) {
                 $tmp_address = AddressSoColissimoQuery::create()
                     ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
@@ -232,8 +230,6 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->setCity($tmp_address->getCity())
                     ->setPhone($tmp_address->getCellphone())
                     ->save();
-
-                $tmp_address->delete();
             } else {
                 $tmp_address = AddressSoColissimoQuery::create()
                     ->findPk($request->getSession()->get('SoColissimoDeliveryId'));
@@ -257,8 +253,6 @@ class SetDeliveryModule implements EventSubscriberInterface
                     ->setZipcode($tmp_address->getZipcode())
                     ->setCity($tmp_address->getCity())
                     ->save();
-
-                $tmp_address->delete();
             }
 
         }
