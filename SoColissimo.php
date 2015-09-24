@@ -46,8 +46,19 @@ class SoColissimo extends AbstractDeliveryModule
 
     private static $prices = null;
 
+    const DOMAIN = 'socolissimo';
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
     const JSON_CONFIG_PATH = "/Config/config.json";
+
+    /**
+     * These constants refer to the imported CSV file.
+     * IMPORT_NB_COLS: file's number of columns (begin at 1)
+     * IMPORT_DELIVERY_REF_COL: file's column where delivery reference is set (begin at 0)
+     * IMPORT_ORDER_REF_COL: file's column where order reference is set (begin at 0)
+     */
+    const IMPORT_NB_COLS = 2;
+    const IMPORT_DELIVERY_REF_COL = 0;
+    const IMPORT_ORDER_REF_COL = 1;
 
     /**
      * This method is called by the Delivery  loop, to check if the current module has to be displayed to the customer.

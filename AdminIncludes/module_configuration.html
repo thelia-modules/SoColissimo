@@ -32,11 +32,14 @@
 {if isset($smarty.get.current_tab)}
     {assign var="tab" value=$smarty.get.current_tab}
 {/if}
+
 <div class="general-block-decorator">
     <div class="row">
         <div class="col-md-12">
+
             <ul id="tabbed-menu" class="nav nav-tabs">
                 <li class="{if $tab eq "export"}active{/if}"><a data-toggle="tab" href="#export">{intl l="Export expeditor inet file" d='socolissimo.ai'}</a> </li>
+                <li class="{if $tab eq "import"}active{/if}"><a data-toggle="tab" href="#import">{intl l="Import expeditor inet file" d='socolissimo.ai'}</a> </li>
                 <li class="{if $tab eq "configure"}active{/if}"><a data-toggle="tab" href="#configure">{intl l="Configure So Colissimo" d='socolissimo.ai'}</a></li>
                 {loop type="socolissimo.delivery.mode" name="devlivery_mode"}
                 <li class="{if $tab eq "prices_slices_tab_{$ID}"}active{/if}"><a data-toggle="tab" href="#prices_slices_tab_{$ID}">{intl l="Price slices for \"%mode\"" d='socolissimo.ai' mode={$TITLE}}</a></li>
@@ -149,6 +152,49 @@
                     </form>
                     {/form}
                 </div>
+
+                <!-- Import form -->
+                <div id="import" class="tab-pane {if $tab eq "import"}active{/if} form-container">
+
+                    <div class="panel panel-default">
+                        <div class="panel-heading clearfix">
+                            {intl l="The file has to be a CSV with 2 columns. The first contains the delivery reference, the second the order reference." d='socolissimo.ai'}
+                        </div>
+
+                        <div class="panel-body">
+
+                            {flash type='import-result'}
+                                <div class="alert alert-success">
+                                    {$MESSAGE}
+                                </div>
+                            {/flash}
+
+                            {form name='socolissimo.import'}
+                                <form action="{url path='/admin/module/socolissimo/import'}" method="post" {form_enctype form=$form}>
+                                    {form_hidden_fields form=$form}
+                                    {render_form_field form=$form field="success_url" value={url path="/admin/module/SoColissimo"} current_tab="import"}
+
+                                    {if $form_error}
+                                        <div class="alert alert-danger">{$form_error_message}</div>
+                                    {/if}
+
+                                    {form_field form=$form field="import_file"}
+                                        <div class="form-group {if $error}has-error{/if}">
+                                            <label for="{$label_attr.for}" class="control-label">
+                                                {$label} :
+                                            </label>
+
+                                            <input type="file" id="{$label_attr.for}" name="{$name}" value="{$value}" required/>
+                                        </div>
+                                    {/form_field}
+
+                                    <button type="submit" class="btn btn-primary">{intl d='socolissimo.ai' l='Upload'}</button>
+                                </form>
+                            {/form}
+                        </div>
+                    </div>
+                </div>
+
                 <div id="configure"  class="tab-pane {if $tab eq "configure"}active{/if} form-container">
                     <div class="panel panel-default">
                         <div class="panel-heading">
