@@ -19,6 +19,7 @@
         <form name="socolissimo.freeshipping.form" class="SoColissimo\Form\FreeShipping" />
         <form name="socolissimo.configure" class="SoColissimo\Form\ConfigureSoColissimo" />
         <form name="socolissimo.export.inet" class="SoColissimo\Form\ExportOrder" />
+        <form name="socolissimo.import" class="SoColissimo\Form\ImportForm"/>
         <form name="socolissimo.add.price.form" class="SoColissimo\Form\AddPriceForm" />
         <form name="socolissimo.update.price.form" class="SoColissimo\Form\UpdatePriceForm" />
     </forms>

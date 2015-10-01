@@ -39,4 +39,8 @@
     <route id="socolissimo.export" path="/admin/module/socolissimo/export" methods="post">
         <default key="_controller">SoColissimo\Controller\Export::export</default>
     </route>
+
+    <route id="socolissimo.export" path="/admin/module/socolissimo/import" methods="post">
+        <default key="_controller">SoColissimo:Import:import</default>
+    </route>
 </routes>
