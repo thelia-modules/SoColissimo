@@ -205,7 +205,8 @@ class Export extends BaseAdminController
                                 $cellphone,
                                 $order->getRef(),
                                 $title->getShort(),
-                                $relay_id->getCode(),
+                                // the Expeditor software used to accept a relay id of 0, but no longer does
+                                ($relay_id->getCode() == 0) ? '' : $relay_id->getCode(),
                                 $customer->getEmail(),
                                 $weight,
                                 $store_name,
