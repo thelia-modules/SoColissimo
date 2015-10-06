@@ -53,12 +53,12 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         // Find the address ... To find ! \m/
         $zipcode = $this->getZipcode();
         $city = $this->getCity();
-        $address = $this->getAddress();
+        $address1 = $this->getAddress();
 
         $address = array(
             "zipcode"=>$zipcode,
             "city"=>$city,
-            "address"=>"",
+            "address"=>$address1,
             "countrycode"=>"FR",
         );
 
@@ -97,10 +97,13 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         ;
 
         try {
+            Tlog::getInstance()->info('SoColissimo : find relay for '.$address["address"].', '.$address["zipcode"].', '.$address["city"].', '.$address["countrycode"]);
             $response = $request->exec();
         } catch (InvalidArgumentException $e) {
+            Tlog::getInstance()->error('SoColissimo : '.$e->getMessage());
             $response = array();
         } catch (\SoapFault $e) {
+            Tlog::getInstance()->error('SoColissimo : '.$e->getMessage());
             $response = array();
         }
 
