@@ -9,7 +9,7 @@
                 {if $isValidMode !== false}
                 <div class="panel panel-default">
                 <div class="panel-heading">
-                    {intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
+                    <strong>{intl l="home delivery" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
                 </div>
                 <div class="panel-body">
                     <div class="container-fluid">
@@ -21,33 +21,7 @@
                             <br>
                             {intl l="Delivery to you or a personal address of your choice." d='socolissimo.fo.default'}
 
-                            <div class="row">
-                                {loop name="address" type="address" customer="current"}
-                                <div class="col-md-6">
-                                    <div class="well block">
-                                        {if $DEFAULT}
-                                        <h4><span class="icon-angle-right"></span> {intl l="Your default address" d="socolissimo.fo.default"}</h4>
-                                        {else}
-                                        <h4><span class="icon-angle-right"></span> {intl l="Other available address" d="socolissimo.fo.default"}</h4>
-                                        {/if}
-                                        <address {if $DEFAULT}class="text-primary"{/if}>
-                                        <strong>{$LABEL}</strong><br>
-                                        {$FIRSTNAME} {$LASTNAME}<br>
-                                        {$ADDRESS1}<br>
-                                        {if $ADDRESS2}{$ADDRESS2}<br>{/if}
-                                        {if $ADDRESS3}{$ADDRESS3}<br>{/if}
-                                        {$ZIPCODE} {$CITY}
-                                        </address>
-                                        <a class="btn btn-change-address" href="{url path="/address/update/%id" id=$ID next={url path='/order/delivery'}}">
-                                        {intl l="Edit this address" d='fo.default'}
-                                        </a>
-                                    </div>
-                                </div>
-                                {/loop}
-                            </div>
-
                             <div class="clearfix">
-                                <a href="{url path='/address/create' next={url path='/order/delivery'}}" class="btn btn-link pull-left"><span class="icon-plus-sign"></span> {intl l="Add a new address" d='fo.default'}</a>
                                 <button type="submit" name="socolissimo-home" value="DOM" class="btn btn-primary pull-right">{intl l="Choose this delivery mode" d="socolissimo.fo.default"}</button>
                             </div>
                         </div>
@@ -74,33 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="row">
-                                {loop name="address" type="address" customer="current"}
-                                <div class="col-md-6">
-                                    <div class="well block">
-                                        {if $DEFAULT}
-                                        <h4><span class="icon-angle-right"></span> {intl l="Your default address" d="socolissimo.fo.default"}</h4>
-                                        {else}
-                                        <h4><span class="icon-angle-right"></span> {intl l="Other available address" d="socolissimo.fo.default"}</h4>
-                                        {/if}
-                                        <address {if $DEFAULT}class="text-primary"{/if}>
-                                        <strong>{$LABEL}</strong><br>
-                                        {$FIRSTNAME} {$LASTNAME}<br>
-                                        {$ADDRESS1}<br>
-                                        {if $ADDRESS2}{$ADDRESS2}<br>{/if}
-                                        {if $ADDRESS3}{$ADDRESS3}<br>{/if}
-                                        {$ZIPCODE} {$CITY}
-                                        </address>
-                                        <a class="btn btn-change-address" href="{url path="/address/update/%id" id=$ID next={url path='/order/delivery'}}">
-                                        {intl l="Edit this address" d='fo.default'}
-                                        </a>
-                                    </div>
-                                </div>
-                                {/loop}
-                            </div>
-
                             <div class="clearfix">
-                                <a href="{url path='/address/create' next={url path='/order/delivery'}}" class="btn btn-link pull-left"><span class="icon-plus-sign"></span> {intl l="Add a new address" d='fo.default'}</a>
                                 <button type="submit" name="socolissimo-appointment" value="RDV" class="btn btn-primary pull-right">{intl l="Choose this delivery mode" d="socolissimo.fo.default"}</button>
                             </div>
                             {/if}
@@ -120,7 +68,7 @@
             {ifloop rel="is.socolissimo.up"}
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        {intl l="Near you" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
+                        <strong>{intl l="Near you" d='socolissimo.fo.default'}</strong> / {$deliveryModePrice} {currency attr="symbol"}
                     </div>
                     <div class="panel-body">
                         <script>
