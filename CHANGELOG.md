@@ -1,3 +1,7 @@
+# 1.1.3
+
+- Fix support for relay search by Thelia address
+
 # 1.1.2
 
 - Set relay id to an empty string when exporting non-relay orders
