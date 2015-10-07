@@ -63,6 +63,8 @@ Boucles
     - Arguments:
         1. zipcode | optionnel | code postal de la ville recherchée
         2. city    | optionnel | nom de la ville recherchée
+        3. address | optionnel | id de l'addresse a utiliser pour la recherche.
+            address et zipcode + city ne peuvent pas être présents en même temps.
     - Sorties:
         1. $LONGITUDE: longitude du point relais
         2. $LATITUDE : latitude du point relais
@@ -151,6 +153,8 @@ Loops
     - Arguments:
         1. zipcode | optionnel | zipcode of the searched city
         2. city    | optionnel | name of the searched city
+        3. address | optionnel | id of the address to use for the search.
+        address and zipcode + city cannot be used at the same time.
     - Output:
         1. $LONGITUDE: longitude of the pickup & go store
         2. $LATITUDE : latitude of the pickup & go store

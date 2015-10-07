@@ -69,6 +69,14 @@ class GetSpecificLocation extends BaseFrontController
         return $response;
     }
 
+    public function search()
+    {
+        $zipcode = $this->getRequest()->query->get('zipcode');
+        $city = $this->getRequest()->query->get('city');
+        $addressId = $this->getRequest()->query->get('address');
+
+        return $this->get($zipcode, $city, $addressId);
+    }
 
     /**
      * @return ParserInterface instance parser
