@@ -36,6 +36,10 @@
         <default key="_controller">SoColissimo\Controller\GetSpecificLocation::getPointInfo</default>
     </route>
 
+    <route id="socolissimo.point.search" path="/module/socolissimo/points">
+        <default key="_controller">SoColissimo\Controller\GetSpecificLocation::search</default>
+    </route>
+
     <route id="socolissimo.export" path="/admin/module/socolissimo/export" methods="post">
         <default key="_controller">SoColissimo\Controller\Export::export</default>
     </route>

@@ -53,19 +53,26 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         // Find the address ... To find ! \m/
         $zipcode = $this->getZipcode();
         $city = $this->getCity();
-        $address = $this->getAddress();
 
-        $address = array(
-            "zipcode"=>$zipcode,
-            "city"=>$city,
-            "address"=>"",
-            "countrycode"=>"FR",
-        );
+        $addressId = $this->getAddress();
 
-        if (empty($zipcode) || empty($city)) {
+        if (!empty($addressId) && (!empty($zipcode) || !empty($city))) {
+            throw new \InvalidArgumentException(
+                "Cannot have argument 'address' and 'zipcode' or 'city' at the same time."
+            );
+        }
+
+        if (null !== $addressModel = AddressQuery::create()->findPk($addressId)) {
+            $address = array(
+                "zipcode" => $addressModel->getZipcode(),
+                "city" => $addressModel->getCity(),
+                "address" => $addressModel->getAddress1(),
+                "countrycode"=>"FR",
+            );
+        } elseif (empty($zipcode) || empty($city)) {
             $search = AddressQuery::create();
 
-            $customer=$this->securityContext->getCustomerUser();
+            $customer = $this->securityContext->getCustomerUser();
             if ($customer !== null) {
                 $search->filterByCustomerId($customer->getId());
                 $search->filterByIsDefault("1");
@@ -78,6 +85,13 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             $address["city"] = $search->getCity();
             $address["address"] = $search->getAddress1();
             $address["countrycode"] = $search->getCountry()->getIsoalpha2();
+        } else {
+            $address = array(
+                "zipcode" => $zipcode,
+                "city" => $city,
+                "address" => "",
+                "countrycode" => "FR",
+            );
         }
 
         // Then ask the Web Service
@@ -178,7 +192,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         return new ArgumentCollection(
             Argument::createAnyTypeArgument("zipcode", ""),
             Argument::createAnyTypeArgument("city",""),
-            Argument::createAnyTypeArgument("address","")
+            Argument::createIntTypeArgument("address")
         );
     }
 

@@ -290,35 +290,31 @@
                             }
 
                             function initialize_so() {
-                                // Get customer address
-                                {loop type="address" name="delivery-selection-socolissimo" customer="current" default="true"}
-                                var adr_geoloc = "{$ADDRESS1}, {$ZIPCODE} {$CITY}";
+                                // Get the selected customer address
+                                var $selectedAddressInput = $('#form-cart-delivery')
+                                        .find('[name="thelia_order_delivery[delivery-address]"]')
+                                        .filter(':checked');
+
+                                var selectedAddressId = $selectedAddressInput.val();
+
+                                var locationsSearchUrl = "{url path='/module/socolissimo/points'}";
+
+                                var addresses_geoloc = [];
+                                {loop type="address" name="delivery-selection-socolissimo" customer="current"}
+                                    addresses_geoloc[{$ID}] = "{$ADDRESS1}, {$ZIPCODE} {$CITY}";
                                 {/loop}
+
+                                var adr_geoloc = addresses_geoloc[selectedAddressId];
+
                                 // Get every relay around customer's address
                                 var locations = [];
-
-                                {loop type="socolissimo.around" name="delivery-selection-socolissimo"}
-                                locations.push({
-                                    'name': '{$nom}',
-                                    'lat': {$coordGeolocalisationLatitude},
-                                    'lng': {$coordGeolocalisationLongitude},
-                                    'id': '{$identifiant}',
-                                    'address': '{$adresse1}',
-                                    'zipcode': '{$codePostal}',
-                                    'city': '{$localite}',
-                                    'distance': '{$distance}',
-                                    'type': '{$typeDePoint}',
-                                    'monday': '{$horairesOuvertureLundi}',
-                                    'tuesday': '{$horairesOuvertureMardi}',
-                                    'wednesday': '{$horairesOuvertureMercredi}',
-                                    'thursday': '{$horairesOuvertureJeudi}',
-                                    'friday': '{$horairesOuvertureVendredi}',
-                                    'saturday': '{$horairesOuvertureSamedi}',
-                                    'sunday': '{$horairesOuvertureDimanche}',
-                                    'disabledPerson': '{$accesPersonneMobiliteReduite}'
-                                });
-                                {/loop}
-                                updatemap_socolissimo(adr_geoloc, locations);
+                                $.get(
+                                    locationsSearchUrl + "?address=" + selectedAddressId,
+                                    function(data) {
+                                        locations = data.locations;
+                                        updatemap_socolissimo(adr_geoloc, locations);
+                                    }
+                                );
                             }
 
                             function search_city_socolissimo() {
