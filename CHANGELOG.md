@@ -1,3 +1,8 @@
+# 1.1.4
+
+- Remove duplicated address edition controls on delivery page
+- Fix unopened HTML elements
+
 # 1.1.3
 
 - Fix support for relay search by Thelia address
