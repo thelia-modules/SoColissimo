@@ -30,6 +30,7 @@ use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use SoColissimo\Model\SocolissimoPrice;
 use SoColissimo\Model\SocolissimoPriceQuery;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Thelia\Model\AreaQuery;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
 use Thelia\Model\ModuleImageQuery;
@@ -230,16 +231,18 @@ class SoColissimo extends AbstractDeliveryModule
         $con->beginTransaction();
         try {
             foreach ($areaPrices as $areaId => $area) {
-                foreach ($area['slices'] as $weight => $price) {
-                    $slice = (new SocolissimoPrice())
-                        ->setAreaId($areaId)
-                        ->setWeightMax($weight)
-                        ->setPrice($price)
-                        ->setDeliveryModeId($deliveryMode->getId());
-                    $slice->save();
-
+                // Check if the area exists
+                if (null !== AreaQuery::create()->findPk($areaId)) {
+                    foreach ($area['slices'] as $weight => $price) {
+                        $slice = (new SocolissimoPrice())
+                            ->setAreaId($areaId)
+                            ->setWeightMax($weight)
+                            ->setPrice($price)
+                            ->setDeliveryModeId($deliveryMode->getId());
+                        $slice->save();
+                    }
+                    $con->commit();
                 }
-                $con->commit();
             }
         } catch (PropelException $e) {
             $con->rollback();
