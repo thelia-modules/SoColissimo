@@ -22,13 +22,16 @@
 /*************************************************************************************/
 
 namespace SoColissimo\Loop;
+
 use Propel\Runtime\ActiveQuery\Criteria;
 use SoColissimo\SoColissimo;
+use Thelia\Core\Template\Loop\Argument\Argument;
 use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Model\OrderQuery;
 use Thelia\Core\Template\Loop\Order;
 use Thelia\Model\OrderStatus;
 use Thelia\Model\OrderStatusQuery;
+
 /**
  * Class NotSentOrders
  * @package SoColissimo\Loop
@@ -38,7 +41,7 @@ class NotSentOrders extends Order
 {
     public function getArgDefinitions()
     {
-        return new ArgumentCollection();
+        return new ArgumentCollection(Argument::createBooleanTypeArgument('with_prev_next_info', false));
     }
 
     /**
@@ -57,8 +60,7 @@ class NotSentOrders extends Order
                 Criteria::IN
             )
             ->find()
-            ->toArray("code")
-        ;
+            ->toArray("code");
         $query = OrderQuery::create()
             ->filterByDeliveryModuleId(SoColissimo::getModCode())
             ->filterByStatusId(
@@ -70,5 +72,4 @@ class NotSentOrders extends Order
 
         return $query;
     }
-
 }
