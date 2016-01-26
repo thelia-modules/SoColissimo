@@ -18,6 +18,7 @@ return array(
     'No price for this area' => 'Aucun prix pour cette zone',
     'Or activate free shipping from (€) :' => 'Ou activer les frais de port gratuits à partir de (€)',
     'PRODUCTION' => 'PRODUCTION',
+    'Package weight' => 'Poids des colis (kg)',
     'Please change the access rights' => 'Merci de modifier les droits d\'accès',
     'Price (€)' => 'Prix (€)',
     'Price slices for "%mode"' => 'Tranche de prix pour "%mode"',

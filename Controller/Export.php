@@ -156,20 +156,25 @@ class Export extends BaseAdminController
                     }
 
                     /**
-                     * Cellp
+                     * Cellphone
                      */
                      $cellphone = $customer->getDefaultAddress()->getCellphone();
 
                     if (empty($cellphone)) {
                         $cellphone = self::DEFAULT_CELLPHONE;
                     }
+
                     /**
                      * Compute package weight
                      */
                     $weight = 0;
-                    /** @var \Thelia\Model\OrderProduct $product */
-                    foreach ($order->getOrderProducts() as $product) {
-                        $weight+=(double) $product->getWeight();
+                    if ($vform->get('order_weight_'.$order->getId())->getData() == 0) {
+                        /** @var \Thelia\Model\OrderProduct $product */
+                        foreach ($order->getOrderProducts() as $product) {
+                            $weight+=(double) $product->getWeight() * $product->getQuantity();
+                        }
+                    } else {
+                        $weight = $vform->get('order_weight_'.$order->getId())->getData();
                     }
 
                     /**

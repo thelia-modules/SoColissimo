@@ -113,38 +113,46 @@
                                     {intl l="Total taxed amount" d='socolissimo.ai'}
                                 </th>
                                 <th class="object-title">
+                                    {intl l="Package weight" d='socolissimo.ai'}
+                                </th>
+                                <th class="object-title">
                                     {intl l="Export" d='socolissimo.ai'}
                                 </th>
                             </thead>
 
                             <tbody>
                                 {loop name="order.notsent.socolissimo" type="order.notsent.socolissimo"}
-                                    {form_field form=$form field="order_"|cat:$ID}
-                                        <tr>
-                                            <td>
-                                                <label for="{$label_attr.for}">
-                                                    <a href="{url path='/admin/order/update/%order_id' order_id={$ID}}">{$label}</a>
-                                                </label>
-                                            </td>
-                                            <td>
-                                                {loop name='order-customer' type='customer' id={$CUSTOMER} current=false}
-                                                    <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$ID}}">{$FIRSTNAME} {$LASTNAME}</a>
-                                                {/loop}
-                                                {elseloop rel='order-customer'}
-                                                    <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$CUSTOMER}}">{intl l='Unknown customer' d='socolissimo.ai'}</a>
-                                                {/elseloop}
-                                            </td>
-                                            <td>
-                                                {$CREATE_DATE|date_format}
-                                            </td>
-                                            <td>
-                                                {$TOTAL_TAXED_AMOUNT} {loop name="list.socolissimo.getcurrency" type="currency" id=$CURRENCY}{$SYMBOL}{/loop}
-                                            </td>
-                                            <td>
+                                    <tr>
+                                        <td>
+                                            <label for="{$label_attr.for}">
+                                                <a href="{url path='/admin/order/update/%order_id' order_id={$ID}}">{$label}</a>
+                                            </label>
+                                        </td>
+                                        <td>
+                                            {loop name='order-customer' type='customer' id={$CUSTOMER} current=false}
+                                                <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$ID}}">{$FIRSTNAME} {$LASTNAME}</a>
+                                            {/loop}
+                                            {elseloop rel='order-customer'}
+                                                <a href="{url path='/admin/customer/update?customer_id=%customer_id' customer_id={$CUSTOMER}}">{intl l='Unknown customer' d='socolissimo.ai'}</a>
+                                            {/elseloop}
+                                        </td>
+                                        <td>
+                                            {$CREATE_DATE|date_format}
+                                        </td>
+                                        <td>
+                                            {$TOTAL_TAXED_AMOUNT} {loop name="list.socolissimo.getcurrency" type="currency" id=$CURRENCY}{$SYMBOL}{/loop}
+                                        </td>
+                                        <td>
+                                            {form_field form=$form field="order_weight_"|cat:$ID}
+                                                <input class="form-control text-center" type="text" name="{$name}" value="0" required />
+                                            {/form_field}
+                                        </td>
+                                        <td>
+                                            {form_field form=$form field="order_"|cat:$ID}
                                                 <input type="checkbox" name="{$name}" id="{$label_attr.for}" value="true" class="form-control"/>
-                                            </td>
-                                        </tr>
-                                    {/form_field}
+                                            {/form_field}
+                                        </td>
+                                    </tr>
                                 {/loop}
                             </tbody>
                         </table>
@@ -249,7 +257,7 @@
 
                 {loop type="socolissimo.delivery.mode" name="devlivery_mode"}
                     {$deliveryModeId=$ID}
-                    <div id="prices_slices_tab_{$deliveryModeId}" class="tab-pane {if $tab eq "prices_slices_tab_{$deliveryModeId}" }active{/if} form-container">
+                    <div id="prices_slices_tab_{$deliveryModeId}" class="tab-pane {if $tab eq "prices_slices_tab_$deliveryModeId" }active{/if} form-container">
                         {if null !== $smarty.get.price_error && {$deliveryModeId} == $smarty.get.price_error_id}
                             <div class="alert alert-danger" role="alert">{$smarty.get.price_error}</div>
                         {/if}
