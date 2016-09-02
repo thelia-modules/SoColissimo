@@ -211,6 +211,9 @@
 
                         <div class="panel-body">
                             {form name="socolissimo.configure"}
+                            {if $form_error && $form_error_message}
+                                <div class="alert alert-danger">{$form_error_message}</div>
+                            {/if}
                             <form action="{url path='/admin/module/socolissimo/configure'}" method="post">
                                 {form_hidden_fields form=$form}
                                 {form_field form=$form field='url_prod'}
@@ -242,6 +245,12 @@
                                     </div>
                                 {/form_field}
                                 {form_field form=$form field='password'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                    </div>
+                                {/form_field}
+                                {form_field form=$form field='google_map_key'}
                                     <div class="form-group {if $error}has-error{/if}">
                                         <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
                                         <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">

@@ -88,7 +88,7 @@ class ConfigureSoColissimo extends BaseForm
                     'constraints' => [
                         new NotBlank(),
                         new Url([
-                            'protocols' => ['https']
+                            'protocols' => ['https', 'http']
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_prod'),
@@ -103,7 +103,7 @@ class ConfigureSoColissimo extends BaseForm
                     'constraints' => [
                         new NotBlank(),
                         new Url([
-                            'protocols' => ['https']
+                            'protocols' => ['https', 'http']
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_test'),
@@ -119,6 +119,16 @@ class ConfigureSoColissimo extends BaseForm
                     'data'        => ConfigQuery::read('socolissimo_test_mode'),
                     'label'       => $translator->trans("test mode"),
                     'label_attr'  => ['for' => 'test_mode']
+                ]
+            )
+            ->add(
+                'google_map_key',
+                'text',
+                [
+                    'constraints' => [],
+                    'data'        => ConfigQuery::read('socolissimo_google_map_key'),
+                    'label'       => $translator->trans("Google map API key"),
+                    'label_attr'  => ['for' => 'google_map_key']
                 ]
             )
         ;

@@ -24,4 +24,5 @@ return array(
     'This delivery mode doesn\'t exists.' => 'This delivery mode doesn\'t exists.',
     'server' => 'server',
     'test mode' => 'test mode',
+    'Google map API key' => 'Clé API Google map',
 );
