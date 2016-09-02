@@ -272,11 +272,40 @@ class SoColissimo extends AbstractDeliveryModule
             throw $e;
         }
 
-        ConfigQuery::write('socolissimo_login', null, 1, 1);
-        ConfigQuery::write('socolissimo_pwd', null, 1, 1);
-        ConfigQuery::write('socolissimo_url_prod', "https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
-        ConfigQuery::write('socolissimo_url_test', "https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl", 1, 1);
-        ConfigQuery::write('socolissimo_test_mode', 1, 1, 1);
+        ConfigQuery::write(
+            'socolissimo_login',
+            ConfigQuery::read('socolissimo_login', null),
+            1,
+            1
+        );
+
+        ConfigQuery::write(
+            'socolissimo_pwd',
+            ConfigQuery::read('socolissimo_pwd', null),
+            1,
+            1
+        );
+
+        ConfigQuery::write(
+            'socolissimo_test_mode',
+            ConfigQuery::read('socolissimo_test_mode', 1),
+            1,
+            1
+        );
+
+        ConfigQuery::write(
+            'socolissimo_url_prod',
+            ConfigQuery::read('socolissimo_url_prod', 'https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl'),
+            1,
+            1
+        );
+
+        ConfigQuery::write(
+            'socolissimo_url_test',
+            ConfigQuery::read('socolissimo_url_test', 'https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl'),
+            1,
+            1
+        );
 
         /* insert the images from image folder if first module activation */
         $module = $this->getModuleModel();
@@ -289,5 +318,4 @@ class SoColissimo extends AbstractDeliveryModule
     {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
     }
-
 }
