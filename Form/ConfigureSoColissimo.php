@@ -121,6 +121,16 @@ class ConfigureSoColissimo extends BaseForm
                     'label_attr'  => ['for' => 'test_mode']
                 ]
             )
+            ->add(
+                'google_map_key',
+                'text',
+                [
+                    'constraints' => [],
+                    'data'        => ConfigQuery::read('socolissimo_google_map_key'),
+                    'label'       => $translator->trans("Google map API key"),
+                    'label_attr'  => ['for' => 'google_map_key']
+                ]
+            )
         ;
     }
 

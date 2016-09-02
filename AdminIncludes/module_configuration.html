@@ -250,6 +250,12 @@
                                         <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
                                     </div>
                                 {/form_field}
+                                {form_field form=$form field='google_map_key'}
+                                    <div class="form-group {if $error}has-error{/if}">
+                                        <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                        <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                    </div>
+                                {/form_field}
                                     <br/>
                                 <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l='Save changes' d='socolissimo.ai'}">{intl l='Save changes' d='socolissimo.ai'} <span class="glyphicon glyphicon-ok"></span></button>
                             </form>

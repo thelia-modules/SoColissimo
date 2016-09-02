@@ -44,9 +44,8 @@ use Thelia\Model\ConfigQuery;
 class GetRelais extends BaseLoop implements ArraySearchLoopInterface
 {
     /**
-     * this method returns an array ***Thanks cap'tain obvious \(^.^)/***
-     *->
-     * @return array
+     * @return array|mixed
+     * @throws \ErrorException
      */
     public function buildArray()
     {
@@ -156,44 +155,14 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
     }
 
     /**
-     *
-     * define all args used in your loop
-     *
-     *
-     * example :
-     *
-     * public function getArgDefinitions()
-     * {
-     *  return new ArgumentCollection(
-     *       Argument::createIntListTypeArgument('id'),
-     *           new Argument(
-     *           'ref',
-     *           new TypeCollection(
-     *               new Type\AlphaNumStringListType()
-     *           )
-     *       ),
-     *       Argument::createIntListTypeArgument('category'),
-     *       Argument::createBooleanTypeArgument('new'),
-     *       Argument::createBooleanTypeArgument('promo'),
-     *       Argument::createFloatTypeArgument('min_price'),
-     *       Argument::createFloatTypeArgument('max_price'),
-     *       Argument::createIntTypeArgument('min_stock'),
-     *       Argument::createFloatTypeArgument('min_weight'),
-     *       Argument::createFloatTypeArgument('max_weight'),
-     *       Argument::createBooleanTypeArgument('current'),
-     *
-     *   );
-     * }
-     *
-     * @return \Thelia\Core\Template\Loop\Argument\ArgumentCollection
+    * @inheritdoc
      */
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
             Argument::createAnyTypeArgument("zipcode", ""),
-            Argument::createAnyTypeArgument("city",""),
+            Argument::createAnyTypeArgument("city", ""),
             Argument::createIntTypeArgument("address")
         );
     }
-
 }

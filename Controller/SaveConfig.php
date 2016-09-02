@@ -24,6 +24,7 @@ class SaveConfig extends BaseAdminController
 
             ConfigQuery::write('socolissimo_login', $vform->get('accountnumber')->getData(), 1, 1);
             ConfigQuery::write('socolissimo_pwd', $vform->get('password')->getData(), 1, 1);
+            ConfigQuery::write('socolissimo_google_map_key', $vform->get('google_map_key')->getData(), 1, 1);
             ConfigQuery::write('socolissimo_url_prod', $vform->get('url_prod')->getData(), 1, 1);
             ConfigQuery::write('socolissimo_url_test', $vform->get('url_test')->getData(), 1, 1);
             ConfigQuery::write('socolissimo_test_mode', $vform->get('test_mode')->getData(), 1, 1);

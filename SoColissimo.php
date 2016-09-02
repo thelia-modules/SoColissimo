@@ -287,8 +287,15 @@ class SoColissimo extends AbstractDeliveryModule
         );
 
         ConfigQuery::write(
-            'socolissimo_test_mode',
-            ConfigQuery::read('socolissimo_test_mode', 1),
+            'socolissimo_pwd',
+            ConfigQuery::read('socolissimo_pwd', null),
+            1,
+            1
+        );
+
+        ConfigQuery::write(
+            'socolissimo_google_map_key',
+            ConfigQuery::read('socolissimo_google_map_key', null),
             1,
             1
         );
