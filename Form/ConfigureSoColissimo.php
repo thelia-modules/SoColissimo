@@ -88,7 +88,7 @@ class ConfigureSoColissimo extends BaseForm
                     'constraints' => [
                         new NotBlank(),
                         new Url([
-                            'protocols' => ['https']
+                            'protocols' => ['https', 'http']
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_prod'),
@@ -103,7 +103,7 @@ class ConfigureSoColissimo extends BaseForm
                     'constraints' => [
                         new NotBlank(),
                         new Url([
-                            'protocols' => ['https']
+                            'protocols' => ['https', 'http']
                         ])
                     ],
                     'data'        => ConfigQuery::read('socolissimo_url_test'),
