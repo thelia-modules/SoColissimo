@@ -43,12 +43,15 @@ class SoColissimoAddress extends Address
     }
     public function buildModelCriteria()
     {
+        if (isset($_SESSION['_sf2_attributes']['SoColissimoDomiciile']) && $_SESSION['_sf2_attributes']['SoColissimoDomiciile'] == 1) {
+            return parent::buildModelCriteria();
+        }
         $id = $this->getId();
         $this->setExists($id[0]);
 
         return $this->exists ?
-                AddressSoColissimoQuery::create()->filterById($id[0]) :
-                parent::buildModelCriteria();
+            AddressSoColissimoQuery::create()->filterById($id[0]) :
+            parent::buildModelCriteria();
     }
     public function parseResults(LoopResult $loopResult)
     {
