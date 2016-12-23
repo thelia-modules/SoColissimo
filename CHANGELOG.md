@@ -1,3 +1,7 @@
+# 1.2.1
+
+- Change expeditor filename
+
 # 1.1.4
 
 - Remove duplicated address edition controls on delivery page
