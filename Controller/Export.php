@@ -246,7 +246,7 @@ class Export extends BaseAdminController
             array(
                 "Content-Encoding"=>"ISO-8889-1",
                 "Content-Type"=>"application/csv-tab-delimited-table",
-                "Content-disposition"=>"filename=export.csv"
+                "Content-disposition"=>"filename=expeditor_thelia.csv"
             )
         );
     }
