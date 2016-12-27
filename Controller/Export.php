@@ -183,10 +183,6 @@ class Export extends BaseAdminController
                     $relay_id = OrderAddressSocolissimoQuery::create()
                         ->findPk($order->getDeliveryOrderAddressId());
 
-                    if ($relay_id === null) {
-                        throw new Exception("Invalid order ".$order->getRef().", no relay id found");
-                    }
-
                     /**
                      * Get store's name
                      */
@@ -211,11 +207,11 @@ class Export extends BaseAdminController
                                 $order->getRef(),
                                 $title->getShort(),
                                 // the Expeditor software used to accept a relay id of 0, but no longer does
-                                ($relay_id->getCode() == 0) ? '' : $relay_id->getCode(),
+                                ($relay_id !== null) ? ($relay_id->getCode() == 0) ? '' : $relay_id->getCode() : 0,
                                 $customer->getEmail(),
                                 $weight,
                                 $store_name,
-                                $relay_id->getType()
+                                ($relay_id !== null) ? $relay_id->getType() : 0
                             )
                         )
                     );
