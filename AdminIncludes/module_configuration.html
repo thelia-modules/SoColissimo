@@ -125,7 +125,9 @@
                                     <tr>
                                         <td>
                                             <label for="{$label_attr.for}">
-                                                <a href="{url path='/admin/order/update/%order_id' order_id={$ID}}">{$label}</a>
+                                                {form_field form=$form field="order_"|cat:$ID}
+                                                    <a href="{url path='/admin/order/update/%order_id' order_id={$ID}}">{$label}</a>
+                                                {/form_field}
                                             </label>
                                         </td>
                                         <td>
