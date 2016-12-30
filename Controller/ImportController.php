@@ -52,17 +52,13 @@ class ImportController extends BaseAdminController
             foreach ($lines as $line) {
                 $parsedLine = str_getcsv($line, ";");
 
-                // Check if there are 2 columns : delivery ref & order ref
-                if (count($parsedLine) == (SoColissimo::IMPORT_NB_COLS)) {
+                // Get delivery and order ref
+                $deliveryRef = $parsedLine[SoColissimo::IMPORT_DELIVERY_REF_COL];
+                $orderRef = $parsedLine[SoColissimo::IMPORT_ORDER_REF_COL];
 
-                    // Get delivery and order ref
-                    $deliveryRef = $parsedLine[SoColissimo::IMPORT_DELIVERY_REF_COL];
-                    $orderRef = $parsedLine[SoColissimo::IMPORT_ORDER_REF_COL];
-
-                    // Save delivery ref if there is one
-                    if (!empty($deliveryRef)) {
-                        $this->importDeliveryRef($deliveryRef, $orderRef, $i);
-                    }
+                // Save delivery ref if there is one
+                if (!empty($deliveryRef)) {
+                    $this->importDeliveryRef($deliveryRef, $orderRef, $i);
                 }
             }
 
