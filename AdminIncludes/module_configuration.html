@@ -139,7 +139,7 @@
                                             {/elseloop}
                                         </td>
                                         <td>
-                                            {$CREATE_DATE|date_format}
+                                            {format_date date=$CREATE_DATE output="datetime"}
                                         </td>
                                         <td>
                                             {$TOTAL_TAXED_AMOUNT} {loop name="list.socolissimo.getcurrency" type="currency" id=$CURRENCY}{$SYMBOL}{/loop}
