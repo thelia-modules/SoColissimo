@@ -80,6 +80,12 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
     protected $weight_max;
 
     /**
+     * The value for the franco_min_price field.
+     * @var        double
+     */
+    protected $franco_min_price;
+
+    /**
      * The value for the price field.
      * @var        double
      */
@@ -406,6 +412,17 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
     }
 
     /**
+     * Get the [franco_min_price] column value.
+     *
+     * @return   double
+     */
+    public function getFrancoMinPrice()
+    {
+
+        return $this->franco_min_price;
+    }
+
+    /**
      * Get the [price] column value.
      *
      * @return   double
@@ -509,6 +526,27 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
     } // setWeightMax()
 
     /**
+     * Set the value of [franco_min_price] column.
+     *
+     * @param      double $v new value
+     * @return   \SoColissimo\Model\SocolissimoPrice The current object (for fluent API support)
+     */
+    public function setFrancoMinPrice($v)
+    {
+        if ($v !== null) {
+            $v = (double) $v;
+        }
+
+        if ($this->franco_min_price !== $v) {
+            $this->franco_min_price = $v;
+            $this->modifiedColumns[SocolissimoPriceTableMap::FRANCO_MIN_PRICE] = true;
+        }
+
+
+        return $this;
+    } // setFrancoMinPrice()
+
+    /**
      * Set the value of [price] column.
      *
      * @param      double $v new value
@@ -578,7 +616,10 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
             $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocolissimoPriceTableMap::translateFieldName('WeightMax', TableMap::TYPE_PHPNAME, $indexType)];
             $this->weight_max = (null !== $col) ? (double) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SocolissimoPriceTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 4 + $startcol : SocolissimoPriceTableMap::translateFieldName('FrancoMinPrice', TableMap::TYPE_PHPNAME, $indexType)];
+            $this->franco_min_price = (null !== $col) ? (double) $col : null;
+
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 5 + $startcol : SocolissimoPriceTableMap::translateFieldName('Price', TableMap::TYPE_PHPNAME, $indexType)];
             $this->price = (null !== $col) ? (double) $col : null;
             $this->resetModified();
 
@@ -588,7 +629,7 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 5; // 5 = SocolissimoPriceTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 6; // 6 = SocolissimoPriceTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
             throw new PropelException("Error populating \SoColissimo\Model\SocolissimoPrice object", 0, $e);
@@ -836,6 +877,9 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
         if ($this->isColumnModified(SocolissimoPriceTableMap::WEIGHT_MAX)) {
             $modifiedColumns[':p' . $index++]  = 'WEIGHT_MAX';
         }
+        if ($this->isColumnModified(SocolissimoPriceTableMap::FRANCO_MIN_PRICE)) {
+            $modifiedColumns[':p' . $index++]  = 'FRANCO_MIN_PRICE';
+        }
         if ($this->isColumnModified(SocolissimoPriceTableMap::PRICE)) {
             $modifiedColumns[':p' . $index++]  = 'PRICE';
         }
@@ -861,6 +905,9 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
                         break;
                     case 'WEIGHT_MAX':
                         $stmt->bindValue($identifier, $this->weight_max, PDO::PARAM_STR);
+                        break;
+                    case 'FRANCO_MIN_PRICE':
+                        $stmt->bindValue($identifier, $this->franco_min_price, PDO::PARAM_STR);
                         break;
                     case 'PRICE':
                         $stmt->bindValue($identifier, $this->price, PDO::PARAM_STR);
@@ -940,6 +987,9 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
                 return $this->getWeightMax();
                 break;
             case 4:
+                return $this->getFrancoMinPrice();
+                break;
+            case 5:
                 return $this->getPrice();
                 break;
             default:
@@ -975,7 +1025,8 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
             $keys[1] => $this->getAreaId(),
             $keys[2] => $this->getDeliveryModeId(),
             $keys[3] => $this->getWeightMax(),
-            $keys[4] => $this->getPrice(),
+            $keys[4] => $this->getFrancoMinPrice(),
+            $keys[5] => $this->getPrice(),
         );
         $virtualColumns = $this->virtualColumns;
         foreach ($virtualColumns as $key => $virtualColumn) {
@@ -1036,6 +1087,9 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
                 $this->setWeightMax($value);
                 break;
             case 4:
+                $this->setFrancoMinPrice($value);
+                break;
+            case 5:
                 $this->setPrice($value);
                 break;
         } // switch()
@@ -1066,7 +1120,8 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
         if (array_key_exists($keys[1], $arr)) $this->setAreaId($arr[$keys[1]]);
         if (array_key_exists($keys[2], $arr)) $this->setDeliveryModeId($arr[$keys[2]]);
         if (array_key_exists($keys[3], $arr)) $this->setWeightMax($arr[$keys[3]]);
-        if (array_key_exists($keys[4], $arr)) $this->setPrice($arr[$keys[4]]);
+        if (array_key_exists($keys[4], $arr)) $this->setFrancoMinPrice($arr[$keys[4]]);
+        if (array_key_exists($keys[5], $arr)) $this->setPrice($arr[$keys[5]]);
     }
 
     /**
@@ -1082,6 +1137,7 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
         if ($this->isColumnModified(SocolissimoPriceTableMap::AREA_ID)) $criteria->add(SocolissimoPriceTableMap::AREA_ID, $this->area_id);
         if ($this->isColumnModified(SocolissimoPriceTableMap::DELIVERY_MODE_ID)) $criteria->add(SocolissimoPriceTableMap::DELIVERY_MODE_ID, $this->delivery_mode_id);
         if ($this->isColumnModified(SocolissimoPriceTableMap::WEIGHT_MAX)) $criteria->add(SocolissimoPriceTableMap::WEIGHT_MAX, $this->weight_max);
+        if ($this->isColumnModified(SocolissimoPriceTableMap::FRANCO_MIN_PRICE)) $criteria->add(SocolissimoPriceTableMap::FRANCO_MIN_PRICE, $this->franco_min_price);
         if ($this->isColumnModified(SocolissimoPriceTableMap::PRICE)) $criteria->add(SocolissimoPriceTableMap::PRICE, $this->price);
 
         return $criteria;
@@ -1149,6 +1205,7 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
         $copyObj->setAreaId($this->getAreaId());
         $copyObj->setDeliveryModeId($this->getDeliveryModeId());
         $copyObj->setWeightMax($this->getWeightMax());
+        $copyObj->setFrancoMinPrice($this->getFrancoMinPrice());
         $copyObj->setPrice($this->getPrice());
         if ($makeNew) {
             $copyObj->setNew(true);
@@ -1289,6 +1346,7 @@ abstract class SocolissimoPrice implements ActiveRecordInterface
         $this->area_id = null;
         $this->delivery_mode_id = null;
         $this->weight_max = null;
+        $this->franco_min_price = null;
         $this->price = null;
         $this->alreadyInSave = false;
         $this->clearAllReferences();

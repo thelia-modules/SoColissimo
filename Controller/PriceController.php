@@ -25,8 +25,13 @@ class PriceController extends BaseAdminController
             $newPrice->setAreaId($data['area'])
                 ->setDeliveryModeId($data['delivery_mode'])
                 ->setWeightMax($data['weight'])
-                ->setPrice($data['price'])
-                ->save();
+                ->setPrice($data['price']);
+
+            if (isset($data['franco'])) {
+                $newPrice->setFrancoMinPrice($data['franco']);
+            }
+
+            $newPrice->save();
 
         } catch (\Exception $e) {
             $deliveryModeId = $this->getRequest()->request->get('socolissimo_price_create')['delivery_mode'];
@@ -50,6 +55,9 @@ class PriceController extends BaseAdminController
                 ->filterByDeliveryModeId($data['delivery_mode'])
                 ->filterByWeightMax($data['weight'])
                 ->findOneOrCreate();
+            if (isset($data['franco'])) {
+                $price->setFrancoMinPrice($data['franco']);
+            }
             $price->setPrice($data['price'])
                 ->save();
 

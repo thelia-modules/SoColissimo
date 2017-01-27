@@ -42,6 +42,7 @@
         <column name="area_id" required="true" type="INTEGER" />
         <column name="delivery_mode_id" required="true" type="INTEGER" />
         <column name="weight_max" required="true" type="FLOAT" />
+        <column name="franco_min_price" type="FLOAT" />
         <column name="price" required="true" type="FLOAT" />
         <foreign-key foreignTable="area" name="fk_socolissimo_price_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="area_id" />

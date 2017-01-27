@@ -87,6 +87,7 @@ CREATE TABLE `socolissimo_price`
     `area_id` INTEGER NOT NULL,
     `delivery_mode_id` INTEGER NOT NULL,
     `weight_max` FLOAT NOT NULL,
+    `franco_min_price` FLOAT,
     `price` FLOAT NOT NULL,
     PRIMARY KEY (`id`),
     INDEX `FI_socolissimo_price_area_id` (`area_id`),

@@ -333,6 +333,7 @@
                                                         <tr>
                                                             <th class="col-md-3">{intl l="Weight up to ... (kg)" d='socolissimo.ai'}</th>
                                                             <th class="col-md-5">{intl l="Price (€)" d='socolissimo.ai'}</th>
+                                                            <th class="col-md-3">{intl l="Activer les frais de port gratuits à partir de (€)" d='socolissimo.ai'}</th>
                                                             <th class="col-md-1">{intl l="Actions" d='socolissimo.ai'}</th>
                                                         </tr>
                                                     </thead>
@@ -341,10 +342,11 @@
                                                     <tr>
                                                         <td>{$MAX_WEIGHT}</td>
                                                         <td>{$PRICE}</td>
+                                                        <td>{$FRANCO}</td>
                                                         <td>
                                                             <div class="btn-group">
                                                                 {loop type="auth" name="can_change" role="ADMIN" module="colissimo" access="UPDATE"}
-                                                                    <button class="btn btn-default btn-xs js-action-edit" data-weight="{$MAX_WEIGHT}" data-price="{$PRICE}" data-area="{$areaId}" data-delivery="{$deliveryModeId}">
+                                                                    <button class="btn btn-default btn-xs js-action-edit" data-weight="{$MAX_WEIGHT}" data-price="{$PRICE}" data-area="{$areaId}" data-franco="{$FRANCO}" data-delivery="{$deliveryModeId}">
                                                                         <span class="glyphicon glyphicon-edit"></span>
                                                                     </button>
                                                                     <button class="btn btn-default btn-xs js-action-delete" data-weight="{$MAX_WEIGHT}" data-price="{$PRICE}" data-area="{$areaId}" data-delivery="{$deliveryModeId}">

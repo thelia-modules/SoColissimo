@@ -25,6 +25,10 @@
                         {form_field form=$form field="price"}
                             <input type="number" id="price-create" name={$name} class="form-control" pattern="\\d+\\.?\\d*" step="0.01" required/>
                         {/form_field}
+                        <label for="franco_edit_{$ID}">{intl l='Activer les frais de port gratuits à partir de (€)' d='socolissimo.ai'}</label>
+                        {form_field form=$form field="franco"}
+                            <input type="number" id="franco-create" name={$name} class="form-control" pattern="\\d+\\.?\\d*" step="0.01" required/>
+                        {/form_field}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
