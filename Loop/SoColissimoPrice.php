@@ -41,8 +41,11 @@ class SoColissimoPrice extends BaseLoop implements PropelSearchLoopInterface
         /** @var \SoColissimo\Model\SocolissimoPrice $price */
         foreach ($loopResult->getResultDataCollection() as $price) {
             $loopResultRow = new LoopResultRow($price);
-            $loopResultRow->set("MAX_WEIGHT", $price->getWeightMax())
-                ->set("PRICE", $price->getPrice());
+            $loopResultRow
+                ->set("MAX_WEIGHT", $price->getWeightMax())
+                ->set("PRICE", $price->getPrice())
+                ->set("FRANCO", $price->getFrancoMinPrice())
+            ;
             $loopResult->addRow($loopResultRow);
         }
         return $loopResult;

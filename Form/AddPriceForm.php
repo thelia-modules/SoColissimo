@@ -59,6 +59,7 @@ class AddPriceForm extends BaseForm
                     ))
                 )
             ))
+            ->add("franco", "number", array())
         ;
     }
 

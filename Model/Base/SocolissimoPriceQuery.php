@@ -26,12 +26,14 @@ use SoColissimo\Model\Thelia\Model\Area;
  * @method     ChildSocolissimoPriceQuery orderByAreaId($order = Criteria::ASC) Order by the area_id column
  * @method     ChildSocolissimoPriceQuery orderByDeliveryModeId($order = Criteria::ASC) Order by the delivery_mode_id column
  * @method     ChildSocolissimoPriceQuery orderByWeightMax($order = Criteria::ASC) Order by the weight_max column
+ * @method     ChildSocolissimoPriceQuery orderByFrancoMinPrice($order = Criteria::ASC) Order by the franco_min_price column
  * @method     ChildSocolissimoPriceQuery orderByPrice($order = Criteria::ASC) Order by the price column
  *
  * @method     ChildSocolissimoPriceQuery groupById() Group by the id column
  * @method     ChildSocolissimoPriceQuery groupByAreaId() Group by the area_id column
  * @method     ChildSocolissimoPriceQuery groupByDeliveryModeId() Group by the delivery_mode_id column
  * @method     ChildSocolissimoPriceQuery groupByWeightMax() Group by the weight_max column
+ * @method     ChildSocolissimoPriceQuery groupByFrancoMinPrice() Group by the franco_min_price column
  * @method     ChildSocolissimoPriceQuery groupByPrice() Group by the price column
  *
  * @method     ChildSocolissimoPriceQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
@@ -53,12 +55,14 @@ use SoColissimo\Model\Thelia\Model\Area;
  * @method     ChildSocolissimoPrice findOneByAreaId(int $area_id) Return the first ChildSocolissimoPrice filtered by the area_id column
  * @method     ChildSocolissimoPrice findOneByDeliveryModeId(int $delivery_mode_id) Return the first ChildSocolissimoPrice filtered by the delivery_mode_id column
  * @method     ChildSocolissimoPrice findOneByWeightMax(double $weight_max) Return the first ChildSocolissimoPrice filtered by the weight_max column
+ * @method     ChildSocolissimoPrice findOneByFrancoMinPrice(double $franco_min_price) Return the first ChildSocolissimoPrice filtered by the franco_min_price column
  * @method     ChildSocolissimoPrice findOneByPrice(double $price) Return the first ChildSocolissimoPrice filtered by the price column
  *
  * @method     array findById(int $id) Return ChildSocolissimoPrice objects filtered by the id column
  * @method     array findByAreaId(int $area_id) Return ChildSocolissimoPrice objects filtered by the area_id column
  * @method     array findByDeliveryModeId(int $delivery_mode_id) Return ChildSocolissimoPrice objects filtered by the delivery_mode_id column
  * @method     array findByWeightMax(double $weight_max) Return ChildSocolissimoPrice objects filtered by the weight_max column
+ * @method     array findByFrancoMinPrice(double $franco_min_price) Return ChildSocolissimoPrice objects filtered by the franco_min_price column
  * @method     array findByPrice(double $price) Return ChildSocolissimoPrice objects filtered by the price column
  *
  */
@@ -148,7 +152,7 @@ abstract class SocolissimoPriceQuery extends ModelCriteria
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, AREA_ID, DELIVERY_MODE_ID, WEIGHT_MAX, PRICE FROM socolissimo_price WHERE ID = :p0';
+        $sql = 'SELECT ID, AREA_ID, DELIVERY_MODE_ID, WEIGHT_MAX, FRANCO_MIN_PRICE, PRICE FROM socolissimo_price WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -403,6 +407,47 @@ abstract class SocolissimoPriceQuery extends ModelCriteria
         }
 
         return $this->addUsingAlias(SocolissimoPriceTableMap::WEIGHT_MAX, $weightMax, $comparison);
+    }
+
+    /**
+     * Filter the query on the franco_min_price column
+     *
+     * Example usage:
+     * <code>
+     * $query->filterByFrancoMinPrice(1234); // WHERE franco_min_price = 1234
+     * $query->filterByFrancoMinPrice(array(12, 34)); // WHERE franco_min_price IN (12, 34)
+     * $query->filterByFrancoMinPrice(array('min' => 12)); // WHERE franco_min_price > 12
+     * </code>
+     *
+     * @param     mixed $francoMinPrice The value to use as filter.
+     *              Use scalar values for equality.
+     *              Use array values for in_array() equivalent.
+     *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
+     * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSocolissimoPriceQuery The current query, for fluid interface
+     */
+    public function filterByFrancoMinPrice($francoMinPrice = null, $comparison = null)
+    {
+        if (is_array($francoMinPrice)) {
+            $useMinMax = false;
+            if (isset($francoMinPrice['min'])) {
+                $this->addUsingAlias(SocolissimoPriceTableMap::FRANCO_MIN_PRICE, $francoMinPrice['min'], Criteria::GREATER_EQUAL);
+                $useMinMax = true;
+            }
+            if (isset($francoMinPrice['max'])) {
+                $this->addUsingAlias(SocolissimoPriceTableMap::FRANCO_MIN_PRICE, $francoMinPrice['max'], Criteria::LESS_EQUAL);
+                $useMinMax = true;
+            }
+            if ($useMinMax) {
+                return $this;
+            }
+            if (null === $comparison) {
+                $comparison = Criteria::IN;
+            }
+        }
+
+        return $this->addUsingAlias(SocolissimoPriceTableMap::FRANCO_MIN_PRICE, $francoMinPrice, $comparison);
     }
 
     /**

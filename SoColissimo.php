@@ -30,6 +30,7 @@ use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use SoColissimo\Model\SocolissimoPrice;
 use SoColissimo\Model\SocolissimoPriceQuery;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Finder\Finder;
 use Thelia\Model\AreaQuery;
 use Thelia\Model\ConfigQuery;
 use Thelia\Model\Country;
@@ -145,6 +146,10 @@ class SoColissimo extends AbstractDeliveryModule
             $priceForWeight = $areaPrices->filterByWeightMax($weight, Criteria::GREATER_EQUAL)
                 ->find()
                 ->getFirst();
+
+            if($priceForWeight->getFrancoMinPrice() !== null && $priceForWeight->getFrancoMinPrice() <= $cartAmount){
+                return $postage;
+            }
 
             $postage = $priceForWeight->getPrice();
         }
@@ -324,5 +329,31 @@ class SoColissimo extends AbstractDeliveryModule
     public static function getModCode()
     {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
+    {
+        $finder = (new Finder)
+            ->files()
+            ->name('#.*?\.sql#')
+            ->sortByName()
+            ->in(__DIR__ . DS . 'Config' . DS . 'update' . DS . 'sql');
+
+        $database = new Database($con);
+
+        /** @var \Symfony\Component\Finder\SplFileInfo $updateSQLFile */
+        foreach ($finder as $updateSQLFile) {
+            if (version_compare($currentVersion, str_replace('.sql', '', $updateSQLFile->getFilename()), '<')) {
+                $database->insertSql(
+                    null,
+                    [
+                        $updateSQLFile->getPathname()
+                    ]
+                );
+            }
+        }
     }
 }
