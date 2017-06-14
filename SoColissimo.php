@@ -184,6 +184,19 @@ class SoColissimo extends AbstractDeliveryModule
             $deliveryModeCode = "pr";
         }
 
+        if (null == $deliveryModeCode) {
+            $session = $request->getSession();
+            $dom = $session->get('SoColissimoDomicile');
+            $rdv = $session->get('SoColissimoRdv');
+            $pr_code = $session->get('SoColissimoDeliveryId');
+
+            if ($dom || $rdv) {
+                $deliveryModeCode = "dom";
+            } elseif (!empty($pr_code)) {
+                $deliveryModeCode = "pr";
+            }
+        }
+
         $postage = self::getPostageAmount(
             $country->getAreaId(),
             $cartWeight,
