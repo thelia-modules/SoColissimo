@@ -1,10 +1,9 @@
-{assign var="count" value="0"}
 {literal}
 {
 {/literal}
 "locations":
 [
-{loop type="socolissimo.around" name="delivery-selection-socolissimo" zipcode=$_zipcode_ city=$_city_ address=$_address_}
+{loop type="socolissimo.around" name="delivery-selection-socolissimo" countryid=$_countryid_ zipcode=$_zipcode_ city=$_city_ address=$_address_}
     {literal}
     {
     {/literal}
@@ -15,6 +14,7 @@
         "address": "{$adresse1}",
         "zipcode": "{$codePostal}",
         "city": "{$localite}",
+        "countrycode" : "{$codePays}",
         "distance": "{$distance}",
         "type": "{$typeDePoint}",
         "monday": "{$horairesOuvertureLundi}",
@@ -28,8 +28,7 @@
     {literal}
     }
     {/literal}
-    {if $count ne 19 && $LOOP_COUNT < $LOOP_TOTAL },{/if}
-    {assign var="count" value=$count+"1"}
+    {if $LOOP_COUNT < $LOOP_TOTAL},{/if}
 {/loop}
 ]
 {literal}

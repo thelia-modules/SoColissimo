@@ -25,10 +25,9 @@
         <default key="_controller">SoColissimo\Controller\SaveConfig::save</default>
     </route>
 
-    <route id="socolissimo.get.specific.location" path="/module/socolissimo/{zipcode}/{city}/{address}" methods="get">
+    <route id="socolissimo.get.specific.location" path="/module/socolissimo/{countryid}/{zipcode}/{city}/{address}" methods="get">
         <default key="_controller">SoColissimo\Controller\GetSpecificLocation::get</default>
         <default key="address"></default>
-        <requirement key="zipcode">\d{5}</requirement>
         <requirement key="city">[a-zA-Z\- ]+</requirement>
     </route>
 
