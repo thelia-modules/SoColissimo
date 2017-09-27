@@ -9,6 +9,7 @@ return array(
     'Can\'t write Config directory' => 'Le dossier Config ne peut être écrit',
     'Can\'t write file' => 'Le fichier suivant ne peut être écrit',
     'Do not change' => 'Ne pas changer',
+    'No relay points were selected' => 'Aucun point relais n\'a été sélectionné',
     'Operation successful. %i orders affected.' => 'Opération effectuée avec succès. %i commandes affectées.',
     'Password' => 'Mot de passe',
     'Select file to import' => 'Sélectionner un fichier à importer',
