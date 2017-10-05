@@ -9,6 +9,7 @@ return array(
     'Can\'t write Config directory' => 'Can\'t write Config directory',
     'Can\'t write file' => 'Can\'t write file',
     'Do not change' => 'Do not change',
+    'No relay points were selected' => 'No relay points were selected',
     'Operation successful. %i orders affected.' => 'Operation successful. %i orders affected.',
     'Password' => 'Password',
     'Select file to import' => 'Select file to import',

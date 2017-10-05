@@ -37,11 +37,12 @@ use Thelia\Model\ConfigQuery;
  */
 class GetSpecificLocation extends BaseFrontController
 {
-    public function get($zipcode, $city, $address="")
+    public function get($countryid, $zipcode, $city, $address="")
     {
         $content = $this->renderRaw(
             "getSpecificLocationSoColissimo",
             array(
+                "_countryid_" => $countryid,
                 "_zipcode_" => $zipcode,
                 "_city_" => $city,
                 "_address_" => $address
@@ -71,11 +72,12 @@ class GetSpecificLocation extends BaseFrontController
 
     public function search()
     {
+        $countryid = $this->getRequest()->query->get('countryid');
         $zipcode = $this->getRequest()->query->get('zipcode');
         $city = $this->getRequest()->query->get('city');
         $addressId = $this->getRequest()->query->get('address');
 
-        return $this->get($zipcode, $city, $addressId);
+        return $this->get($countryid, $zipcode, $city, $addressId);
     }
 
     /**

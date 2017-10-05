@@ -35,6 +35,7 @@ use Thelia\Core\Template\Loop\Argument\ArgumentCollection;
 use Thelia\Log\Tlog;
 use Thelia\Model\AddressQuery;
 use Thelia\Model\ConfigQuery;
+use Thelia\Model\CountryQuery;
 
 /**
  * Class GetRelais
@@ -52,6 +53,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
         // Find the address ... To find ! \m/
         $zipcode = $this->getZipcode();
         $city = $this->getCity();
+        $countryId = $this->getCountryid();
 
         $addressId = $this->getAddress();
 
@@ -66,7 +68,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
                 "zipcode" => $addressModel->getZipcode(),
                 "city" => $addressModel->getCity(),
                 "address" => $addressModel->getAddress1(),
-                "countrycode"=>"FR",
+                "countrycode"=> $addressModel->getCountry()->getIsoalpha2()
             );
         } elseif (empty($zipcode) || empty($city)) {
             $search = AddressQuery::create();
@@ -89,7 +91,9 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
                 "zipcode" => $zipcode,
                 "city" => $city,
                 "address" => "",
-                "countrycode" => "FR",
+                "countrycode" => CountryQuery::create()
+                    ->findOneById($countryId)
+                    ->getIsoalpha2()
             );
         }
 
@@ -160,6 +164,7 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
+            Argument::createIntTypeArgument("countryid", ""),
             Argument::createAnyTypeArgument("zipcode", ""),
             Argument::createAnyTypeArgument("city", ""),
             Argument::createIntTypeArgument("address")
