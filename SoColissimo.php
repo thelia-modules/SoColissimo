@@ -49,6 +49,7 @@ class SoColissimo extends AbstractDeliveryModule
     private static $prices = null;
 
     const DOMAIN = 'socolissimo';
+
     const JSON_PRICE_RESOURCE = "/Config/prices.json";
     const JSON_CONFIG_PATH = "/Config/config.json";
 
@@ -128,13 +129,13 @@ class SoColissimo extends AbstractDeliveryModule
 
             /* check if SoColissimo delivers the asked area */
             if (null === $lastPrice) {
-                throw new DeliveryException("SoColissimo delivery unavailable for the chosen delivery country");
+                throw new DeliveryException("Colissimo delivery unavailable for the chosen delivery country");
             }
 
             /* check this weight is not too much */
             $maxWeight = $lastPrice->getWeightMax();
             if ($weight > $maxWeight) {
-                throw new DeliveryException(sprintf("SoColissimo delivery unavailable for this cart weight (%s kg)", $weight));
+                throw new DeliveryException(sprintf("Colissimo delivery unavailable for this cart weight (%s kg)", $weight));
             }
 
             //If a min price for freeshipping is define and the amount of cart reach this montant return 0

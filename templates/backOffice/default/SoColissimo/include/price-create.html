@@ -14,18 +14,18 @@
                 <div class="modal-content">
                     <div class="modal-header bg-primary">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <strong class="modal-title text-uppercase">{intl l="Create a price slice" d='socolissimo.ai'}</strong>
+                        <strong class="modal-title text-uppercase">{intl l="Create a price slice" d='socolissimo.bo.default'}</strong>
                     </div>
                     <div class="modal-body">
-                        <label for="weight_{$areaId}">{intl l="Weight up to ... (kg)" d='socolissimo.ai' d='socolissimo.ai'}</label>
+                        <label for="weight_{$areaId}">{intl l="Weight up to ... (kg)" d='socolissimo.bo.default' d='socolissimo.bo.default'}</label>
                         {form_field form=$form field="weight"}
                             <input type="number" id="weight-create" name={$name} class="form-control" required/>
                         {/form_field}
-                        <label for="price_edit_{$ID}">{intl l='Price (€)' d='socolissimo.ai'}</label>
+                        <label for="price_edit_{$ID}">{intl l='Price (€)' d='socolissimo.bo.default'}</label>
                         {form_field form=$form field="price"}
                             <input type="number" id="price-create" name={$name} class="form-control" pattern="\\d+\\.?\\d*" step="0.01" required/>
                         {/form_field}
-                        <label for="franco_edit_{$ID}">{intl l='Activer les frais de port gratuits à partir de (€)' d='socolissimo.ai'}</label>
+                        <label for="franco_edit_{$ID}">{intl l='Enable free shipping from (€)' d='socolissimo.bo.default'}</label>
                         {form_field form=$form field="franco"}
                             <input type="number" id="franco-create" name={$name} class="form-control" pattern="\\d+\\.?\\d*" step="0.01" required/>
                         {/form_field}
@@ -33,11 +33,11 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">
                             <span class="glyphicon glyphicon-remove"></span>
-                            {intl l="Cancel" d='socolissimo.ai'}
+                            {intl l="Cancel" d='socolissimo.bo.default'}
                         </button>
                         <button type="submit" class="btn btn-success">
                             <span class="glyphicon glyphicon-ok"></span>
-                            {intl l="Create" d='socolissimo.ai'}
+                            {intl l="Create" d='socolissimo.bo.default'}
                         </button>
                     </div>
                 </div>
