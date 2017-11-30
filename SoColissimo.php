@@ -82,8 +82,7 @@ class SoColissimo extends AbstractDeliveryModule
 
         $prices = SocolissimoPriceQuery::create()
             ->filterByAreaId($areaId)
-            ->filterByWeightMax($cartWeight, Criteria::GREATER_EQUAL)
-        ->findOne();
+            ->findOne();
 
         $freeShipping = SocolissimoDeliveryModeQuery::create()
             ->findOneByFreeshippingActive(1);
@@ -116,26 +115,26 @@ class SoColissimo extends AbstractDeliveryModule
         $freeshipping = $deliveryMode->getFreeshippingActive();
         $freeshippingFrom = $deliveryMode->getFreeshippingFrom();
 
-        $postage=0;
+        $postage = 0;
 
         if (!$freeshipping) {
             $areaPrices = SocolissimoPriceQuery::create()
                 ->filterByDeliveryModeId($deliveryMode->getId())
                 ->filterByAreaId($areaId)
-                ->orderByWeightMax();
+                ->filterByWeightMax($weight, Criteria::GREATER_EQUAL)
+                ->_or()
+                ->filterByWeightMax(null)
+                ->filterByPriceMax($cartAmount, Criteria::GREATER_EQUAL)
+                ->_or()
+                ->filterByPriceMax(null)
+                ->orderByWeightMax()
+                ->orderByPriceMax();
 
-            $lastPrice = $areaPrices->find()
-                ->getLast();
+            $firstPrice = $areaPrices->find()
+                ->getFirst();
 
-            /* check if SoColissimo delivers the asked area */
-            if (null === $lastPrice) {
-                throw new DeliveryException("Colissimo delivery unavailable for the chosen delivery country");
-            }
-
-            /* check this weight is not too much */
-            $maxWeight = $lastPrice->getWeightMax();
-            if ($weight > $maxWeight) {
-                throw new DeliveryException(sprintf("Colissimo delivery unavailable for this cart weight (%s kg)", $weight));
+            if (null === $firstPrice) {
+                throw new DeliveryException("Colissimo delivery unavailable for your cart weight or delivery country");
             }
 
             //If a min price for freeshipping is define and the amount of cart reach this montant return 0
@@ -143,16 +142,7 @@ class SoColissimo extends AbstractDeliveryModule
                 return $postage;
             }
 
-            //Get the closest price from top
-            $priceForWeight = $areaPrices->filterByWeightMax($weight, Criteria::GREATER_EQUAL)
-                ->find()
-                ->getFirst();
-
-            if($priceForWeight->getFrancoMinPrice() !== null && $priceForWeight->getFrancoMinPrice() <= $cartAmount){
-                return $postage;
-            }
-
-            $postage = $priceForWeight->getPrice();
+            $postage = $firstPrice->getPrice();
         }
 
         return $postage;
@@ -175,11 +165,10 @@ class SoColissimo extends AbstractDeliveryModule
         $cartAmount = $request->getSession()->getSessionCart($this->getDispatcher())->getTaxedAmount($country);
 
         $dom = $request->get('socolissimo-home');
-        $rdv = $request->get('socolissimo-appointment');
         $pr_code = $request->get('socolissimo_code');
 
         $deliveryModeCode = null;
-        if ($dom || $rdv) {
+        if ($dom) {
             $deliveryModeCode = "dom";
         } elseif (!empty($pr_code)) {
             $deliveryModeCode = "pr";
@@ -188,25 +177,36 @@ class SoColissimo extends AbstractDeliveryModule
         if (null == $deliveryModeCode) {
             $session = $request->getSession();
             $dom = $session->get('SoColissimoDomicile');
-            $rdv = $session->get('SoColissimoRdv');
             $pr_code = $session->get('SoColissimoDeliveryId');
 
-            if ($dom || $rdv) {
+            if ($dom) {
                 $deliveryModeCode = "dom";
             } elseif (!empty($pr_code)) {
                 $deliveryModeCode = "pr";
             }
         }
 
-        $postage = self::getPostageAmount(
-            $country->getAreaId(),
-            $cartWeight,
-            $cartAmount,
-            $deliveryModeCode
-        );
+        try {
+            $postage = self::getPostageAmount($country->getAreaId(), $cartWeight, $cartAmount, $deliveryModeCode);
+        } catch (\Exception $ex) {
+            $postage = self::getPostageAmount($country->getAreaId(), $cartWeight, $cartAmount, 'dom');
+        }
 
         return $postage;
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public function getCode()
     {
