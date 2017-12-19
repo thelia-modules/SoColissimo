@@ -42,7 +42,9 @@ class SoColissimoPrice extends BaseLoop implements PropelSearchLoopInterface
         foreach ($loopResult->getResultDataCollection() as $price) {
             $loopResultRow = new LoopResultRow($price);
             $loopResultRow
+                ->set("SLICE_ID", $price->getId())
                 ->set("MAX_WEIGHT", $price->getWeightMax())
+                ->set("MAX_PRICE", $price->getPriceMax())
                 ->set("PRICE", $price->getPrice())
                 ->set("FRANCO", $price->getFrancoMinPrice())
             ;
@@ -50,5 +52,4 @@ class SoColissimoPrice extends BaseLoop implements PropelSearchLoopInterface
         }
         return $loopResult;
     }
-
 }

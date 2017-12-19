@@ -58,7 +58,7 @@ class SocolissimoPriceTableMap extends TableMap
     /**
      * The total number of columns
      */
-    const NUM_COLUMNS = 6;
+    const NUM_COLUMNS = 7;
 
     /**
      * The number of lazy-loaded columns
@@ -68,7 +68,7 @@ class SocolissimoPriceTableMap extends TableMap
     /**
      * The number of columns to hydrate (NUM_COLUMNS - NUM_LAZY_LOAD_COLUMNS)
      */
-    const NUM_HYDRATE_COLUMNS = 6;
+    const NUM_HYDRATE_COLUMNS = 7;
 
     /**
      * the column name for the ID field
@@ -89,6 +89,11 @@ class SocolissimoPriceTableMap extends TableMap
      * the column name for the WEIGHT_MAX field
      */
     const WEIGHT_MAX = 'socolissimo_price.WEIGHT_MAX';
+
+    /**
+     * the column name for the PRICE_MAX field
+     */
+    const PRICE_MAX = 'socolissimo_price.PRICE_MAX';
 
     /**
      * the column name for the FRANCO_MIN_PRICE field
@@ -112,12 +117,12 @@ class SocolissimoPriceTableMap extends TableMap
      * e.g. self::$fieldNames[self::TYPE_PHPNAME][0] = 'Id'
      */
     protected static $fieldNames = array (
-        self::TYPE_PHPNAME       => array('Id', 'AreaId', 'DeliveryModeId', 'WeightMax', 'FrancoMinPrice', 'Price', ),
-        self::TYPE_STUDLYPHPNAME => array('id', 'areaId', 'deliveryModeId', 'weightMax', 'francoMinPrice', 'price', ),
-        self::TYPE_COLNAME       => array(SocolissimoPriceTableMap::ID, SocolissimoPriceTableMap::AREA_ID, SocolissimoPriceTableMap::DELIVERY_MODE_ID, SocolissimoPriceTableMap::WEIGHT_MAX, SocolissimoPriceTableMap::FRANCO_MIN_PRICE, SocolissimoPriceTableMap::PRICE, ),
-        self::TYPE_RAW_COLNAME   => array('ID', 'AREA_ID', 'DELIVERY_MODE_ID', 'WEIGHT_MAX', 'FRANCO_MIN_PRICE', 'PRICE', ),
-        self::TYPE_FIELDNAME     => array('id', 'area_id', 'delivery_mode_id', 'weight_max', 'franco_min_price', 'price', ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id', 'AreaId', 'DeliveryModeId', 'WeightMax', 'PriceMax', 'FrancoMinPrice', 'Price', ),
+        self::TYPE_STUDLYPHPNAME => array('id', 'areaId', 'deliveryModeId', 'weightMax', 'priceMax', 'francoMinPrice', 'price', ),
+        self::TYPE_COLNAME       => array(SocolissimoPriceTableMap::ID, SocolissimoPriceTableMap::AREA_ID, SocolissimoPriceTableMap::DELIVERY_MODE_ID, SocolissimoPriceTableMap::WEIGHT_MAX, SocolissimoPriceTableMap::PRICE_MAX, SocolissimoPriceTableMap::FRANCO_MIN_PRICE, SocolissimoPriceTableMap::PRICE, ),
+        self::TYPE_RAW_COLNAME   => array('ID', 'AREA_ID', 'DELIVERY_MODE_ID', 'WEIGHT_MAX', 'PRICE_MAX', 'FRANCO_MIN_PRICE', 'PRICE', ),
+        self::TYPE_FIELDNAME     => array('id', 'area_id', 'delivery_mode_id', 'weight_max', 'price_max', 'franco_min_price', 'price', ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -127,12 +132,12 @@ class SocolissimoPriceTableMap extends TableMap
      * e.g. self::$fieldKeys[self::TYPE_PHPNAME]['Id'] = 0
      */
     protected static $fieldKeys = array (
-        self::TYPE_PHPNAME       => array('Id' => 0, 'AreaId' => 1, 'DeliveryModeId' => 2, 'WeightMax' => 3, 'FrancoMinPrice' => 4, 'Price' => 5, ),
-        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'areaId' => 1, 'deliveryModeId' => 2, 'weightMax' => 3, 'francoMinPrice' => 4, 'price' => 5, ),
-        self::TYPE_COLNAME       => array(SocolissimoPriceTableMap::ID => 0, SocolissimoPriceTableMap::AREA_ID => 1, SocolissimoPriceTableMap::DELIVERY_MODE_ID => 2, SocolissimoPriceTableMap::WEIGHT_MAX => 3, SocolissimoPriceTableMap::FRANCO_MIN_PRICE => 4, SocolissimoPriceTableMap::PRICE => 5, ),
-        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'AREA_ID' => 1, 'DELIVERY_MODE_ID' => 2, 'WEIGHT_MAX' => 3, 'FRANCO_MIN_PRICE' => 4, 'PRICE' => 5, ),
-        self::TYPE_FIELDNAME     => array('id' => 0, 'area_id' => 1, 'delivery_mode_id' => 2, 'weight_max' => 3, 'franco_min_price' => 4, 'price' => 5, ),
-        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, )
+        self::TYPE_PHPNAME       => array('Id' => 0, 'AreaId' => 1, 'DeliveryModeId' => 2, 'WeightMax' => 3, 'PriceMax' => 4, 'FrancoMinPrice' => 5, 'Price' => 6, ),
+        self::TYPE_STUDLYPHPNAME => array('id' => 0, 'areaId' => 1, 'deliveryModeId' => 2, 'weightMax' => 3, 'priceMax' => 4, 'francoMinPrice' => 5, 'price' => 6, ),
+        self::TYPE_COLNAME       => array(SocolissimoPriceTableMap::ID => 0, SocolissimoPriceTableMap::AREA_ID => 1, SocolissimoPriceTableMap::DELIVERY_MODE_ID => 2, SocolissimoPriceTableMap::WEIGHT_MAX => 3, SocolissimoPriceTableMap::PRICE_MAX => 4, SocolissimoPriceTableMap::FRANCO_MIN_PRICE => 5, SocolissimoPriceTableMap::PRICE => 6, ),
+        self::TYPE_RAW_COLNAME   => array('ID' => 0, 'AREA_ID' => 1, 'DELIVERY_MODE_ID' => 2, 'WEIGHT_MAX' => 3, 'PRICE_MAX' => 4, 'FRANCO_MIN_PRICE' => 5, 'PRICE' => 6, ),
+        self::TYPE_FIELDNAME     => array('id' => 0, 'area_id' => 1, 'delivery_mode_id' => 2, 'weight_max' => 3, 'price_max' => 4, 'franco_min_price' => 5, 'price' => 6, ),
+        self::TYPE_NUM           => array(0, 1, 2, 3, 4, 5, 6, )
     );
 
     /**
@@ -154,7 +159,8 @@ class SocolissimoPriceTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('AREA_ID', 'AreaId', 'INTEGER', 'area', 'ID', true, null, null);
         $this->addForeignKey('DELIVERY_MODE_ID', 'DeliveryModeId', 'INTEGER', 'socolissimo_delivery_mode', 'ID', true, null, null);
-        $this->addColumn('WEIGHT_MAX', 'WeightMax', 'FLOAT', true, null, null);
+        $this->addColumn('WEIGHT_MAX', 'WeightMax', 'FLOAT', false, null, null);
+        $this->addColumn('PRICE_MAX', 'PriceMax', 'FLOAT', false, null, null);
         $this->addColumn('FRANCO_MIN_PRICE', 'FrancoMinPrice', 'FLOAT', false, null, null);
         $this->addColumn('PRICE', 'Price', 'FLOAT', true, null, null);
     } // initialize()
@@ -310,6 +316,7 @@ class SocolissimoPriceTableMap extends TableMap
             $criteria->addSelectColumn(SocolissimoPriceTableMap::AREA_ID);
             $criteria->addSelectColumn(SocolissimoPriceTableMap::DELIVERY_MODE_ID);
             $criteria->addSelectColumn(SocolissimoPriceTableMap::WEIGHT_MAX);
+            $criteria->addSelectColumn(SocolissimoPriceTableMap::PRICE_MAX);
             $criteria->addSelectColumn(SocolissimoPriceTableMap::FRANCO_MIN_PRICE);
             $criteria->addSelectColumn(SocolissimoPriceTableMap::PRICE);
         } else {
@@ -317,6 +324,7 @@ class SocolissimoPriceTableMap extends TableMap
             $criteria->addSelectColumn($alias . '.AREA_ID');
             $criteria->addSelectColumn($alias . '.DELIVERY_MODE_ID');
             $criteria->addSelectColumn($alias . '.WEIGHT_MAX');
+            $criteria->addSelectColumn($alias . '.PRICE_MAX');
             $criteria->addSelectColumn($alias . '.FRANCO_MIN_PRICE');
             $criteria->addSelectColumn($alias . '.PRICE');
         }
