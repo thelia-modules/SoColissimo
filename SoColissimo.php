@@ -23,8 +23,10 @@
 
 namespace SoColissimo;
 
+use PDO;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Exception\PropelException;
+use Propel\Runtime\Propel;
 use SoColissimo\Model\SocolissimoDeliveryMode;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use SoColissimo\Model\SocolissimoPrice;
@@ -186,23 +188,70 @@ class SoColissimo extends AbstractDeliveryModule
             }
         }
 
-        try {
-            $postage = self::getPostageAmount($country->getAreaId(), $cartWeight, $cartAmount, $deliveryModeCode);
-        } catch (\Exception $ex) {
-            $postage = self::getPostageAmount($country->getAreaId(), $cartWeight, $cartAmount, 'dom');
+        $areaIdArray = $this->getAllAreasForCountry($country);
+        if (empty($areaIdArray)) {
+            throw new DeliveryException("Your delivery country is not covered by Colissimo.");
+        }
+
+        $postage = null;
+
+        if (null === $postage = self::getMinPostage($areaIdArray, $cartWeight, $cartAmount, $deliveryModeCode)) {
+            $postage = self::getMinPostage($areaIdArray, $cartWeight, $cartAmount, 'dom');
+            if (null === $postage) {
+                throw new DeliveryException("Colissimo delivery unavailable for your cart weight or delivery country");
+            }
         }
 
         return $postage;
     }
 
 
+    private function getMinPostage($areaIdArray, $cartWeight, $cartAmount, $deliveryModeCode)
+    {
+        $minPostage = null;
 
+        foreach ($areaIdArray as $areaId) {
+            try {
+                $postage = self::getPostageAmount($areaId, $cartWeight, $cartAmount, $deliveryModeCode);
+                if ($minPostage === null || $postage < $minPostage) {
+                    $minPostage = $postage;
+                    if ($minPostage == 0) {
+                        break;
+                    }
+                }
+            } catch (\Exception $ex) {
+            }
+        }
 
+        return $minPostage;
+    }
 
+    /**
+     * Returns ids of area containing this country and covers by this module
+     * @param Country $country
+     * @return array Area ids
+     */
+    private function getAllAreasForCountry(Country $country)
+    {
+        $areaArray = [];
 
+        $sql = "SELECT ca.area_id as area_id FROM country_area ca
+               INNER JOIN area_delivery_module adm ON (ca.area_id = adm.area_id AND adm.delivery_module_id = :p0)
+               WHERE ca.country_id = :p1";
 
+        $con = Propel::getConnection();
 
+        $stmt = $con->prepare($sql);
+        $stmt->bindValue(':p0', $this->getModuleModel()->getId(), PDO::PARAM_INT);
+        $stmt->bindValue(':p1', $country->getId(), PDO::PARAM_INT);
+        $stmt->execute();
 
+        while ($row = $stmt->fetch(\PDO::FETCH_ASSOC)) {
+            $areaArray[] = $row['area_id'];
+        }
+
+        return $areaArray;
+    }
 
 
 
