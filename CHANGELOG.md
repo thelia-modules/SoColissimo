@@ -1,3 +1,32 @@
+# 1.4.2
+
+# 1.4.1
+- Fix bug area delivery
+
+# 1.4.0
+- Add price slices by cart price and weight
+
+# 1.3.0
+- International support of Relay Points
+
+# 1.2.7
+- Fix relais query on address with accent
+
+# 1.2.6
+- Fix delivery amount not recalculated correctly (ex when using a coupon)
+
+# 1.2.5
+- added franco per area and weight
+
+# 1.2.4
+- Feature/order date
+
+# 1.2.3
+- Bump version 1.2.3
+
+# 1.2.2
+- Bump version 1.2.2
+
 # 1.2.1
 
 - Change expeditor filename
