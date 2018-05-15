@@ -23,6 +23,8 @@
 
 namespace SoColissimo\Controller;
 
+use SoColissimo\Model\SocolissimoAreaFreeshipping;
+use SoColissimo\Model\SocolissimoAreaFreeshippingQuery;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
@@ -30,6 +32,7 @@ use Thelia\Core\HttpFoundation\Response;
 
 use Thelia\Core\Security\Resource\AdminResources;
 use Thelia\Core\Security\AccessManager;
+use Thelia\Model\AreaQuery;
 
 class FreeShipping extends BaseAdminController
 {
@@ -87,5 +90,71 @@ class FreeShipping extends BaseAdminController
                 'price_error' => null
             )
         );
+    }
+
+    /**
+     * @return mixed|null|\Symfony\Component\HttpFoundation\Response
+     * @throws \Propel\Runtime\Exception\PropelException
+     */
+    public function setAreaFreeShipping()
+    {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+            return $response;
+        }
+
+        try {
+            $data = $this->getRequest()->request;
+
+            $socolissimo_area_id = $data->get('area-id');
+            $socolissimo_delivery_id = $data->get('delivery-mode');
+            $cartAmount = $data->get("cart-amount");
+
+            $aeraQuery = AreaQuery::create()->findOneById($socolissimo_area_id);
+            if (null === $aeraQuery) {
+                return null;
+            }
+
+            $deliveryModeQuery = SocolissimoDeliveryModeQuery::create()->findOneById($socolissimo_delivery_id);
+            if (null === $deliveryModeQuery) {
+                return null;
+            }
+
+            $socolissimoFreeShipping = new SocolissimoAreaFreeshipping();
+
+            $socolissimoAreaFreeshippingQuery = SocolissimoAreaFreeshippingQuery::create()
+                ->filterByAreaId($socolissimo_area_id)
+                ->filterByDeliveryModeId($socolissimo_delivery_id)
+                ->findOne();
+
+            if (null === $socolissimoAreaFreeshippingQuery) {
+                $socolissimoFreeShipping
+                    ->setAreaId($socolissimo_area_id)
+                    ->setDeliveryModeId($socolissimo_delivery_id)
+                    ->setCartAmount($cartAmount)
+                    ->save();
+            }
+
+            $cartAmountQuery = SocolissimoAreaFreeshippingQuery::create()
+                ->filterByAreaId($socolissimo_area_id)
+                ->filterByDeliveryModeId($socolissimo_delivery_id)
+                ->findOneOrCreate()
+                ->setCartAmount($cartAmount)
+                ->save();
+
+        } catch (\Exception $e) {
+
+        }
+
+            return $this->generateRedirectFromRoute (
+                "admin.module.configure",
+                array(),
+                array(
+                    'current_tab' => 'prices_slices_tab_' . $data->get('area_freeshipping'),
+                    'module_code' => "SoColissimo",
+                    '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction',
+                    'price_error_id' => null,
+                    'price_error' => null
+                )
+            );
     }
 }
