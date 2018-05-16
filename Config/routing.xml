@@ -13,10 +13,14 @@
     <route id="socolissimo.toggle.freeshipping" path="/admin/module/socolissimo/freeshipping" methods="post">
         <default key="_controller">SoColissimo\Controller\FreeShipping::toggleFreeShippingActivation</default>
     </route>
+
     <route id="socolissimo.edit.freeshippingfrom" path="/admin/module/socolissimo/freeshipping_from" methods="post">
         <default key="_controller">SoColissimo\Controller\FreeShipping::setFreeShippingFrom</default>
     </route>
 
+    <route id="socolissimo.edit.areafreeshipping" path="/admin/module/socolissimo/area_freeshipping" methods="post">
+        <default key="_controller">SoColissimo\Controller\FreeShipping::setAreaFreeShipping</default>
+    </route>
 
     <route id="socolissimo.configure" path="/admin/module/socolissimo/configure" methods="post">
         <default key="_controller">SoColissimo\Controller\SaveConfig::save</default>

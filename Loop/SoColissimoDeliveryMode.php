@@ -42,6 +42,7 @@ class SoColissimoDeliveryMode extends BaseLoop implements PropelSearchLoopInterf
             $loopResultRow = new LoopResultRow($mode);
             $loopResultRow->set("ID", $mode->getId())
                 ->set("TITLE", $mode->getTitle())
+                ->set("CODE", $mode->getCode())
                 ->set("FREESHIPPING_ACTIVE", $mode->getFreeshippingActive())
                 ->set("FREESHIPPING_FROM", $mode->getFreeshippingFrom());
             $loopResult->addRow($loopResultRow);

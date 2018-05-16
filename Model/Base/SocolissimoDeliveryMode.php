@@ -15,6 +15,10 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDom as ChildSocolissimoAreaFreeshippingDom;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery as ChildSocolissimoAreaFreeshippingDomQuery;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPr as ChildSocolissimoAreaFreeshippingPr;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery as ChildSocolissimoAreaFreeshippingPrQuery;
 use SoColissimo\Model\SocolissimoDeliveryMode as ChildSocolissimoDeliveryMode;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery as ChildSocolissimoDeliveryModeQuery;
 use SoColissimo\Model\SocolissimoPrice as ChildSocolissimoPrice;
@@ -92,6 +96,18 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
     protected $collSocolissimoPricesPartial;
 
     /**
+     * @var        ObjectCollection|ChildSocolissimoAreaFreeshippingDom[] Collection to store aggregation of ChildSocolissimoAreaFreeshippingDom objects.
+     */
+    protected $collSocolissimoAreaFreeshippingDoms;
+    protected $collSocolissimoAreaFreeshippingDomsPartial;
+
+    /**
+     * @var        ObjectCollection|ChildSocolissimoAreaFreeshippingPr[] Collection to store aggregation of ChildSocolissimoAreaFreeshippingPr objects.
+     */
+    protected $collSocolissimoAreaFreeshippingPrs;
+    protected $collSocolissimoAreaFreeshippingPrsPartial;
+
+    /**
      * Flag to prevent endless save loop, if this object is referenced
      * by another object which falls in this transaction.
      *
@@ -104,6 +120,18 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
      * @var ObjectCollection
      */
     protected $socolissimoPricesScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $socolissimoAreaFreeshippingDomsScheduledForDeletion = null;
+
+    /**
+     * An array of objects scheduled for deletion.
+     * @var ObjectCollection
+     */
+    protected $socolissimoAreaFreeshippingPrsScheduledForDeletion = null;
 
     /**
      * Initializes internal state of SoColissimo\Model\Base\SocolissimoDeliveryMode object.
@@ -653,6 +681,10 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
 
             $this->collSocolissimoPrices = null;
 
+            $this->collSocolissimoAreaFreeshippingDoms = null;
+
+            $this->collSocolissimoAreaFreeshippingPrs = null;
+
         } // if (deep)
     }
 
@@ -786,6 +818,40 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
 
                 if ($this->collSocolissimoPrices !== null) {
             foreach ($this->collSocolissimoPrices as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->socolissimoAreaFreeshippingDomsScheduledForDeletion !== null) {
+                if (!$this->socolissimoAreaFreeshippingDomsScheduledForDeletion->isEmpty()) {
+                    \SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery::create()
+                        ->filterByPrimaryKeys($this->socolissimoAreaFreeshippingDomsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->socolissimoAreaFreeshippingDomsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collSocolissimoAreaFreeshippingDoms !== null) {
+            foreach ($this->collSocolissimoAreaFreeshippingDoms as $referrerFK) {
+                    if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
+                        $affectedRows += $referrerFK->save($con);
+                    }
+                }
+            }
+
+            if ($this->socolissimoAreaFreeshippingPrsScheduledForDeletion !== null) {
+                if (!$this->socolissimoAreaFreeshippingPrsScheduledForDeletion->isEmpty()) {
+                    \SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery::create()
+                        ->filterByPrimaryKeys($this->socolissimoAreaFreeshippingPrsScheduledForDeletion->getPrimaryKeys(false))
+                        ->delete($con);
+                    $this->socolissimoAreaFreeshippingPrsScheduledForDeletion = null;
+                }
+            }
+
+                if ($this->collSocolissimoAreaFreeshippingPrs !== null) {
+            foreach ($this->collSocolissimoAreaFreeshippingPrs as $referrerFK) {
                     if (!$referrerFK->isDeleted() && ($referrerFK->isNew() || $referrerFK->isModified())) {
                         $affectedRows += $referrerFK->save($con);
                     }
@@ -980,6 +1046,12 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
             if (null !== $this->collSocolissimoPrices) {
                 $result['SocolissimoPrices'] = $this->collSocolissimoPrices->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
             }
+            if (null !== $this->collSocolissimoAreaFreeshippingDoms) {
+                $result['SocolissimoAreaFreeshippingDoms'] = $this->collSocolissimoAreaFreeshippingDoms->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
+            if (null !== $this->collSocolissimoAreaFreeshippingPrs) {
+                $result['SocolissimoAreaFreeshippingPrs'] = $this->collSocolissimoAreaFreeshippingPrs->toArray(null, true, $keyType, $includeLazyLoadColumns, $alreadyDumpedObjects);
+            }
         }
 
         return $result;
@@ -1153,6 +1225,18 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
                 }
             }
 
+            foreach ($this->getSocolissimoAreaFreeshippingDoms() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSocolissimoAreaFreeshippingDom($relObj->copy($deepCopy));
+                }
+            }
+
+            foreach ($this->getSocolissimoAreaFreeshippingPrs() as $relObj) {
+                if ($relObj !== $this) {  // ensure that we don't try to copy a reference to ourselves
+                    $copyObj->addSocolissimoAreaFreeshippingPr($relObj->copy($deepCopy));
+                }
+            }
+
         } // if ($deepCopy)
 
         if ($makeNew) {
@@ -1196,6 +1280,12 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
     {
         if ('SocolissimoPrice' == $relationName) {
             return $this->initSocolissimoPrices();
+        }
+        if ('SocolissimoAreaFreeshippingDom' == $relationName) {
+            return $this->initSocolissimoAreaFreeshippingDoms();
+        }
+        if ('SocolissimoAreaFreeshippingPr' == $relationName) {
+            return $this->initSocolissimoAreaFreeshippingPrs();
         }
     }
 
@@ -1443,6 +1533,492 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
     }
 
     /**
+     * Clears out the collSocolissimoAreaFreeshippingDoms collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSocolissimoAreaFreeshippingDoms()
+     */
+    public function clearSocolissimoAreaFreeshippingDoms()
+    {
+        $this->collSocolissimoAreaFreeshippingDoms = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collSocolissimoAreaFreeshippingDoms collection loaded partially.
+     */
+    public function resetPartialSocolissimoAreaFreeshippingDoms($v = true)
+    {
+        $this->collSocolissimoAreaFreeshippingDomsPartial = $v;
+    }
+
+    /**
+     * Initializes the collSocolissimoAreaFreeshippingDoms collection.
+     *
+     * By default this just sets the collSocolissimoAreaFreeshippingDoms collection to an empty array (like clearcollSocolissimoAreaFreeshippingDoms());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSocolissimoAreaFreeshippingDoms($overrideExisting = true)
+    {
+        if (null !== $this->collSocolissimoAreaFreeshippingDoms && !$overrideExisting) {
+            return;
+        }
+        $this->collSocolissimoAreaFreeshippingDoms = new ObjectCollection();
+        $this->collSocolissimoAreaFreeshippingDoms->setModel('\SoColissimo\Model\SocolissimoAreaFreeshippingDom');
+    }
+
+    /**
+     * Gets an array of ChildSocolissimoAreaFreeshippingDom objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSocolissimoDeliveryMode is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildSocolissimoAreaFreeshippingDom[] List of ChildSocolissimoAreaFreeshippingDom objects
+     * @throws PropelException
+     */
+    public function getSocolissimoAreaFreeshippingDoms($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSocolissimoAreaFreeshippingDomsPartial && !$this->isNew();
+        if (null === $this->collSocolissimoAreaFreeshippingDoms || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSocolissimoAreaFreeshippingDoms) {
+                // return empty collection
+                $this->initSocolissimoAreaFreeshippingDoms();
+            } else {
+                $collSocolissimoAreaFreeshippingDoms = ChildSocolissimoAreaFreeshippingDomQuery::create(null, $criteria)
+                    ->filterBySocolissimoDeliveryMode($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collSocolissimoAreaFreeshippingDomsPartial && count($collSocolissimoAreaFreeshippingDoms)) {
+                        $this->initSocolissimoAreaFreeshippingDoms(false);
+
+                        foreach ($collSocolissimoAreaFreeshippingDoms as $obj) {
+                            if (false == $this->collSocolissimoAreaFreeshippingDoms->contains($obj)) {
+                                $this->collSocolissimoAreaFreeshippingDoms->append($obj);
+                            }
+                        }
+
+                        $this->collSocolissimoAreaFreeshippingDomsPartial = true;
+                    }
+
+                    reset($collSocolissimoAreaFreeshippingDoms);
+
+                    return $collSocolissimoAreaFreeshippingDoms;
+                }
+
+                if ($partial && $this->collSocolissimoAreaFreeshippingDoms) {
+                    foreach ($this->collSocolissimoAreaFreeshippingDoms as $obj) {
+                        if ($obj->isNew()) {
+                            $collSocolissimoAreaFreeshippingDoms[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSocolissimoAreaFreeshippingDoms = $collSocolissimoAreaFreeshippingDoms;
+                $this->collSocolissimoAreaFreeshippingDomsPartial = false;
+            }
+        }
+
+        return $this->collSocolissimoAreaFreeshippingDoms;
+    }
+
+    /**
+     * Sets a collection of SocolissimoAreaFreeshippingDom objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $socolissimoAreaFreeshippingDoms A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildSocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function setSocolissimoAreaFreeshippingDoms(Collection $socolissimoAreaFreeshippingDoms, ConnectionInterface $con = null)
+    {
+        $socolissimoAreaFreeshippingDomsToDelete = $this->getSocolissimoAreaFreeshippingDoms(new Criteria(), $con)->diff($socolissimoAreaFreeshippingDoms);
+
+
+        $this->socolissimoAreaFreeshippingDomsScheduledForDeletion = $socolissimoAreaFreeshippingDomsToDelete;
+
+        foreach ($socolissimoAreaFreeshippingDomsToDelete as $socolissimoAreaFreeshippingDomRemoved) {
+            $socolissimoAreaFreeshippingDomRemoved->setSocolissimoDeliveryMode(null);
+        }
+
+        $this->collSocolissimoAreaFreeshippingDoms = null;
+        foreach ($socolissimoAreaFreeshippingDoms as $socolissimoAreaFreeshippingDom) {
+            $this->addSocolissimoAreaFreeshippingDom($socolissimoAreaFreeshippingDom);
+        }
+
+        $this->collSocolissimoAreaFreeshippingDoms = $socolissimoAreaFreeshippingDoms;
+        $this->collSocolissimoAreaFreeshippingDomsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related SocolissimoAreaFreeshippingDom objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related SocolissimoAreaFreeshippingDom objects.
+     * @throws PropelException
+     */
+    public function countSocolissimoAreaFreeshippingDoms(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSocolissimoAreaFreeshippingDomsPartial && !$this->isNew();
+        if (null === $this->collSocolissimoAreaFreeshippingDoms || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSocolissimoAreaFreeshippingDoms) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSocolissimoAreaFreeshippingDoms());
+            }
+
+            $query = ChildSocolissimoAreaFreeshippingDomQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySocolissimoDeliveryMode($this)
+                ->count($con);
+        }
+
+        return count($this->collSocolissimoAreaFreeshippingDoms);
+    }
+
+    /**
+     * Method called to associate a ChildSocolissimoAreaFreeshippingDom object to this object
+     * through the ChildSocolissimoAreaFreeshippingDom foreign key attribute.
+     *
+     * @param    ChildSocolissimoAreaFreeshippingDom $l ChildSocolissimoAreaFreeshippingDom
+     * @return   \SoColissimo\Model\SocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function addSocolissimoAreaFreeshippingDom(ChildSocolissimoAreaFreeshippingDom $l)
+    {
+        if ($this->collSocolissimoAreaFreeshippingDoms === null) {
+            $this->initSocolissimoAreaFreeshippingDoms();
+            $this->collSocolissimoAreaFreeshippingDomsPartial = true;
+        }
+
+        if (!in_array($l, $this->collSocolissimoAreaFreeshippingDoms->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddSocolissimoAreaFreeshippingDom($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param SocolissimoAreaFreeshippingDom $socolissimoAreaFreeshippingDom The socolissimoAreaFreeshippingDom object to add.
+     */
+    protected function doAddSocolissimoAreaFreeshippingDom($socolissimoAreaFreeshippingDom)
+    {
+        $this->collSocolissimoAreaFreeshippingDoms[]= $socolissimoAreaFreeshippingDom;
+        $socolissimoAreaFreeshippingDom->setSocolissimoDeliveryMode($this);
+    }
+
+    /**
+     * @param  SocolissimoAreaFreeshippingDom $socolissimoAreaFreeshippingDom The socolissimoAreaFreeshippingDom object to remove.
+     * @return ChildSocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function removeSocolissimoAreaFreeshippingDom($socolissimoAreaFreeshippingDom)
+    {
+        if ($this->getSocolissimoAreaFreeshippingDoms()->contains($socolissimoAreaFreeshippingDom)) {
+            $this->collSocolissimoAreaFreeshippingDoms->remove($this->collSocolissimoAreaFreeshippingDoms->search($socolissimoAreaFreeshippingDom));
+            if (null === $this->socolissimoAreaFreeshippingDomsScheduledForDeletion) {
+                $this->socolissimoAreaFreeshippingDomsScheduledForDeletion = clone $this->collSocolissimoAreaFreeshippingDoms;
+                $this->socolissimoAreaFreeshippingDomsScheduledForDeletion->clear();
+            }
+            $this->socolissimoAreaFreeshippingDomsScheduledForDeletion[]= clone $socolissimoAreaFreeshippingDom;
+            $socolissimoAreaFreeshippingDom->setSocolissimoDeliveryMode(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this SocolissimoDeliveryMode is new, it will return
+     * an empty collection; or if this SocolissimoDeliveryMode has previously
+     * been saved, it will retrieve related SocolissimoAreaFreeshippingDoms from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in SocolissimoDeliveryMode.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildSocolissimoAreaFreeshippingDom[] List of ChildSocolissimoAreaFreeshippingDom objects
+     */
+    public function getSocolissimoAreaFreeshippingDomsJoinArea($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSocolissimoAreaFreeshippingDomQuery::create(null, $criteria);
+        $query->joinWith('Area', $joinBehavior);
+
+        return $this->getSocolissimoAreaFreeshippingDoms($query, $con);
+    }
+
+    /**
+     * Clears out the collSocolissimoAreaFreeshippingPrs collection
+     *
+     * This does not modify the database; however, it will remove any associated objects, causing
+     * them to be refetched by subsequent calls to accessor method.
+     *
+     * @return void
+     * @see        addSocolissimoAreaFreeshippingPrs()
+     */
+    public function clearSocolissimoAreaFreeshippingPrs()
+    {
+        $this->collSocolissimoAreaFreeshippingPrs = null; // important to set this to NULL since that means it is uninitialized
+    }
+
+    /**
+     * Reset is the collSocolissimoAreaFreeshippingPrs collection loaded partially.
+     */
+    public function resetPartialSocolissimoAreaFreeshippingPrs($v = true)
+    {
+        $this->collSocolissimoAreaFreeshippingPrsPartial = $v;
+    }
+
+    /**
+     * Initializes the collSocolissimoAreaFreeshippingPrs collection.
+     *
+     * By default this just sets the collSocolissimoAreaFreeshippingPrs collection to an empty array (like clearcollSocolissimoAreaFreeshippingPrs());
+     * however, you may wish to override this method in your stub class to provide setting appropriate
+     * to your application -- for example, setting the initial array to the values stored in database.
+     *
+     * @param      boolean $overrideExisting If set to true, the method call initializes
+     *                                        the collection even if it is not empty
+     *
+     * @return void
+     */
+    public function initSocolissimoAreaFreeshippingPrs($overrideExisting = true)
+    {
+        if (null !== $this->collSocolissimoAreaFreeshippingPrs && !$overrideExisting) {
+            return;
+        }
+        $this->collSocolissimoAreaFreeshippingPrs = new ObjectCollection();
+        $this->collSocolissimoAreaFreeshippingPrs->setModel('\SoColissimo\Model\SocolissimoAreaFreeshippingPr');
+    }
+
+    /**
+     * Gets an array of ChildSocolissimoAreaFreeshippingPr objects which contain a foreign key that references this object.
+     *
+     * If the $criteria is not null, it is used to always fetch the results from the database.
+     * Otherwise the results are fetched from the database the first time, then cached.
+     * Next time the same method is called without $criteria, the cached collection is returned.
+     * If this ChildSocolissimoDeliveryMode is new, it will return
+     * an empty collection or the current collection; the criteria is ignored on a new object.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @return Collection|ChildSocolissimoAreaFreeshippingPr[] List of ChildSocolissimoAreaFreeshippingPr objects
+     * @throws PropelException
+     */
+    public function getSocolissimoAreaFreeshippingPrs($criteria = null, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSocolissimoAreaFreeshippingPrsPartial && !$this->isNew();
+        if (null === $this->collSocolissimoAreaFreeshippingPrs || null !== $criteria  || $partial) {
+            if ($this->isNew() && null === $this->collSocolissimoAreaFreeshippingPrs) {
+                // return empty collection
+                $this->initSocolissimoAreaFreeshippingPrs();
+            } else {
+                $collSocolissimoAreaFreeshippingPrs = ChildSocolissimoAreaFreeshippingPrQuery::create(null, $criteria)
+                    ->filterBySocolissimoDeliveryMode($this)
+                    ->find($con);
+
+                if (null !== $criteria) {
+                    if (false !== $this->collSocolissimoAreaFreeshippingPrsPartial && count($collSocolissimoAreaFreeshippingPrs)) {
+                        $this->initSocolissimoAreaFreeshippingPrs(false);
+
+                        foreach ($collSocolissimoAreaFreeshippingPrs as $obj) {
+                            if (false == $this->collSocolissimoAreaFreeshippingPrs->contains($obj)) {
+                                $this->collSocolissimoAreaFreeshippingPrs->append($obj);
+                            }
+                        }
+
+                        $this->collSocolissimoAreaFreeshippingPrsPartial = true;
+                    }
+
+                    reset($collSocolissimoAreaFreeshippingPrs);
+
+                    return $collSocolissimoAreaFreeshippingPrs;
+                }
+
+                if ($partial && $this->collSocolissimoAreaFreeshippingPrs) {
+                    foreach ($this->collSocolissimoAreaFreeshippingPrs as $obj) {
+                        if ($obj->isNew()) {
+                            $collSocolissimoAreaFreeshippingPrs[] = $obj;
+                        }
+                    }
+                }
+
+                $this->collSocolissimoAreaFreeshippingPrs = $collSocolissimoAreaFreeshippingPrs;
+                $this->collSocolissimoAreaFreeshippingPrsPartial = false;
+            }
+        }
+
+        return $this->collSocolissimoAreaFreeshippingPrs;
+    }
+
+    /**
+     * Sets a collection of SocolissimoAreaFreeshippingPr objects related by a one-to-many relationship
+     * to the current object.
+     * It will also schedule objects for deletion based on a diff between old objects (aka persisted)
+     * and new objects from the given Propel collection.
+     *
+     * @param      Collection $socolissimoAreaFreeshippingPrs A Propel collection.
+     * @param      ConnectionInterface $con Optional connection object
+     * @return   ChildSocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function setSocolissimoAreaFreeshippingPrs(Collection $socolissimoAreaFreeshippingPrs, ConnectionInterface $con = null)
+    {
+        $socolissimoAreaFreeshippingPrsToDelete = $this->getSocolissimoAreaFreeshippingPrs(new Criteria(), $con)->diff($socolissimoAreaFreeshippingPrs);
+
+
+        $this->socolissimoAreaFreeshippingPrsScheduledForDeletion = $socolissimoAreaFreeshippingPrsToDelete;
+
+        foreach ($socolissimoAreaFreeshippingPrsToDelete as $socolissimoAreaFreeshippingPrRemoved) {
+            $socolissimoAreaFreeshippingPrRemoved->setSocolissimoDeliveryMode(null);
+        }
+
+        $this->collSocolissimoAreaFreeshippingPrs = null;
+        foreach ($socolissimoAreaFreeshippingPrs as $socolissimoAreaFreeshippingPr) {
+            $this->addSocolissimoAreaFreeshippingPr($socolissimoAreaFreeshippingPr);
+        }
+
+        $this->collSocolissimoAreaFreeshippingPrs = $socolissimoAreaFreeshippingPrs;
+        $this->collSocolissimoAreaFreeshippingPrsPartial = false;
+
+        return $this;
+    }
+
+    /**
+     * Returns the number of related SocolissimoAreaFreeshippingPr objects.
+     *
+     * @param      Criteria $criteria
+     * @param      boolean $distinct
+     * @param      ConnectionInterface $con
+     * @return int             Count of related SocolissimoAreaFreeshippingPr objects.
+     * @throws PropelException
+     */
+    public function countSocolissimoAreaFreeshippingPrs(Criteria $criteria = null, $distinct = false, ConnectionInterface $con = null)
+    {
+        $partial = $this->collSocolissimoAreaFreeshippingPrsPartial && !$this->isNew();
+        if (null === $this->collSocolissimoAreaFreeshippingPrs || null !== $criteria || $partial) {
+            if ($this->isNew() && null === $this->collSocolissimoAreaFreeshippingPrs) {
+                return 0;
+            }
+
+            if ($partial && !$criteria) {
+                return count($this->getSocolissimoAreaFreeshippingPrs());
+            }
+
+            $query = ChildSocolissimoAreaFreeshippingPrQuery::create(null, $criteria);
+            if ($distinct) {
+                $query->distinct();
+            }
+
+            return $query
+                ->filterBySocolissimoDeliveryMode($this)
+                ->count($con);
+        }
+
+        return count($this->collSocolissimoAreaFreeshippingPrs);
+    }
+
+    /**
+     * Method called to associate a ChildSocolissimoAreaFreeshippingPr object to this object
+     * through the ChildSocolissimoAreaFreeshippingPr foreign key attribute.
+     *
+     * @param    ChildSocolissimoAreaFreeshippingPr $l ChildSocolissimoAreaFreeshippingPr
+     * @return   \SoColissimo\Model\SocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function addSocolissimoAreaFreeshippingPr(ChildSocolissimoAreaFreeshippingPr $l)
+    {
+        if ($this->collSocolissimoAreaFreeshippingPrs === null) {
+            $this->initSocolissimoAreaFreeshippingPrs();
+            $this->collSocolissimoAreaFreeshippingPrsPartial = true;
+        }
+
+        if (!in_array($l, $this->collSocolissimoAreaFreeshippingPrs->getArrayCopy(), true)) { // only add it if the **same** object is not already associated
+            $this->doAddSocolissimoAreaFreeshippingPr($l);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param SocolissimoAreaFreeshippingPr $socolissimoAreaFreeshippingPr The socolissimoAreaFreeshippingPr object to add.
+     */
+    protected function doAddSocolissimoAreaFreeshippingPr($socolissimoAreaFreeshippingPr)
+    {
+        $this->collSocolissimoAreaFreeshippingPrs[]= $socolissimoAreaFreeshippingPr;
+        $socolissimoAreaFreeshippingPr->setSocolissimoDeliveryMode($this);
+    }
+
+    /**
+     * @param  SocolissimoAreaFreeshippingPr $socolissimoAreaFreeshippingPr The socolissimoAreaFreeshippingPr object to remove.
+     * @return ChildSocolissimoDeliveryMode The current object (for fluent API support)
+     */
+    public function removeSocolissimoAreaFreeshippingPr($socolissimoAreaFreeshippingPr)
+    {
+        if ($this->getSocolissimoAreaFreeshippingPrs()->contains($socolissimoAreaFreeshippingPr)) {
+            $this->collSocolissimoAreaFreeshippingPrs->remove($this->collSocolissimoAreaFreeshippingPrs->search($socolissimoAreaFreeshippingPr));
+            if (null === $this->socolissimoAreaFreeshippingPrsScheduledForDeletion) {
+                $this->socolissimoAreaFreeshippingPrsScheduledForDeletion = clone $this->collSocolissimoAreaFreeshippingPrs;
+                $this->socolissimoAreaFreeshippingPrsScheduledForDeletion->clear();
+            }
+            $this->socolissimoAreaFreeshippingPrsScheduledForDeletion[]= clone $socolissimoAreaFreeshippingPr;
+            $socolissimoAreaFreeshippingPr->setSocolissimoDeliveryMode(null);
+        }
+
+        return $this;
+    }
+
+
+    /**
+     * If this collection has already been initialized with
+     * an identical criteria, it returns the collection.
+     * Otherwise if this SocolissimoDeliveryMode is new, it will return
+     * an empty collection; or if this SocolissimoDeliveryMode has previously
+     * been saved, it will retrieve related SocolissimoAreaFreeshippingPrs from storage.
+     *
+     * This method is protected by default in order to keep the public
+     * api reasonable.  You can provide public methods for those you
+     * actually need in SocolissimoDeliveryMode.
+     *
+     * @param      Criteria $criteria optional Criteria object to narrow the query
+     * @param      ConnectionInterface $con optional connection object
+     * @param      string $joinBehavior optional join type to use (defaults to Criteria::LEFT_JOIN)
+     * @return Collection|ChildSocolissimoAreaFreeshippingPr[] List of ChildSocolissimoAreaFreeshippingPr objects
+     */
+    public function getSocolissimoAreaFreeshippingPrsJoinArea($criteria = null, $con = null, $joinBehavior = Criteria::LEFT_JOIN)
+    {
+        $query = ChildSocolissimoAreaFreeshippingPrQuery::create(null, $criteria);
+        $query->joinWith('Area', $joinBehavior);
+
+        return $this->getSocolissimoAreaFreeshippingPrs($query, $con);
+    }
+
+    /**
      * Clears the current object and sets all attributes to their default values
      */
     public function clear()
@@ -1476,9 +2052,21 @@ abstract class SocolissimoDeliveryMode implements ActiveRecordInterface
                     $o->clearAllReferences($deep);
                 }
             }
+            if ($this->collSocolissimoAreaFreeshippingDoms) {
+                foreach ($this->collSocolissimoAreaFreeshippingDoms as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
+            if ($this->collSocolissimoAreaFreeshippingPrs) {
+                foreach ($this->collSocolissimoAreaFreeshippingPrs as $o) {
+                    $o->clearAllReferences($deep);
+                }
+            }
         } // if ($deep)
 
         $this->collSocolissimoPrices = null;
+        $this->collSocolissimoAreaFreeshippingDoms = null;
+        $this->collSocolissimoAreaFreeshippingPrs = null;
     }
 
     /**
