@@ -116,7 +116,11 @@ CREATE TABLE `socolissimo_area_freeshipping_dom`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `area_id` INTEGER NOT NULL,
     `delivery_mode_id` INTEGER NOT NULL,
+<<<<<<< HEAD
     `cart_amount` DECIMAL(16,6) DEFAULT 0.000000 NOT NULL,
+=======
+    `cart_amount` DECIMAL(16,6) DEFAULT 0.000000,
+>>>>>>> Add new tables, generate sql & models, update freeshipping.php & template BO
     PRIMARY KEY (`id`),
     INDEX `FI_socolissimo_area_freeshipping_dom_area_id` (`area_id`),
     INDEX `FI_socolissimo_area_freeshipping_dom_delivery_mode_id` (`delivery_mode_id`),
@@ -143,7 +147,11 @@ CREATE TABLE `socolissimo_area_freeshipping_pr`
     `id` INTEGER NOT NULL AUTO_INCREMENT,
     `area_id` INTEGER NOT NULL,
     `delivery_mode_id` INTEGER NOT NULL,
+<<<<<<< HEAD
     `cart_amount` DECIMAL(16,6) DEFAULT 0.000000 NOT NULL,
+=======
+    `cart_amount` DECIMAL(16,6) DEFAULT 0.000000,
+>>>>>>> Add new tables, generate sql & models, update freeshipping.php & template BO
     PRIMARY KEY (`id`),
     INDEX `FI_socolissimo_area_freeshipping_pr_area_id` (`area_id`),
     INDEX `FI_socolissimo_area_freeshipping_pr_delivery_mode_id` (`delivery_mode_id`),

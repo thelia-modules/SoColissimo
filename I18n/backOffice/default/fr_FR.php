@@ -4,6 +4,7 @@ return array(
     '*If you choose this option, the exported orders would not be available on this page anymore' => '* Si vous choisissez cette option, les commandes exportées n\'apparaitront plus dans cette page',
     'Actions' => 'Actions',
     'Activate total free shipping ' => 'Activer les frais de port gratuits',
+    'Activate free shipping from (€) :' => 'Activer les frais de port gratuits à partir de (€)',
     'Add this price slice' => 'Ajouter cette tranche de prix',
     'Advanced configuration' => 'Configuration avancée',
     'An error occured' => 'Une erreur est survenue',
