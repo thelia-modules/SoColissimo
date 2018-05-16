@@ -14,19 +14,19 @@ use Propel\Runtime\Exception\BadMethodCallException;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Map\TableMap;
 use Propel\Runtime\Parser\AbstractParser;
-use SoColissimo\Model\SocolissimoAreaFreeshippingQuery as ChildSocolissimoAreaFreeshippingQuery;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery as ChildSocolissimoAreaFreeshippingPrQuery;
 use SoColissimo\Model\SocolissimoDeliveryMode as ChildSocolissimoDeliveryMode;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery as ChildSocolissimoDeliveryModeQuery;
-use SoColissimo\Model\Map\SocolissimoAreaFreeshippingTableMap;
+use SoColissimo\Model\Map\SocolissimoAreaFreeshippingPrTableMap;
 use SoColissimo\Model\Thelia\Model\AreaQuery;
 use SoColissimo\Model\Thelia\Model\Area as ChildArea;
 
-abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
+abstract class SocolissimoAreaFreeshippingPr implements ActiveRecordInterface
 {
     /**
      * TableMap class name
      */
-    const TABLE_MAP = '\\SoColissimo\\Model\\Map\\SocolissimoAreaFreeshippingTableMap';
+    const TABLE_MAP = '\\SoColissimo\\Model\\Map\\SocolissimoAreaFreeshippingPrTableMap';
 
 
     /**
@@ -110,7 +110,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
     }
 
     /**
-     * Initializes internal state of SoColissimo\Model\Base\SocolissimoAreaFreeshipping object.
+     * Initializes internal state of SoColissimo\Model\Base\SocolissimoAreaFreeshippingPr object.
      * @see applyDefaults()
      */
     public function __construct()
@@ -207,9 +207,9 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
     }
 
     /**
-     * Compares this with another <code>SocolissimoAreaFreeshipping</code> instance.  If
-     * <code>obj</code> is an instance of <code>SocolissimoAreaFreeshipping</code>, delegates to
-     * <code>equals(SocolissimoAreaFreeshipping)</code>.  Otherwise, returns <code>false</code>.
+     * Compares this with another <code>SocolissimoAreaFreeshippingPr</code> instance.  If
+     * <code>obj</code> is an instance of <code>SocolissimoAreaFreeshippingPr</code>, delegates to
+     * <code>equals(SocolissimoAreaFreeshippingPr)</code>.  Otherwise, returns <code>false</code>.
      *
      * @param  mixed   $obj The object to compare to.
      * @return boolean Whether equal to the object specified.
@@ -292,7 +292,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * @param string $name  The virtual column name
      * @param mixed  $value The value to give to the virtual column
      *
-     * @return SocolissimoAreaFreeshipping The current object, for fluid interface
+     * @return SocolissimoAreaFreeshippingPr The current object, for fluid interface
      */
     public function setVirtualColumn($name, $value)
     {
@@ -324,7 +324,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      *                       or a format name ('XML', 'YAML', 'JSON', 'CSV')
      * @param string $data The source data to import from
      *
-     * @return SocolissimoAreaFreeshipping The current object, for fluid interface
+     * @return SocolissimoAreaFreeshippingPr The current object, for fluid interface
      */
     public function importFrom($parser, $data)
     {
@@ -417,7 +417,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Set the value of [id] column.
      *
      * @param      int $v new value
-     * @return   \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      */
     public function setId($v)
     {
@@ -427,7 +427,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
 
         if ($this->id !== $v) {
             $this->id = $v;
-            $this->modifiedColumns[SocolissimoAreaFreeshippingTableMap::ID] = true;
+            $this->modifiedColumns[SocolissimoAreaFreeshippingPrTableMap::ID] = true;
         }
 
 
@@ -438,7 +438,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Set the value of [area_id] column.
      *
      * @param      int $v new value
-     * @return   \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      */
     public function setAreaId($v)
     {
@@ -448,7 +448,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
 
         if ($this->area_id !== $v) {
             $this->area_id = $v;
-            $this->modifiedColumns[SocolissimoAreaFreeshippingTableMap::AREA_ID] = true;
+            $this->modifiedColumns[SocolissimoAreaFreeshippingPrTableMap::AREA_ID] = true;
         }
 
         if ($this->aArea !== null && $this->aArea->getId() !== $v) {
@@ -463,7 +463,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Set the value of [delivery_mode_id] column.
      *
      * @param      int $v new value
-     * @return   \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      */
     public function setDeliveryModeId($v)
     {
@@ -473,7 +473,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
 
         if ($this->delivery_mode_id !== $v) {
             $this->delivery_mode_id = $v;
-            $this->modifiedColumns[SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID] = true;
+            $this->modifiedColumns[SocolissimoAreaFreeshippingPrTableMap::DELIVERY_MODE_ID] = true;
         }
 
         if ($this->aSocolissimoDeliveryMode !== null && $this->aSocolissimoDeliveryMode->getId() !== $v) {
@@ -488,7 +488,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Set the value of [cart_amount] column.
      *
      * @param      string $v new value
-     * @return   \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      */
     public function setCartAmount($v)
     {
@@ -498,7 +498,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
 
         if ($this->cart_amount !== $v) {
             $this->cart_amount = $v;
-            $this->modifiedColumns[SocolissimoAreaFreeshippingTableMap::CART_AMOUNT] = true;
+            $this->modifiedColumns[SocolissimoAreaFreeshippingPrTableMap::CART_AMOUNT] = true;
         }
 
 
@@ -546,16 +546,16 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         try {
 
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SocolissimoAreaFreeshippingTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 0 + $startcol : SocolissimoAreaFreeshippingPrTableMap::translateFieldName('Id', TableMap::TYPE_PHPNAME, $indexType)];
             $this->id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SocolissimoAreaFreeshippingTableMap::translateFieldName('AreaId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 1 + $startcol : SocolissimoAreaFreeshippingPrTableMap::translateFieldName('AreaId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->area_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SocolissimoAreaFreeshippingTableMap::translateFieldName('DeliveryModeId', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 2 + $startcol : SocolissimoAreaFreeshippingPrTableMap::translateFieldName('DeliveryModeId', TableMap::TYPE_PHPNAME, $indexType)];
             $this->delivery_mode_id = (null !== $col) ? (int) $col : null;
 
-            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocolissimoAreaFreeshippingTableMap::translateFieldName('CartAmount', TableMap::TYPE_PHPNAME, $indexType)];
+            $col = $row[TableMap::TYPE_NUM == $indexType ? 3 + $startcol : SocolissimoAreaFreeshippingPrTableMap::translateFieldName('CartAmount', TableMap::TYPE_PHPNAME, $indexType)];
             $this->cart_amount = (null !== $col) ? (string) $col : null;
             $this->resetModified();
 
@@ -565,10 +565,10 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
                 $this->ensureConsistency();
             }
 
-            return $startcol + 4; // 4 = SocolissimoAreaFreeshippingTableMap::NUM_HYDRATE_COLUMNS.
+            return $startcol + 4; // 4 = SocolissimoAreaFreeshippingPrTableMap::NUM_HYDRATE_COLUMNS.
 
         } catch (Exception $e) {
-            throw new PropelException("Error populating \SoColissimo\Model\SocolissimoAreaFreeshipping object", 0, $e);
+            throw new PropelException("Error populating \SoColissimo\Model\SocolissimoAreaFreeshippingPr object", 0, $e);
         }
     }
 
@@ -616,13 +616,13 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(SocolissimoAreaFreeshippingPrTableMap::DATABASE_NAME);
         }
 
         // We don't need to alter the object instance pool; we're just modifying this instance
         // already in the pool.
 
-        $dataFetcher = ChildSocolissimoAreaFreeshippingQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
+        $dataFetcher = ChildSocolissimoAreaFreeshippingPrQuery::create(null, $this->buildPkeyCriteria())->setFormatter(ModelCriteria::FORMAT_STATEMENT)->find($con);
         $row = $dataFetcher->fetch();
         $dataFetcher->close();
         if (!$row) {
@@ -643,8 +643,8 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * @param      ConnectionInterface $con
      * @return void
      * @throws PropelException
-     * @see SocolissimoAreaFreeshipping::setDeleted()
-     * @see SocolissimoAreaFreeshipping::isDeleted()
+     * @see SocolissimoAreaFreeshippingPr::setDeleted()
+     * @see SocolissimoAreaFreeshippingPr::isDeleted()
      */
     public function delete(ConnectionInterface $con = null)
     {
@@ -653,12 +653,12 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingPrTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
         try {
-            $deleteQuery = ChildSocolissimoAreaFreeshippingQuery::create()
+            $deleteQuery = ChildSocolissimoAreaFreeshippingPrQuery::create()
                 ->filterByPrimaryKey($this->getPrimaryKey());
             $ret = $this->preDelete($con);
             if ($ret) {
@@ -695,7 +695,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         }
 
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingPrTableMap::DATABASE_NAME);
         }
 
         $con->beginTransaction();
@@ -715,7 +715,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
                     $this->postUpdate($con);
                 }
                 $this->postSave($con);
-                SocolissimoAreaFreeshippingTableMap::addInstanceToPool($this);
+                SocolissimoAreaFreeshippingPrTableMap::addInstanceToPool($this);
             } else {
                 $affectedRows = 0;
             }
@@ -795,27 +795,27 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         $modifiedColumns = array();
         $index = 0;
 
-        $this->modifiedColumns[SocolissimoAreaFreeshippingTableMap::ID] = true;
+        $this->modifiedColumns[SocolissimoAreaFreeshippingPrTableMap::ID] = true;
         if (null !== $this->id) {
-            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SocolissimoAreaFreeshippingTableMap::ID . ')');
+            throw new PropelException('Cannot insert a value for auto-increment primary key (' . SocolissimoAreaFreeshippingPrTableMap::ID . ')');
         }
 
          // check the columns in natural order for more readable SQL queries
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::ID)) {
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::ID)) {
             $modifiedColumns[':p' . $index++]  = 'ID';
         }
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::AREA_ID)) {
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::AREA_ID)) {
             $modifiedColumns[':p' . $index++]  = 'AREA_ID';
         }
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID)) {
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::DELIVERY_MODE_ID)) {
             $modifiedColumns[':p' . $index++]  = 'DELIVERY_MODE_ID';
         }
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT)) {
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::CART_AMOUNT)) {
             $modifiedColumns[':p' . $index++]  = 'CART_AMOUNT';
         }
 
         $sql = sprintf(
-            'INSERT INTO socolissimo_area_freeshipping (%s) VALUES (%s)',
+            'INSERT INTO socolissimo_area_freeshipping_pr (%s) VALUES (%s)',
             implode(', ', $modifiedColumns),
             implode(', ', array_keys($modifiedColumns))
         );
@@ -882,7 +882,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function getByName($name, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SocolissimoAreaFreeshippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SocolissimoAreaFreeshippingPrTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
         $field = $this->getByPosition($pos);
 
         return $field;
@@ -933,11 +933,11 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function toArray($keyType = TableMap::TYPE_PHPNAME, $includeLazyLoadColumns = true, $alreadyDumpedObjects = array(), $includeForeignObjects = false)
     {
-        if (isset($alreadyDumpedObjects['SocolissimoAreaFreeshipping'][$this->getPrimaryKey()])) {
+        if (isset($alreadyDumpedObjects['SocolissimoAreaFreeshippingPr'][$this->getPrimaryKey()])) {
             return '*RECURSION*';
         }
-        $alreadyDumpedObjects['SocolissimoAreaFreeshipping'][$this->getPrimaryKey()] = true;
-        $keys = SocolissimoAreaFreeshippingTableMap::getFieldNames($keyType);
+        $alreadyDumpedObjects['SocolissimoAreaFreeshippingPr'][$this->getPrimaryKey()] = true;
+        $keys = SocolissimoAreaFreeshippingPrTableMap::getFieldNames($keyType);
         $result = array(
             $keys[0] => $this->getId(),
             $keys[1] => $this->getAreaId(),
@@ -974,7 +974,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function setByName($name, $value, $type = TableMap::TYPE_PHPNAME)
     {
-        $pos = SocolissimoAreaFreeshippingTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
+        $pos = SocolissimoAreaFreeshippingPrTableMap::translateFieldName($name, $type, TableMap::TYPE_NUM);
 
         return $this->setByPosition($pos, $value);
     }
@@ -1024,7 +1024,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function fromArray($arr, $keyType = TableMap::TYPE_PHPNAME)
     {
-        $keys = SocolissimoAreaFreeshippingTableMap::getFieldNames($keyType);
+        $keys = SocolissimoAreaFreeshippingPrTableMap::getFieldNames($keyType);
 
         if (array_key_exists($keys[0], $arr)) $this->setId($arr[$keys[0]]);
         if (array_key_exists($keys[1], $arr)) $this->setAreaId($arr[$keys[1]]);
@@ -1039,12 +1039,12 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function buildCriteria()
     {
-        $criteria = new Criteria(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+        $criteria = new Criteria(SocolissimoAreaFreeshippingPrTableMap::DATABASE_NAME);
 
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::ID)) $criteria->add(SocolissimoAreaFreeshippingTableMap::ID, $this->id);
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::AREA_ID)) $criteria->add(SocolissimoAreaFreeshippingTableMap::AREA_ID, $this->area_id);
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID)) $criteria->add(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $this->delivery_mode_id);
-        if ($this->isColumnModified(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT)) $criteria->add(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT, $this->cart_amount);
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::ID)) $criteria->add(SocolissimoAreaFreeshippingPrTableMap::ID, $this->id);
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::AREA_ID)) $criteria->add(SocolissimoAreaFreeshippingPrTableMap::AREA_ID, $this->area_id);
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::DELIVERY_MODE_ID)) $criteria->add(SocolissimoAreaFreeshippingPrTableMap::DELIVERY_MODE_ID, $this->delivery_mode_id);
+        if ($this->isColumnModified(SocolissimoAreaFreeshippingPrTableMap::CART_AMOUNT)) $criteria->add(SocolissimoAreaFreeshippingPrTableMap::CART_AMOUNT, $this->cart_amount);
 
         return $criteria;
     }
@@ -1059,8 +1059,8 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function buildPkeyCriteria()
     {
-        $criteria = new Criteria(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
-        $criteria->add(SocolissimoAreaFreeshippingTableMap::ID, $this->id);
+        $criteria = new Criteria(SocolissimoAreaFreeshippingPrTableMap::DATABASE_NAME);
+        $criteria->add(SocolissimoAreaFreeshippingPrTableMap::ID, $this->id);
 
         return $criteria;
     }
@@ -1101,7 +1101,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * If desired, this method can also make copies of all associated (fkey referrers)
      * objects.
      *
-     * @param      object $copyObj An object of \SoColissimo\Model\SocolissimoAreaFreeshipping (or compatible) type.
+     * @param      object $copyObj An object of \SoColissimo\Model\SocolissimoAreaFreeshippingPr (or compatible) type.
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
      * @param      boolean $makeNew Whether to reset autoincrement PKs and make the object new.
      * @throws PropelException
@@ -1126,7 +1126,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * objects.
      *
      * @param      boolean $deepCopy Whether to also copy all rows that refer (by fkey) to the current row.
-     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshipping Clone of current object.
+     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshippingPr Clone of current object.
      * @throws PropelException
      */
     public function copy($deepCopy = false)
@@ -1143,7 +1143,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Declares an association between this object and a ChildArea object.
      *
      * @param                  ChildArea $v
-     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      * @throws PropelException
      */
     public function setArea(ChildArea $v = null)
@@ -1159,7 +1159,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildArea object, it will not be re-added.
         if ($v !== null) {
-            $v->addSocolissimoAreaFreeshipping($this);
+            $v->addSocolissimoAreaFreeshippingPr($this);
         }
 
 
@@ -1183,7 +1183,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aArea->addSocolissimoAreaFreeshippings($this);
+                $this->aArea->addSocolissimoAreaFreeshippingPrs($this);
              */
         }
 
@@ -1194,7 +1194,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      * Declares an association between this object and a ChildSocolissimoDeliveryMode object.
      *
      * @param                  ChildSocolissimoDeliveryMode $v
-     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshipping The current object (for fluent API support)
+     * @return                 \SoColissimo\Model\SocolissimoAreaFreeshippingPr The current object (for fluent API support)
      * @throws PropelException
      */
     public function setSocolissimoDeliveryMode(ChildSocolissimoDeliveryMode $v = null)
@@ -1210,7 +1210,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
         // Add binding for other direction of this n:n relationship.
         // If this object has already been added to the ChildSocolissimoDeliveryMode object, it will not be re-added.
         if ($v !== null) {
-            $v->addSocolissimoAreaFreeshipping($this);
+            $v->addSocolissimoAreaFreeshippingPr($this);
         }
 
 
@@ -1234,7 +1234,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
                 to this object.  This level of coupling may, however, be
                 undesirable since it could result in an only partially populated collection
                 in the referenced object.
-                $this->aSocolissimoDeliveryMode->addSocolissimoAreaFreeshippings($this);
+                $this->aSocolissimoDeliveryMode->addSocolissimoAreaFreeshippingPrs($this);
              */
         }
 
@@ -1283,7 +1283,7 @@ abstract class SocolissimoAreaFreeshipping implements ActiveRecordInterface
      */
     public function __toString()
     {
-        return (string) $this->exportTo(SocolissimoAreaFreeshippingTableMap::DEFAULT_STRING_FORMAT);
+        return (string) $this->exportTo(SocolissimoAreaFreeshippingPrTableMap::DEFAULT_STRING_FORMAT);
     }
 
     /**

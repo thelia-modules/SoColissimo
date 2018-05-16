@@ -144,7 +144,7 @@ class SocolissimoAreaFreeshippingTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('AREA_ID', 'AreaId', 'INTEGER', 'area', 'ID', true, null, null);
         $this->addForeignKey('DELIVERY_MODE_ID', 'DeliveryModeId', 'INTEGER', 'socolissimo_delivery_mode', 'ID', true, null, null);
-        $this->addColumn('CART_AMOUNT', 'CartAmount', 'FLOAT', true, null, null);
+        $this->addColumn('CART_AMOUNT', 'CartAmount', 'DECIMAL', true, 16, 0);
     } // initialize()
 
     /**

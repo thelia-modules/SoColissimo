@@ -1,4 +1,8 @@
 # 1.4.2
+Objective: Add a minimum cart amount to get the free shipping cost for "So Colissimo Domicile" by Area
+- Add table socolissimo_area_freeshipping
+- Update Routing.xml, Freeshipping.php, SoColissimo.php and Template BO
+- Update version module.xml & CHANGELOG.md
 
 # 1.4.1
 - Fix bug area delivery

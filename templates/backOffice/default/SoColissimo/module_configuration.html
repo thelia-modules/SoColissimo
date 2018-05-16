@@ -340,7 +340,7 @@
                                                     <th width="40%">
                                                         <div col-md-12 id="area-freeshipping-{$deliveryModeId}" {if $isSoColissimoFreeShipping eq 1}  style="display:none;" {/if}>
                                                             <form action="{url path="/admin/module/socolissimo/area_freeshipping"}"  method="post">
-                                                                <div class="input-group" {if $CODE !== 'dom'} style="display: none" {/if}>
+                                                                <div class="input-group">
                                                                     <span class="input-group-addon {if $AREA_FREESHIPPING}alert-success{/if}">{intl l="Activate free shipping from (€) :" d="socolissimo.bo.default"}</span>
                                                                     <input type="hidden" name="area-id" value="{$area_id}">
                                                                     <input type="hidden" name="delivery-mode" value="{$deliveryModeId}">

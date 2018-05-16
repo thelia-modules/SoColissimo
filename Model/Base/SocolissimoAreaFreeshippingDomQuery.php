@@ -12,81 +12,81 @@ use Propel\Runtime\Collection\Collection;
 use Propel\Runtime\Collection\ObjectCollection;
 use Propel\Runtime\Connection\ConnectionInterface;
 use Propel\Runtime\Exception\PropelException;
-use SoColissimo\Model\SocolissimoAreaFreeshipping as ChildSocolissimoAreaFreeshipping;
-use SoColissimo\Model\SocolissimoAreaFreeshippingQuery as ChildSocolissimoAreaFreeshippingQuery;
-use SoColissimo\Model\Map\SocolissimoAreaFreeshippingTableMap;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDom as ChildSocolissimoAreaFreeshippingDom;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery as ChildSocolissimoAreaFreeshippingDomQuery;
+use SoColissimo\Model\Map\SocolissimoAreaFreeshippingDomTableMap;
 use SoColissimo\Model\Thelia\Model\Area;
 
 /**
- * Base class that represents a query for the 'socolissimo_area_freeshipping' table.
+ * Base class that represents a query for the 'socolissimo_area_freeshipping_dom' table.
  *
  *
  *
- * @method     ChildSocolissimoAreaFreeshippingQuery orderById($order = Criteria::ASC) Order by the id column
- * @method     ChildSocolissimoAreaFreeshippingQuery orderByAreaId($order = Criteria::ASC) Order by the area_id column
- * @method     ChildSocolissimoAreaFreeshippingQuery orderByDeliveryModeId($order = Criteria::ASC) Order by the delivery_mode_id column
- * @method     ChildSocolissimoAreaFreeshippingQuery orderByCartAmount($order = Criteria::ASC) Order by the cart_amount column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery orderById($order = Criteria::ASC) Order by the id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery orderByAreaId($order = Criteria::ASC) Order by the area_id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery orderByDeliveryModeId($order = Criteria::ASC) Order by the delivery_mode_id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery orderByCartAmount($order = Criteria::ASC) Order by the cart_amount column
  *
- * @method     ChildSocolissimoAreaFreeshippingQuery groupById() Group by the id column
- * @method     ChildSocolissimoAreaFreeshippingQuery groupByAreaId() Group by the area_id column
- * @method     ChildSocolissimoAreaFreeshippingQuery groupByDeliveryModeId() Group by the delivery_mode_id column
- * @method     ChildSocolissimoAreaFreeshippingQuery groupByCartAmount() Group by the cart_amount column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery groupById() Group by the id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery groupByAreaId() Group by the area_id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery groupByDeliveryModeId() Group by the delivery_mode_id column
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery groupByCartAmount() Group by the cart_amount column
  *
- * @method     ChildSocolissimoAreaFreeshippingQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
- * @method     ChildSocolissimoAreaFreeshippingQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
- * @method     ChildSocolissimoAreaFreeshippingQuery innerJoin($relation) Adds a INNER JOIN clause to the query
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery leftJoin($relation) Adds a LEFT JOIN clause to the query
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery rightJoin($relation) Adds a RIGHT JOIN clause to the query
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery innerJoin($relation) Adds a INNER JOIN clause to the query
  *
- * @method     ChildSocolissimoAreaFreeshippingQuery leftJoinArea($relationAlias = null) Adds a LEFT JOIN clause to the query using the Area relation
- * @method     ChildSocolissimoAreaFreeshippingQuery rightJoinArea($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Area relation
- * @method     ChildSocolissimoAreaFreeshippingQuery innerJoinArea($relationAlias = null) Adds a INNER JOIN clause to the query using the Area relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery leftJoinArea($relationAlias = null) Adds a LEFT JOIN clause to the query using the Area relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery rightJoinArea($relationAlias = null) Adds a RIGHT JOIN clause to the query using the Area relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery innerJoinArea($relationAlias = null) Adds a INNER JOIN clause to the query using the Area relation
  *
- * @method     ChildSocolissimoAreaFreeshippingQuery leftJoinSocolissimoDeliveryMode($relationAlias = null) Adds a LEFT JOIN clause to the query using the SocolissimoDeliveryMode relation
- * @method     ChildSocolissimoAreaFreeshippingQuery rightJoinSocolissimoDeliveryMode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoDeliveryMode relation
- * @method     ChildSocolissimoAreaFreeshippingQuery innerJoinSocolissimoDeliveryMode($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoDeliveryMode relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery leftJoinSocolissimoDeliveryMode($relationAlias = null) Adds a LEFT JOIN clause to the query using the SocolissimoDeliveryMode relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery rightJoinSocolissimoDeliveryMode($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoDeliveryMode relation
+ * @method     ChildSocolissimoAreaFreeshippingDomQuery innerJoinSocolissimoDeliveryMode($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoDeliveryMode relation
  *
- * @method     ChildSocolissimoAreaFreeshipping findOne(ConnectionInterface $con = null) Return the first ChildSocolissimoAreaFreeshipping matching the query
- * @method     ChildSocolissimoAreaFreeshipping findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSocolissimoAreaFreeshipping matching the query, or a new ChildSocolissimoAreaFreeshipping object populated from the query conditions when no match is found
+ * @method     ChildSocolissimoAreaFreeshippingDom findOne(ConnectionInterface $con = null) Return the first ChildSocolissimoAreaFreeshippingDom matching the query
+ * @method     ChildSocolissimoAreaFreeshippingDom findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSocolissimoAreaFreeshippingDom matching the query, or a new ChildSocolissimoAreaFreeshippingDom object populated from the query conditions when no match is found
  *
- * @method     ChildSocolissimoAreaFreeshipping findOneById(int $id) Return the first ChildSocolissimoAreaFreeshipping filtered by the id column
- * @method     ChildSocolissimoAreaFreeshipping findOneByAreaId(int $area_id) Return the first ChildSocolissimoAreaFreeshipping filtered by the area_id column
- * @method     ChildSocolissimoAreaFreeshipping findOneByDeliveryModeId(int $delivery_mode_id) Return the first ChildSocolissimoAreaFreeshipping filtered by the delivery_mode_id column
- * @method     ChildSocolissimoAreaFreeshipping findOneByCartAmount(string $cart_amount) Return the first ChildSocolissimoAreaFreeshipping filtered by the cart_amount column
+ * @method     ChildSocolissimoAreaFreeshippingDom findOneById(int $id) Return the first ChildSocolissimoAreaFreeshippingDom filtered by the id column
+ * @method     ChildSocolissimoAreaFreeshippingDom findOneByAreaId(int $area_id) Return the first ChildSocolissimoAreaFreeshippingDom filtered by the area_id column
+ * @method     ChildSocolissimoAreaFreeshippingDom findOneByDeliveryModeId(int $delivery_mode_id) Return the first ChildSocolissimoAreaFreeshippingDom filtered by the delivery_mode_id column
+ * @method     ChildSocolissimoAreaFreeshippingDom findOneByCartAmount(string $cart_amount) Return the first ChildSocolissimoAreaFreeshippingDom filtered by the cart_amount column
  *
- * @method     array findById(int $id) Return ChildSocolissimoAreaFreeshipping objects filtered by the id column
- * @method     array findByAreaId(int $area_id) Return ChildSocolissimoAreaFreeshipping objects filtered by the area_id column
- * @method     array findByDeliveryModeId(int $delivery_mode_id) Return ChildSocolissimoAreaFreeshipping objects filtered by the delivery_mode_id column
- * @method     array findByCartAmount(string $cart_amount) Return ChildSocolissimoAreaFreeshipping objects filtered by the cart_amount column
+ * @method     array findById(int $id) Return ChildSocolissimoAreaFreeshippingDom objects filtered by the id column
+ * @method     array findByAreaId(int $area_id) Return ChildSocolissimoAreaFreeshippingDom objects filtered by the area_id column
+ * @method     array findByDeliveryModeId(int $delivery_mode_id) Return ChildSocolissimoAreaFreeshippingDom objects filtered by the delivery_mode_id column
+ * @method     array findByCartAmount(string $cart_amount) Return ChildSocolissimoAreaFreeshippingDom objects filtered by the cart_amount column
  *
  */
-abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
+abstract class SocolissimoAreaFreeshippingDomQuery extends ModelCriteria
 {
 
     /**
-     * Initializes internal state of \SoColissimo\Model\Base\SocolissimoAreaFreeshippingQuery object.
+     * Initializes internal state of \SoColissimo\Model\Base\SocolissimoAreaFreeshippingDomQuery object.
      *
      * @param     string $dbName The database name
      * @param     string $modelName The phpName of a model, e.g. 'Book'
      * @param     string $modelAlias The alias for the model in this query, e.g. 'b'
      */
-    public function __construct($dbName = 'thelia', $modelName = '\\SoColissimo\\Model\\SocolissimoAreaFreeshipping', $modelAlias = null)
+    public function __construct($dbName = 'thelia', $modelName = '\\SoColissimo\\Model\\SocolissimoAreaFreeshippingDom', $modelAlias = null)
     {
         parent::__construct($dbName, $modelName, $modelAlias);
     }
 
     /**
-     * Returns a new ChildSocolissimoAreaFreeshippingQuery object.
+     * Returns a new ChildSocolissimoAreaFreeshippingDomQuery object.
      *
      * @param     string $modelAlias The alias of a model in the query
      * @param     Criteria $criteria Optional Criteria to build the query from
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery
+     * @return ChildSocolissimoAreaFreeshippingDomQuery
      */
     public static function create($modelAlias = null, $criteria = null)
     {
-        if ($criteria instanceof \SoColissimo\Model\SocolissimoAreaFreeshippingQuery) {
+        if ($criteria instanceof \SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery) {
             return $criteria;
         }
-        $query = new \SoColissimo\Model\SocolissimoAreaFreeshippingQuery();
+        $query = new \SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery();
         if (null !== $modelAlias) {
             $query->setModelAlias($modelAlias);
         }
@@ -109,19 +109,19 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param mixed $key Primary key to use for the query
      * @param ConnectionInterface $con an optional connection object
      *
-     * @return ChildSocolissimoAreaFreeshipping|array|mixed the result, formatted by the current formatter
+     * @return ChildSocolissimoAreaFreeshippingDom|array|mixed the result, formatted by the current formatter
      */
     public function findPk($key, $con = null)
     {
         if ($key === null) {
             return null;
         }
-        if ((null !== ($obj = SocolissimoAreaFreeshippingTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
+        if ((null !== ($obj = SocolissimoAreaFreeshippingDomTableMap::getInstanceFromPool((string) $key))) && !$this->formatter) {
             // the object is already in the instance pool
             return $obj;
         }
         if ($con === null) {
-            $con = Propel::getServiceContainer()->getReadConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getReadConnection(SocolissimoAreaFreeshippingDomTableMap::DATABASE_NAME);
         }
         $this->basePreSelect($con);
         if ($this->formatter || $this->modelAlias || $this->with || $this->select
@@ -140,11 +140,11 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return   ChildSocolissimoAreaFreeshipping A model object, or null if the key is not found
+     * @return   ChildSocolissimoAreaFreeshippingDom A model object, or null if the key is not found
      */
     protected function findPkSimple($key, $con)
     {
-        $sql = 'SELECT ID, AREA_ID, DELIVERY_MODE_ID, CART_AMOUNT FROM socolissimo_area_freeshipping WHERE ID = :p0';
+        $sql = 'SELECT ID, AREA_ID, DELIVERY_MODE_ID, CART_AMOUNT FROM socolissimo_area_freeshipping_dom WHERE ID = :p0';
         try {
             $stmt = $con->prepare($sql);
             $stmt->bindValue(':p0', $key, PDO::PARAM_INT);
@@ -155,9 +155,9 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
         }
         $obj = null;
         if ($row = $stmt->fetch(\PDO::FETCH_NUM)) {
-            $obj = new ChildSocolissimoAreaFreeshipping();
+            $obj = new ChildSocolissimoAreaFreeshippingDom();
             $obj->hydrate($row);
-            SocolissimoAreaFreeshippingTableMap::addInstanceToPool($obj, (string) $key);
+            SocolissimoAreaFreeshippingDomTableMap::addInstanceToPool($obj, (string) $key);
         }
         $stmt->closeCursor();
 
@@ -170,7 +170,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param     mixed $key Primary key to use for the query
      * @param     ConnectionInterface $con A connection object
      *
-     * @return ChildSocolissimoAreaFreeshipping|array|mixed the result, formatted by the current formatter
+     * @return ChildSocolissimoAreaFreeshippingDom|array|mixed the result, formatted by the current formatter
      */
     protected function findPkComplex($key, $con)
     {
@@ -212,12 +212,12 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *
      * @param     mixed $key Primary key to use for the query
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByPrimaryKey($key)
     {
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $key, Criteria::EQUAL);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $key, Criteria::EQUAL);
     }
 
     /**
@@ -225,12 +225,12 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *
      * @param     array $keys The list of primary key to use for the query
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByPrimaryKeys($keys)
     {
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $keys, Criteria::IN);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $keys, Criteria::IN);
     }
 
     /**
@@ -249,18 +249,18 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterById($id = null, $comparison = null)
     {
         if (is_array($id)) {
             $useMinMax = false;
             if (isset($id['min'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $id['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($id['max'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $id['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -271,7 +271,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $id, $comparison);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $id, $comparison);
     }
 
     /**
@@ -292,18 +292,18 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByAreaId($areaId = null, $comparison = null)
     {
         if (is_array($areaId)) {
             $useMinMax = false;
             if (isset($areaId['min'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::AREA_ID, $areaId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::AREA_ID, $areaId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($areaId['max'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::AREA_ID, $areaId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::AREA_ID, $areaId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -314,7 +314,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::AREA_ID, $areaId, $comparison);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::AREA_ID, $areaId, $comparison);
     }
 
     /**
@@ -335,18 +335,18 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByDeliveryModeId($deliveryModeId = null, $comparison = null)
     {
         if (is_array($deliveryModeId)) {
             $useMinMax = false;
             if (isset($deliveryModeId['min'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $deliveryModeId['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::DELIVERY_MODE_ID, $deliveryModeId['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($deliveryModeId['max'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $deliveryModeId['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::DELIVERY_MODE_ID, $deliveryModeId['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -357,7 +357,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $deliveryModeId, $comparison);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::DELIVERY_MODE_ID, $deliveryModeId, $comparison);
     }
 
     /**
@@ -376,18 +376,18 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      *              Use associative array('min' => $minValue, 'max' => $maxValue) for intervals.
      * @param     string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByCartAmount($cartAmount = null, $comparison = null)
     {
         if (is_array($cartAmount)) {
             $useMinMax = false;
             if (isset($cartAmount['min'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT, $cartAmount['min'], Criteria::GREATER_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::CART_AMOUNT, $cartAmount['min'], Criteria::GREATER_EQUAL);
                 $useMinMax = true;
             }
             if (isset($cartAmount['max'])) {
-                $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT, $cartAmount['max'], Criteria::LESS_EQUAL);
+                $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::CART_AMOUNT, $cartAmount['max'], Criteria::LESS_EQUAL);
                 $useMinMax = true;
             }
             if ($useMinMax) {
@@ -398,7 +398,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             }
         }
 
-        return $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::CART_AMOUNT, $cartAmount, $comparison);
+        return $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::CART_AMOUNT, $cartAmount, $comparison);
     }
 
     /**
@@ -407,20 +407,20 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param \SoColissimo\Model\Thelia\Model\Area|ObjectCollection $area The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterByArea($area, $comparison = null)
     {
         if ($area instanceof \SoColissimo\Model\Thelia\Model\Area) {
             return $this
-                ->addUsingAlias(SocolissimoAreaFreeshippingTableMap::AREA_ID, $area->getId(), $comparison);
+                ->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::AREA_ID, $area->getId(), $comparison);
         } elseif ($area instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(SocolissimoAreaFreeshippingTableMap::AREA_ID, $area->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::AREA_ID, $area->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterByArea() only accepts arguments of type \SoColissimo\Model\Thelia\Model\Area or Collection');
         }
@@ -432,7 +432,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function joinArea($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -482,20 +482,20 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param \SoColissimo\Model\SocolissimoDeliveryMode|ObjectCollection $socolissimoDeliveryMode The related object(s) to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function filterBySocolissimoDeliveryMode($socolissimoDeliveryMode, $comparison = null)
     {
         if ($socolissimoDeliveryMode instanceof \SoColissimo\Model\SocolissimoDeliveryMode) {
             return $this
-                ->addUsingAlias(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $socolissimoDeliveryMode->getId(), $comparison);
+                ->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::DELIVERY_MODE_ID, $socolissimoDeliveryMode->getId(), $comparison);
         } elseif ($socolissimoDeliveryMode instanceof ObjectCollection) {
             if (null === $comparison) {
                 $comparison = Criteria::IN;
             }
 
             return $this
-                ->addUsingAlias(SocolissimoAreaFreeshippingTableMap::DELIVERY_MODE_ID, $socolissimoDeliveryMode->toKeyValue('PrimaryKey', 'Id'), $comparison);
+                ->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::DELIVERY_MODE_ID, $socolissimoDeliveryMode->toKeyValue('PrimaryKey', 'Id'), $comparison);
         } else {
             throw new PropelException('filterBySocolissimoDeliveryMode() only accepts arguments of type \SoColissimo\Model\SocolissimoDeliveryMode or Collection');
         }
@@ -507,7 +507,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
     public function joinSocolissimoDeliveryMode($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
@@ -554,21 +554,21 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
     /**
      * Exclude object from result
      *
-     * @param   ChildSocolissimoAreaFreeshipping $socolissimoAreaFreeshipping Object to remove from the list of results
+     * @param   ChildSocolissimoAreaFreeshippingDom $socolissimoAreaFreeshippingDom Object to remove from the list of results
      *
-     * @return ChildSocolissimoAreaFreeshippingQuery The current query, for fluid interface
+     * @return ChildSocolissimoAreaFreeshippingDomQuery The current query, for fluid interface
      */
-    public function prune($socolissimoAreaFreeshipping = null)
+    public function prune($socolissimoAreaFreeshippingDom = null)
     {
-        if ($socolissimoAreaFreeshipping) {
-            $this->addUsingAlias(SocolissimoAreaFreeshippingTableMap::ID, $socolissimoAreaFreeshipping->getId(), Criteria::NOT_EQUAL);
+        if ($socolissimoAreaFreeshippingDom) {
+            $this->addUsingAlias(SocolissimoAreaFreeshippingDomTableMap::ID, $socolissimoAreaFreeshippingDom->getId(), Criteria::NOT_EQUAL);
         }
 
         return $this;
     }
 
     /**
-     * Deletes all rows from the socolissimo_area_freeshipping table.
+     * Deletes all rows from the socolissimo_area_freeshipping_dom table.
      *
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).
@@ -576,7 +576,7 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
     public function doDeleteAll(ConnectionInterface $con = null)
     {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingDomTableMap::DATABASE_NAME);
         }
         $affectedRows = 0; // initialize var to track total num of affected rows
         try {
@@ -587,8 +587,8 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             // Because this db requires some delete cascade/set null emulation, we have to
             // clear the cached instance *after* the emulation has happened (since
             // instances get re-added by the select statement contained therein).
-            SocolissimoAreaFreeshippingTableMap::clearInstancePool();
-            SocolissimoAreaFreeshippingTableMap::clearRelatedInstancePool();
+            SocolissimoAreaFreeshippingDomTableMap::clearInstancePool();
+            SocolissimoAreaFreeshippingDomTableMap::clearRelatedInstancePool();
 
             $con->commit();
         } catch (PropelException $e) {
@@ -600,9 +600,9 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
     }
 
     /**
-     * Performs a DELETE on the database, given a ChildSocolissimoAreaFreeshipping or Criteria object OR a primary key value.
+     * Performs a DELETE on the database, given a ChildSocolissimoAreaFreeshippingDom or Criteria object OR a primary key value.
      *
-     * @param mixed               $values Criteria or ChildSocolissimoAreaFreeshipping object or primary key or array of primary keys
+     * @param mixed               $values Criteria or ChildSocolissimoAreaFreeshippingDom object or primary key or array of primary keys
      *              which is used to create the DELETE statement
      * @param ConnectionInterface $con the connection to use
      * @return int The number of affected rows (if supported by underlying database driver).  This includes CASCADE-related rows
@@ -613,13 +613,13 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
      public function delete(ConnectionInterface $con = null)
      {
         if (null === $con) {
-            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+            $con = Propel::getServiceContainer()->getWriteConnection(SocolissimoAreaFreeshippingDomTableMap::DATABASE_NAME);
         }
 
         $criteria = $this;
 
         // Set the correct dbName
-        $criteria->setDbName(SocolissimoAreaFreeshippingTableMap::DATABASE_NAME);
+        $criteria->setDbName(SocolissimoAreaFreeshippingDomTableMap::DATABASE_NAME);
 
         $affectedRows = 0; // initialize var to track total num of affected rows
 
@@ -629,10 +629,10 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
             $con->beginTransaction();
 
 
-        SocolissimoAreaFreeshippingTableMap::removeInstanceFromPool($criteria);
+        SocolissimoAreaFreeshippingDomTableMap::removeInstanceFromPool($criteria);
 
             $affectedRows += ModelCriteria::delete($con);
-            SocolissimoAreaFreeshippingTableMap::clearRelatedInstancePool();
+            SocolissimoAreaFreeshippingDomTableMap::clearRelatedInstancePool();
             $con->commit();
 
             return $affectedRows;
@@ -642,4 +642,4 @@ abstract class SocolissimoAreaFreeshippingQuery extends ModelCriteria
         }
     }
 
-} // SocolissimoAreaFreeshippingQuery
+} // SocolissimoAreaFreeshippingDomQuery

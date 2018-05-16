@@ -53,15 +53,28 @@
         </foreign-key>
     </table>
 
-    <table name="socolissimo_area_freeshipping">
+    <table name="socolissimo_area_freeshipping_dom">
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="area_id" required="true" type="INTEGER" />
         <column name="delivery_mode_id" required="true" type="INTEGER" />
-        <column name="cart_amount" required="true" type="FLOAT" />
-        <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+        <column name="cart_amount"  defaultValue="0.000000" required="true" scale="6" size="16" type="DECIMAL" />
+        <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_dom_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="area_id" />
         </foreign-key>
-        <foreign-key foreignTable="socolissimo_delivery_mode" name="fk_socolissimo_area_freeshipping_delivery_mode_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+        <foreign-key foreignTable="socolissimo_delivery_mode" name="fk_socolissimo_area_freeshipping_dom_delivery_mode_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+            <reference foreign="id" local="delivery_mode_id" />
+        </foreign-key>
+    </table>
+
+    <table name="socolissimo_area_freeshipping_pr">
+        <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
+        <column name="area_id" required="true" type="INTEGER" />
+        <column name="delivery_mode_id" required="true" type="INTEGER" />
+        <column name="cart_amount"  defaultValue="0.000000" required="true" scale="6" size="16" type="DECIMAL" />
+        <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_pr_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
+            <reference foreign="id" local="area_id" />
+        </foreign-key>
+        <foreign-key foreignTable="socolissimo_delivery_mode" name="fk_socolissimo_area_freeshipping_pr_delivery_mode_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="delivery_mode_id" />
         </foreign-key>
     </table>

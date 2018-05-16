@@ -23,7 +23,10 @@
 
 namespace SoColissimo\Controller;
 
-use SoColissimo\Model\SocolissimoAreaFreeshipping;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDom;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPr;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery;
 use SoColissimo\Model\SocolissimoAreaFreeshippingQuery;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -119,22 +122,46 @@ class FreeShipping extends BaseAdminController
                 return null;
             }
 
-            $socolissimoFreeShipping = new SocolissimoAreaFreeshipping();
+            //Price slices for "Domicile"
+            $socolissimoFreeShippingDom = new SocolissimoAreaFreeshippingDom();
 
-            $socolissimoAreaFreeshippingQuery = SocolissimoAreaFreeshippingQuery::create()
+            $socolissimoAreaFreeshippingDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
                 ->filterByAreaId($socolissimo_area_id)
                 ->filterByDeliveryModeId($socolissimo_delivery_id)
                 ->findOne();
 
-            if (null === $socolissimoAreaFreeshippingQuery) {
-                $socolissimoFreeShipping
+            if (null === $socolissimoAreaFreeshippingDomQuery) {
+                $socolissimoFreeShippingDom
                     ->setAreaId($socolissimo_area_id)
                     ->setDeliveryModeId($socolissimo_delivery_id)
                     ->setCartAmount($cartAmount)
                     ->save();
             }
 
-            $cartAmountQuery = SocolissimoAreaFreeshippingQuery::create()
+            $cartAmountDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
+                ->filterByAreaId($socolissimo_area_id)
+                ->filterByDeliveryModeId($socolissimo_delivery_id)
+                ->findOneOrCreate()
+                ->setCartAmount($cartAmount)
+                ->save();
+
+            //Price slices for "Point Relais"
+            $socolissimoFreeShippingPr = new SocolissimoAreaFreeshippingPr();
+
+            $socolissimoAreaFreeshippingPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
+                ->filterByAreaId($socolissimo_area_id)
+                ->filterByDeliveryModeId($socolissimo_delivery_id)
+                ->findOne();
+
+            if (null === $socolissimoAreaFreeshippingPrQuery) {
+                $socolissimoFreeShippingPr
+                    ->setAreaId($socolissimo_area_id)
+                    ->setDeliveryModeId($socolissimo_delivery_id)
+                    ->setCartAmount($cartAmount)
+                    ->save();
+            }
+
+            $cartAmountPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
                 ->filterByAreaId($socolissimo_area_id)
                 ->filterByDeliveryModeId($socolissimo_delivery_id)
                 ->findOneOrCreate()

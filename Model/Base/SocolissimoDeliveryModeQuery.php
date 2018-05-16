@@ -41,9 +41,13 @@ use SoColissimo\Model\Map\SocolissimoDeliveryModeTableMap;
  * @method     ChildSocolissimoDeliveryModeQuery rightJoinSocolissimoPrice($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoPrice relation
  * @method     ChildSocolissimoDeliveryModeQuery innerJoinSocolissimoPrice($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoPrice relation
  *
- * @method     ChildSocolissimoDeliveryModeQuery leftJoinSocolissimoAreaFreeshipping($relationAlias = null) Adds a LEFT JOIN clause to the query using the SocolissimoAreaFreeshipping relation
- * @method     ChildSocolissimoDeliveryModeQuery rightJoinSocolissimoAreaFreeshipping($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoAreaFreeshipping relation
- * @method     ChildSocolissimoDeliveryModeQuery innerJoinSocolissimoAreaFreeshipping($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoAreaFreeshipping relation
+ * @method     ChildSocolissimoDeliveryModeQuery leftJoinSocolissimoAreaFreeshippingDom($relationAlias = null) Adds a LEFT JOIN clause to the query using the SocolissimoAreaFreeshippingDom relation
+ * @method     ChildSocolissimoDeliveryModeQuery rightJoinSocolissimoAreaFreeshippingDom($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoAreaFreeshippingDom relation
+ * @method     ChildSocolissimoDeliveryModeQuery innerJoinSocolissimoAreaFreeshippingDom($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoAreaFreeshippingDom relation
+ *
+ * @method     ChildSocolissimoDeliveryModeQuery leftJoinSocolissimoAreaFreeshippingPr($relationAlias = null) Adds a LEFT JOIN clause to the query using the SocolissimoAreaFreeshippingPr relation
+ * @method     ChildSocolissimoDeliveryModeQuery rightJoinSocolissimoAreaFreeshippingPr($relationAlias = null) Adds a RIGHT JOIN clause to the query using the SocolissimoAreaFreeshippingPr relation
+ * @method     ChildSocolissimoDeliveryModeQuery innerJoinSocolissimoAreaFreeshippingPr($relationAlias = null) Adds a INNER JOIN clause to the query using the SocolissimoAreaFreeshippingPr relation
  *
  * @method     ChildSocolissimoDeliveryMode findOne(ConnectionInterface $con = null) Return the first ChildSocolissimoDeliveryMode matching the query
  * @method     ChildSocolissimoDeliveryMode findOneOrCreate(ConnectionInterface $con = null) Return the first ChildSocolissimoDeliveryMode matching the query, or a new ChildSocolissimoDeliveryMode object populated from the query conditions when no match is found
@@ -477,40 +481,40 @@ abstract class SocolissimoDeliveryModeQuery extends ModelCriteria
     }
 
     /**
-     * Filter the query by a related \SoColissimo\Model\SocolissimoAreaFreeshipping object
+     * Filter the query by a related \SoColissimo\Model\SocolissimoAreaFreeshippingDom object
      *
-     * @param \SoColissimo\Model\SocolissimoAreaFreeshipping|ObjectCollection $socolissimoAreaFreeshipping  the related object to use as filter
+     * @param \SoColissimo\Model\SocolissimoAreaFreeshippingDom|ObjectCollection $socolissimoAreaFreeshippingDom  the related object to use as filter
      * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
      *
      * @return ChildSocolissimoDeliveryModeQuery The current query, for fluid interface
      */
-    public function filterBySocolissimoAreaFreeshipping($socolissimoAreaFreeshipping, $comparison = null)
+    public function filterBySocolissimoAreaFreeshippingDom($socolissimoAreaFreeshippingDom, $comparison = null)
     {
-        if ($socolissimoAreaFreeshipping instanceof \SoColissimo\Model\SocolissimoAreaFreeshipping) {
+        if ($socolissimoAreaFreeshippingDom instanceof \SoColissimo\Model\SocolissimoAreaFreeshippingDom) {
             return $this
-                ->addUsingAlias(SocolissimoDeliveryModeTableMap::ID, $socolissimoAreaFreeshipping->getDeliveryModeId(), $comparison);
-        } elseif ($socolissimoAreaFreeshipping instanceof ObjectCollection) {
+                ->addUsingAlias(SocolissimoDeliveryModeTableMap::ID, $socolissimoAreaFreeshippingDom->getDeliveryModeId(), $comparison);
+        } elseif ($socolissimoAreaFreeshippingDom instanceof ObjectCollection) {
             return $this
-                ->useSocolissimoAreaFreeshippingQuery()
-                ->filterByPrimaryKeys($socolissimoAreaFreeshipping->getPrimaryKeys())
+                ->useSocolissimoAreaFreeshippingDomQuery()
+                ->filterByPrimaryKeys($socolissimoAreaFreeshippingDom->getPrimaryKeys())
                 ->endUse();
         } else {
-            throw new PropelException('filterBySocolissimoAreaFreeshipping() only accepts arguments of type \SoColissimo\Model\SocolissimoAreaFreeshipping or Collection');
+            throw new PropelException('filterBySocolissimoAreaFreeshippingDom() only accepts arguments of type \SoColissimo\Model\SocolissimoAreaFreeshippingDom or Collection');
         }
     }
 
     /**
-     * Adds a JOIN clause to the query using the SocolissimoAreaFreeshipping relation
+     * Adds a JOIN clause to the query using the SocolissimoAreaFreeshippingDom relation
      *
      * @param     string $relationAlias optional alias for the relation
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
      * @return ChildSocolissimoDeliveryModeQuery The current query, for fluid interface
      */
-    public function joinSocolissimoAreaFreeshipping($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function joinSocolissimoAreaFreeshippingDom($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         $tableMap = $this->getTableMap();
-        $relationMap = $tableMap->getRelation('SocolissimoAreaFreeshipping');
+        $relationMap = $tableMap->getRelation('SocolissimoAreaFreeshippingDom');
 
         // create a ModelJoin object for this join
         $join = new ModelJoin();
@@ -525,14 +529,14 @@ abstract class SocolissimoDeliveryModeQuery extends ModelCriteria
             $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
             $this->addJoinObject($join, $relationAlias);
         } else {
-            $this->addJoinObject($join, 'SocolissimoAreaFreeshipping');
+            $this->addJoinObject($join, 'SocolissimoAreaFreeshippingDom');
         }
 
         return $this;
     }
 
     /**
-     * Use the SocolissimoAreaFreeshipping relation SocolissimoAreaFreeshipping object
+     * Use the SocolissimoAreaFreeshippingDom relation SocolissimoAreaFreeshippingDom object
      *
      * @see useQuery()
      *
@@ -540,13 +544,86 @@ abstract class SocolissimoDeliveryModeQuery extends ModelCriteria
      *                                   to be used as main alias in the secondary query
      * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
      *
-     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingQuery A secondary query class using the current class as primary query
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery A secondary query class using the current class as primary query
      */
-    public function useSocolissimoAreaFreeshippingQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    public function useSocolissimoAreaFreeshippingDomQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
     {
         return $this
-            ->joinSocolissimoAreaFreeshipping($relationAlias, $joinType)
-            ->useQuery($relationAlias ? $relationAlias : 'SocolissimoAreaFreeshipping', '\SoColissimo\Model\SocolissimoAreaFreeshippingQuery');
+            ->joinSocolissimoAreaFreeshippingDom($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SocolissimoAreaFreeshippingDom', '\SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery');
+    }
+
+    /**
+     * Filter the query by a related \SoColissimo\Model\SocolissimoAreaFreeshippingPr object
+     *
+     * @param \SoColissimo\Model\SocolissimoAreaFreeshippingPr|ObjectCollection $socolissimoAreaFreeshippingPr  the related object to use as filter
+     * @param string $comparison Operator to use for the column comparison, defaults to Criteria::EQUAL
+     *
+     * @return ChildSocolissimoDeliveryModeQuery The current query, for fluid interface
+     */
+    public function filterBySocolissimoAreaFreeshippingPr($socolissimoAreaFreeshippingPr, $comparison = null)
+    {
+        if ($socolissimoAreaFreeshippingPr instanceof \SoColissimo\Model\SocolissimoAreaFreeshippingPr) {
+            return $this
+                ->addUsingAlias(SocolissimoDeliveryModeTableMap::ID, $socolissimoAreaFreeshippingPr->getDeliveryModeId(), $comparison);
+        } elseif ($socolissimoAreaFreeshippingPr instanceof ObjectCollection) {
+            return $this
+                ->useSocolissimoAreaFreeshippingPrQuery()
+                ->filterByPrimaryKeys($socolissimoAreaFreeshippingPr->getPrimaryKeys())
+                ->endUse();
+        } else {
+            throw new PropelException('filterBySocolissimoAreaFreeshippingPr() only accepts arguments of type \SoColissimo\Model\SocolissimoAreaFreeshippingPr or Collection');
+        }
+    }
+
+    /**
+     * Adds a JOIN clause to the query using the SocolissimoAreaFreeshippingPr relation
+     *
+     * @param     string $relationAlias optional alias for the relation
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return ChildSocolissimoDeliveryModeQuery The current query, for fluid interface
+     */
+    public function joinSocolissimoAreaFreeshippingPr($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        $tableMap = $this->getTableMap();
+        $relationMap = $tableMap->getRelation('SocolissimoAreaFreeshippingPr');
+
+        // create a ModelJoin object for this join
+        $join = new ModelJoin();
+        $join->setJoinType($joinType);
+        $join->setRelationMap($relationMap, $this->useAliasInSQL ? $this->getModelAlias() : null, $relationAlias);
+        if ($previousJoin = $this->getPreviousJoin()) {
+            $join->setPreviousJoin($previousJoin);
+        }
+
+        // add the ModelJoin to the current object
+        if ($relationAlias) {
+            $this->addAlias($relationAlias, $relationMap->getRightTable()->getName());
+            $this->addJoinObject($join, $relationAlias);
+        } else {
+            $this->addJoinObject($join, 'SocolissimoAreaFreeshippingPr');
+        }
+
+        return $this;
+    }
+
+    /**
+     * Use the SocolissimoAreaFreeshippingPr relation SocolissimoAreaFreeshippingPr object
+     *
+     * @see useQuery()
+     *
+     * @param     string $relationAlias optional alias for the relation,
+     *                                   to be used as main alias in the secondary query
+     * @param     string $joinType Accepted values are null, 'left join', 'right join', 'inner join'
+     *
+     * @return   \SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery A secondary query class using the current class as primary query
+     */
+    public function useSocolissimoAreaFreeshippingPrQuery($relationAlias = null, $joinType = Criteria::INNER_JOIN)
+    {
+        return $this
+            ->joinSocolissimoAreaFreeshippingPr($relationAlias, $joinType)
+            ->useQuery($relationAlias ? $relationAlias : 'SocolissimoAreaFreeshippingPr', '\SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery');
     }
 
     /**
