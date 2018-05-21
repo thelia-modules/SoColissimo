@@ -27,7 +27,6 @@ use PDO;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
-use SoColissimo\Model\SocolissimoAreaFreeshippingDom;
 use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery;
 use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery;
 use SoColissimo\Model\SocolissimoDeliveryMode;
@@ -145,12 +144,10 @@ class SoColissimo extends AbstractDeliveryModule
 
             //If a min price for freeshipping is define and the amount of cart reach this montant return 0
             if (null !== $freeshippingFrom && $freeshippingFrom <= $cartAmount) {
+                $postage = 0;
                 return $postage;
             }
-            $postage = $firstPrice->getPrice();
 
-
-            //If Delivery mode is "Domicile"
             if ($deliveryModeQuery === 'dom') {
                 $cartAmountDom = SocolissimoAreaFreeshippingDomQuery::create()
                     ->findOne()
@@ -159,8 +156,7 @@ class SoColissimo extends AbstractDeliveryModule
                     $postage = 0;
                     return $postage;
                 }
-            } //If Delivery mode is "Point-Relais"
-            elseif ($deliveryModeQuery === 'pr') {
+            } elseif ($deliveryModeQuery === 'pr') {
                 $cartAmountPr = SocolissimoAreaFreeshippingPrQuery::create()
                     ->findOne()
                     ->getCartAmount();
@@ -344,6 +340,8 @@ class SoColissimo extends AbstractDeliveryModule
         try {
             // Security to not erase user config on reactivation
             SocolissimoDeliveryModeQuery::create()->findOne();
+            SocolissimoAreaFreeshippingDomQuery::create()->findOne();
+            SocolissimoAreaFreeshippingPrQuery::create()->findOne();
         } catch (\Exception $e) {
             $database = new Database($con->getWrappedConnection());
             $database->insertSql(null, [__DIR__ . '/Config/thelia.sql', __DIR__ . '/Config/insert.sql']);

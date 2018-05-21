@@ -8,6 +8,16 @@ VALUES
 	(1, 'Domicile', 'dom', 0, NULL),
 	(2, 'Point relais', 'pr', 0, NULL);
 
+-- add domicile delivery mode
+INSERT INTO `socolissimo_area_freeshipping_dom` (`id`, `area_id`, `delivery_mode_id`, `cart_amount`)
+VALUES
+	(1, '1', '1', NULL);
+
+-- add relais delivery mode
+INSERT INTO `socolissimo_area_freeshipping_pr` (`id`, `area_id`, `delivery_mode_id`, `cart_amount`)
+VALUES
+	(1, '1', '1', NULL);
+
 -- ---------------------------------------------------------------------
 -- Mail templates for socolissimo
 -- ---------------------------------------------------------------------
