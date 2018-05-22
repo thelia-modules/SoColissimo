@@ -344,7 +344,7 @@
                                                                     <span class="input-group-addon {if $AREA_FREESHIPPING}alert-success{/if}">{intl l="Activate free shipping from (€) :" d="socolissimo.bo.default"}</span>
                                                                     <input type="hidden" name="area-id" value="{$area_id}">
                                                                     <input type="hidden" name="delivery-mode" value="{$deliveryModeId}">
-                                                                    <input type="number" name="cart-amount" class="form-control" value="{$AREA_FREESHIPPING}">
+                                                                    <input type="number" step="0.01" name="cart-amount" class="form-control" value="{$AREA_FREESHIPPING}">
                                                                     <span class="input-group-btn">
                                                                 <button class="btn btn-default" type="submit">{intl l="Save"}</button>
                                                             </span>

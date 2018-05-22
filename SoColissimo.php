@@ -27,6 +27,8 @@ use PDO;
 use Propel\Runtime\ActiveQuery\Criteria;
 use Propel\Runtime\Exception\PropelException;
 use Propel\Runtime\Propel;
+use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery;
+use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery;
 use SoColissimo\Model\SocolissimoDeliveryMode;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use SoColissimo\Model\SocolissimoPrice;
@@ -93,7 +95,6 @@ class SoColissimo extends AbstractDeliveryModule
         if (null !== $prices || null !== $freeShipping) {
             return true;
         }
-
         return false;
     }
 
@@ -108,7 +109,7 @@ class SoColissimo extends AbstractDeliveryModule
      */
     public static function getPostageAmount($areaId, $weight, $cartAmount = 0, $deliverModeCode = null)
     {
-        if ($deliverModeCode === null) {
+        if (null === $deliverModeCode) {
             $deliveryMode = SocolissimoDeliveryModeQuery::create()->find()->getFirst();
         } else {
             $deliveryMode = SocolissimoDeliveryModeQuery::create()->findOneByCode($deliverModeCode);
@@ -116,6 +117,8 @@ class SoColissimo extends AbstractDeliveryModule
 
         $freeshipping = $deliveryMode->getFreeshippingActive();
         $freeshippingFrom = $deliveryMode->getFreeshippingFrom();
+        $deliveryModeQuery = $deliveryMode->getCode();
+
 
         $postage = 0;
 
@@ -141,14 +144,30 @@ class SoColissimo extends AbstractDeliveryModule
 
             //If a min price for freeshipping is define and the amount of cart reach this montant return 0
             if (null !== $freeshippingFrom && $freeshippingFrom <= $cartAmount) {
+                $postage = 0;
                 return $postage;
             }
 
+            if ($deliveryModeQuery === 'dom') {
+                $cartAmountDom = SocolissimoAreaFreeshippingDomQuery::create()
+                    ->findOne()
+                    ->getCartAmount();
+                if (null !== $cartAmountDom && $cartAmountDom <= $cartAmount) {
+                    $postage = 0;
+                    return $postage;
+                }
+            } elseif ($deliveryModeQuery === 'pr') {
+                $cartAmountPr = SocolissimoAreaFreeshippingPrQuery::create()
+                    ->findOne()
+                    ->getCartAmount();
+                if (null !== $cartAmountPr && $cartAmountPr <= $cartAmount) {
+                    $postage = 0;
+                    return $postage;
+                }
+            }
             $postage = $firstPrice->getPrice();
         }
-
         return $postage;
-
     }
 
     /**
@@ -192,7 +211,6 @@ class SoColissimo extends AbstractDeliveryModule
         if (empty($areaIdArray)) {
             throw new DeliveryException("Your delivery country is not covered by Colissimo.");
         }
-
         $postage = null;
 
         if (null === $postage = self::getMinPostage($areaIdArray, $cartWeight, $cartAmount, $deliveryModeCode)) {
@@ -201,7 +219,6 @@ class SoColissimo extends AbstractDeliveryModule
                 throw new DeliveryException("Colissimo delivery unavailable for your cart weight or delivery country");
             }
         }
-
         return $postage;
     }
 
@@ -320,12 +337,13 @@ class SoColissimo extends AbstractDeliveryModule
 
     public function postActivation(ConnectionInterface $con = null)
     {
-        $database = new Database($con);
-
         try {
             // Security to not erase user config on reactivation
             SocolissimoDeliveryModeQuery::create()->findOne();
+            SocolissimoAreaFreeshippingDomQuery::create()->findOne();
+            SocolissimoAreaFreeshippingPrQuery::create()->findOne();
         } catch (\Exception $e) {
+            $database = new Database($con->getWrappedConnection());
             $database->insertSql(null, [__DIR__ . '/Config/thelia.sql', __DIR__ . '/Config/insert.sql']);
         }
 
@@ -339,6 +357,7 @@ class SoColissimo extends AbstractDeliveryModule
         } catch (\Exception $e) {
             throw $e;
         }
+
 
         ConfigQuery::write(
             'socolissimo_login',

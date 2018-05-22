@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************/
 /*                                                                                   */
-/*      Thelia	                                                                     */
+/*      Thelia                                                                       */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
 /*      email : info@thelia.net                                                      */
@@ -17,7 +17,7 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/*      along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
 /*************************************************************************************/
 
@@ -27,7 +27,6 @@ use SoColissimo\Model\SocolissimoAreaFreeshippingDom;
 use SoColissimo\Model\SocolissimoAreaFreeshippingDomQuery;
 use SoColissimo\Model\SocolissimoAreaFreeshippingPr;
 use SoColissimo\Model\SocolissimoAreaFreeshippingPrQuery;
-use SoColissimo\Model\SocolissimoAreaFreeshippingQuery;
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Admin\BaseAdminController;
@@ -41,7 +40,8 @@ class FreeShipping extends BaseAdminController
 {
     public function toggleFreeShippingActivation()
     {
-        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+        if (null !== $response = $this
+                ->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
             return $response;
         }
 
@@ -60,13 +60,13 @@ class FreeShipping extends BaseAdminController
         } catch (\Exception $e) {
             $response = JsonResponse::create(array("error"=>$e->getMessage()), 500);
         }
-
         return $response;
     }
 
     public function setFreeShippingFrom()
     {
-        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+        if (null !== $response = $this
+                ->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
             return $response;
         }
 
@@ -78,7 +78,6 @@ class FreeShipping extends BaseAdminController
         if ($price < 0) {
             $price = null;
         }
-
         $deliveryMode->setFreeshippingFrom($price)
             ->save();
 
@@ -101,9 +100,12 @@ class FreeShipping extends BaseAdminController
      */
     public function setAreaFreeShipping()
     {
-        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
+        if (null !== $response = $this
+                ->checkAuth(array(AdminResources::MODULE), array('SoColissimo'), AccessManager::UPDATE)) {
             return $response;
         }
+
+        $data = $this->getRequest()->request;
 
         try {
             $data = $this->getRequest()->request;
@@ -111,6 +113,10 @@ class FreeShipping extends BaseAdminController
             $socolissimo_area_id = $data->get('area-id');
             $socolissimo_delivery_id = $data->get('delivery-mode');
             $cartAmount = $data->get("cart-amount");
+
+            if ($cartAmount < 0 || $cartAmount === '') {
+                $cartAmount = null;
+            }
 
             $aeraQuery = AreaQuery::create()->findOneById($socolissimo_area_id);
             if (null === $aeraQuery) {
@@ -123,65 +129,67 @@ class FreeShipping extends BaseAdminController
             }
 
             //Price slices for "Domicile"
-            $socolissimoFreeShippingDom = new SocolissimoAreaFreeshippingDom();
+            if ($socolissimo_delivery_id === '1') {
+                $socolissimoFreeShippingDom = new SocolissimoAreaFreeshippingDom();
 
-            $socolissimoAreaFreeshippingDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
-                ->filterByAreaId($socolissimo_area_id)
-                ->filterByDeliveryModeId($socolissimo_delivery_id)
-                ->findOne();
+                $socolissimoAreaFreeshippingDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
+                    ->filterByAreaId($socolissimo_area_id)
+                    ->filterByDeliveryModeId($socolissimo_delivery_id)
+                    ->findOne();
 
-            if (null === $socolissimoAreaFreeshippingDomQuery) {
-                $socolissimoFreeShippingDom
-                    ->setAreaId($socolissimo_area_id)
-                    ->setDeliveryModeId($socolissimo_delivery_id)
+                if (null === $socolissimoAreaFreeshippingDomQuery) {
+                    $socolissimoFreeShippingDom
+                        ->setAreaId($socolissimo_area_id)
+                        ->setDeliveryModeId($socolissimo_delivery_id)
+                        ->setCartAmount($cartAmount)
+                        ->save();
+                }
+
+                $cartAmountDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
+                    ->filterByAreaId($socolissimo_area_id)
+                    ->filterByDeliveryModeId($socolissimo_delivery_id)
+                    ->findOneOrCreate()
                     ->setCartAmount($cartAmount)
                     ->save();
             }
-
-            $cartAmountDomQuery = SocolissimoAreaFreeshippingDomQuery::create()
-                ->filterByAreaId($socolissimo_area_id)
-                ->filterByDeliveryModeId($socolissimo_delivery_id)
-                ->findOneOrCreate()
-                ->setCartAmount($cartAmount)
-                ->save();
 
             //Price slices for "Point Relais"
-            $socolissimoFreeShippingPr = new SocolissimoAreaFreeshippingPr();
+            if ($socolissimo_delivery_id === '2') {
+                $socolissimoFreeShippingPr = new SocolissimoAreaFreeshippingPr();
 
-            $socolissimoAreaFreeshippingPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
-                ->filterByAreaId($socolissimo_area_id)
-                ->filterByDeliveryModeId($socolissimo_delivery_id)
-                ->findOne();
+                $socolissimoAreaFreeshippingPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
+                    ->filterByAreaId($socolissimo_area_id)
+                    ->filterByDeliveryModeId($socolissimo_delivery_id)
+                    ->findOne();
 
-            if (null === $socolissimoAreaFreeshippingPrQuery) {
-                $socolissimoFreeShippingPr
-                    ->setAreaId($socolissimo_area_id)
-                    ->setDeliveryModeId($socolissimo_delivery_id)
+                if (null === $socolissimoAreaFreeshippingPrQuery) {
+                    $socolissimoFreeShippingPr
+                        ->setAreaId($socolissimo_area_id)
+                        ->setDeliveryModeId($socolissimo_delivery_id)
+                        ->setCartAmount($cartAmount)
+                        ->save();
+                }
+
+                $cartAmountPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
+                    ->filterByAreaId($socolissimo_area_id)
+                    ->filterByDeliveryModeId($socolissimo_delivery_id)
+                    ->findOneOrCreate()
                     ->setCartAmount($cartAmount)
                     ->save();
             }
-
-            $cartAmountPrQuery = SocolissimoAreaFreeshippingPrQuery::create()
-                ->filterByAreaId($socolissimo_area_id)
-                ->filterByDeliveryModeId($socolissimo_delivery_id)
-                ->findOneOrCreate()
-                ->setCartAmount($cartAmount)
-                ->save();
-
         } catch (\Exception $e) {
-
         }
 
-            return $this->generateRedirectFromRoute (
-                "admin.module.configure",
-                array(),
-                array(
-                    'current_tab' => 'prices_slices_tab_' . $data->get('area_freeshipping'),
-                    'module_code' => "SoColissimo",
-                    '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction',
-                    'price_error_id' => null,
-                    'price_error' => null
-                )
-            );
+        return $this->generateRedirectFromRoute(
+            "admin.module.configure",
+            array(),
+            array(
+                'current_tab' => 'prices_slices_tab_' . $data->get('area_freeshipping'),
+                'module_code' => "SoColissimo",
+                '_controller' => 'Thelia\\Controller\\Admin\\ModuleController::configureAction',
+                'price_error_id' => null,
+                'price_error' => null
+            )
+        );
     }
 }

@@ -1,0 +1,2 @@
+ALTER TABLE `socolissimo_area_freeshipping_dom` MODIFY `cart_amount` DECIMAL(16,6) DEFAULT 0.000000 NULL;
+ALTER TABLE `socolissimo_area_freeshipping_pr` MODIFY `cart_amount` DECIMAL(16,6) DEFAULT 0.000000 NULL;

@@ -1,3 +1,8 @@
+# 1.4.3
+- fix freeshipping.php
+- add translate: l18n/backOffice/default/fr_FR.php
+- update version module
+
 # 1.4.2
 Objective: Add a minimum cart amount to get the free shipping cost for "So Colissimo Domicile" by Area
 - Add table socolissimo_area_freeshipping
