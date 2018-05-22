@@ -16,7 +16,7 @@ VALUES
 -- add relais delivery mode
 INSERT INTO `socolissimo_area_freeshipping_pr` (`id`, `area_id`, `delivery_mode_id`, `cart_amount`)
 VALUES
-	(1, '1', '1', NULL);
+	(1, '1', '2', NULL);
 
 -- ---------------------------------------------------------------------
 -- Mail templates for socolissimo
