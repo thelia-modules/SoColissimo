@@ -70,7 +70,6 @@
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="area_id" required="true" type="INTEGER" />
         <column name="delivery_mode_id" required="true" type="INTEGER" />
-        <column name="cart_amount"  defaultValue="0.000000" required="true" scale="6" size="16" type="DECIMAL" />
         <column name="cart_amount"  defaultValue="0.000000" scale="6" size="16" type="DECIMAL" />
         <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_pr_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="area_id" />

@@ -144,11 +144,7 @@ class SocolissimoAreaFreeshippingDomTableMap extends TableMap
         $this->addPrimaryKey('ID', 'Id', 'INTEGER', true, null, null);
         $this->addForeignKey('AREA_ID', 'AreaId', 'INTEGER', 'area', 'ID', true, null, null);
         $this->addForeignKey('DELIVERY_MODE_ID', 'DeliveryModeId', 'INTEGER', 'socolissimo_delivery_mode', 'ID', true, null, null);
-<<<<<<< HEAD
-        $this->addColumn('CART_AMOUNT', 'CartAmount', 'DECIMAL', true, 16, 0);
-=======
         $this->addColumn('CART_AMOUNT', 'CartAmount', 'DECIMAL', false, 16, 0);
->>>>>>> Add new tables, generate sql & models, update freeshipping.php & template BO
     } // initialize()
 
     /**
