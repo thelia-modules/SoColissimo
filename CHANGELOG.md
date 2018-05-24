@@ -1,3 +1,8 @@
+# 1.4.4
+- create loops: AreaFreeshippingDom and AreaFreeshippingPr
+- update template for to add these loops 
+- update version module
+
 # 1.4.3
 - fix freeshipping.php
 - add translate: l18n/backOffice/default/fr_FR.php

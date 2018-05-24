@@ -306,8 +306,8 @@
                                             <input type="hidden" name="delivery-mode" value="{$deliveryModeId}">
                                             <input type="number" name="price" class="form-control" value="{$FREESHIPPING_FROM}">
                                             <span class="input-group-btn">
-                                        <button class="btn btn-default" type="submit">{intl l="Save"}</button>
-                                    </span>
+                                                <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                                            </span>
                                         </div>
                                     </form>
                                 </div>
@@ -338,16 +338,38 @@
                                                         </label>
                                                     </th>
                                                     <th width="40%">
-                                                        <div col-md-12 id="area-freeshipping-{$deliveryModeId}" {if $isSoColissimoFreeShipping eq 1}  style="display:none;" {/if}>
+                                                        <div id="area-freeshipping-{$area_id}" {if $isSoColissimoFreeShipping eq 1}  style="display:none;" {/if}>
                                                             <form action="{url path="/admin/module/socolissimo/area_freeshipping"}"  method="post">
                                                                 <div class="input-group">
-                                                                    <span class="input-group-addon {if $AREA_FREESHIPPING}alert-success{/if}">{intl l="Activate free shipping from (€) :" d="socolissimo.bo.default"}</span>
+                                                                    <span class="input-group-addon {if $area_id }alert-success{/if}">{intl l="Activate free shipping from (€) :" d="socolissimo.bo.default"}</span>
                                                                     <input type="hidden" name="area-id" value="{$area_id}">
                                                                     <input type="hidden" name="delivery-mode" value="{$deliveryModeId}">
-                                                                    <input type="number" step="0.01" name="cart-amount" class="form-control" value="{$AREA_FREESHIPPING}">
+
+                                                                    {if $deliveryModeId eq 1}
+                                                                        {ifloop rel="area_freeshipping_dom"}
+                                                                        {loop type="socolissimo.area.freeshipping.dom" name="area_freeshipping_dom" area_id=$area_id}
+                                                                            <input type="number" step="0.01" name="cart-amount" class="form-control" value="{$CART_AMOUNT}">
+                                                                        {/loop}
+                                                                        {/ifloop}
+                                                                        {elseloop rel="area_freeshipping_dom"}
+                                                                        <input type="number" step="0.01" name="cart-amount" class="form-control" value="">
+                                                                        {/elseloop}
+                                                                    {/if}
+
+                                                                    {if $deliveryModeId eq 2}
+                                                                        {ifloop rel="area_freeshipping_pr"}
+                                                                        {loop type="socolissimo.area.freeshipping.pr" name="area_freeshipping_pr" area_id=$area_id}
+                                                                            <input type="number" step="0.01" name="cart-amount" class="form-control" value="{$CART_AMOUNT}">
+                                                                        {/loop}
+                                                                        {/ifloop}
+                                                                        {elseloop rel="area_freeshipping_pr"}
+                                                                            <input type="number" step="0.01" name="cart-amount" class="form-control" value="">
+                                                                        {/elseloop}
+                                                                    {/if}
+
                                                                     <span class="input-group-btn">
-                                                                <button class="btn btn-default" type="submit">{intl l="Save"}</button>
-                                                            </span>
+                                                                        <button class="btn btn-default" type="submit">{intl l="Save"}</button>
+                                                                    </span>
                                                                 </div>
                                                             </form>
                                                         </div>
