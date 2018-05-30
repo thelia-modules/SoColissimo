@@ -12,7 +12,8 @@
     var config = {
         'urlAdd': '{url path="/admin/module/socolissimo/slice/save"}',
         'urlDelete': '{url path="/admin/module/socolissimo/slice/delete"}',
-        'urlSave': '{url path="/admin/module/socolissimo/slice/save"}'
+        'urlSave': '{url path="/admin/module/socolissimo/slice/save"}',
+        'urlCheck': '{url path="/admin/module/socolissimo/check"}'
     };
 
     $(document).ready(function() {
@@ -200,8 +201,26 @@
 
         });
 
+        $("#socolissimo-check-ids").on('submit', function (event) {
+            event.preventDefault();
+            $("#socolissimo-check-ids-result").removeClass('alert-warning', 'alert-success', 'alert');
+            $("#socolissimo-check-ids-result").html();
+            $.ajax({
+                type: "POST",
+                dataType: 'json',
+                data: $(this).serialize(),
+                url: config.urlCheck
+            }).done(function(data, textStatus, jqXHR){
+                $("#socolissimo-check-ids-result").html(data.status + '<br>' + data.message);
+                $("#socolissimo-check-ids-result").addClass('alert alert-success');
 
-
+            }).fail(function(jqXHR, textStatus, errorThrown){
+                var data = jqXHR.responseJSON;
+                $("#socolissimo-check-ids-result").html(data.status + '<br>' + data.message);
+                $("#socolissimo-check-ids-result").addClass('alert alert-warning');
+            });
+            return false;
+        });
     });
 
 

@@ -45,6 +45,7 @@
                         <li class="{if $tab eq "prices_slices_tab_{$ID}"}active{/if}"><a data-toggle="tab" href="#prices_slices_tab_{$ID}">{intl l="Price slices for \"%mode\"" d='socolissimo.bo.default' mode={$TITLE}}</a></li>
                     {/loop}
                     <li class="{if $tab eq "configure"}active{/if}"><a data-toggle="tab" href="#configure">{intl l="Advanced configuration" d='socolissimo.bo.default'}</a></li>
+                    <li class="{if $tab eq "check"}active{/if}"><a data-toggle="tab" href="#check">{intl l="Check account" d='socolissimo.bo.default'}</a></li>
                 </ul>
 
                 <div class="tab-content">
@@ -265,6 +266,43 @@
                                 {/form}
                             </div>
                         </div>
+                    </div>
+
+                    <div id="check"  class="tab-pane {if $tab eq "check"}active{/if} form-container">
+                        {form name="socolissimo.check.ids"}
+                        {if $form_error && $form_error_message}
+                            <div class="alert alert-danger">{$form_error_message}</div>
+                        {/if}
+                        <form id="socolissimo-check-ids" method="post">
+                            {form_hidden_fields form=$form}
+                            {form_field form=$form field='address'}
+                                <div class="form-group {if $error}has-error{/if}">
+                                    <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                </div>
+                            {/form_field}
+                            {form_field form=$form field='postcode'}
+                                <div class="form-group {if $error}has-error{/if}">
+                                    <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                </div>
+                            {/form_field}
+                            {form_field form=$form field='city'}
+                                <div class="form-group {if $error}has-error{/if}">
+                                    <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                </div>
+                            {/form_field}
+                            {form_field form=$form field='lang'}
+                                <div class="form-group {if $error}has-error{/if}">
+                                    <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                    <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                </div>
+                            {/form_field}
+                            <button type="submit" class="form-submit-button btn btn-sm  btn-default btn-info btn-test-account-config" title="{intl l='Test account' d='socolissimo.bo.default'}">{intl l='Test' d='socolissimo.bo.default'}</button>
+                            <div id="socolissimo-check-ids-result"></div>
+                        </form>
+                        {/form}
                     </div>
 
                     {loop type="socolissimo.delivery.mode" name="devlivery_mode"}

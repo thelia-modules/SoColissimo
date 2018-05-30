@@ -26,6 +26,10 @@
         <default key="_controller">SoColissimo\Controller\SaveConfig::save</default>
     </route>
 
+    <route id="socolissimo.check" path="/admin/module/socolissimo/check" methods="post">
+        <default key="_controller">SoColissimo\Controller\CheckAccountController::check</default>
+    </route>
+
     <route id="socolissimo.get.specific.location" path="/module/socolissimo/{countryid}/{zipcode}/{city}/{address}" methods="get">
         <default key="_controller">SoColissimo\Controller\GetSpecificLocation::get</default>
         <default key="address"></default>
