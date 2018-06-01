@@ -18,18 +18,24 @@ class AreaFreeshippingPr extends BaseLoop implements PropelSearchLoopInterface
     protected function getArgDefinitions()
     {
         return new ArgumentCollection(
-            Argument::createIntTypeArgument('id')
+            Argument::createIntTypeArgument('area_id'),
+            Argument::createIntTypeArgument('delivery_mode_id')
         );
     }
 
     public function buildModelCriteria()
     {
-        $mode = $this->getId();
+        $areaId = $this->getAreaId();
+        $mode = $this->getDeliveryModeId();
 
         $modes = SocolissimoAreaFreeshippingPrQuery::create();
 
         if (null !== $mode) {
-            $modes->filterById($mode);
+            $modes->filterByDeliveryModeId($mode);
+        }
+
+        if (null !== $areaId) {
+            $modes->filterByAreaId($areaId);
         }
 
         return $modes;
