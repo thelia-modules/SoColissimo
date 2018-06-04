@@ -1,3 +1,6 @@
+# 1.4.5
+- fix AreaFreeshipingPr.php 
+
 # 1.4.4
 - create loops: AreaFreeshippingDom and AreaFreeshippingPr
 - update template for to add these loops 
