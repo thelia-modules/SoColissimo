@@ -150,16 +150,20 @@ class SoColissimo extends AbstractDeliveryModule
 
             if ($deliveryModeQuery === 'dom') {
                 $cartAmountDom = SocolissimoAreaFreeshippingDomQuery::create()
-                    ->findOne()
-                    ->getCartAmount();
+                    ->findOne();
+                if ($cartAmountDom) {
+                    $cartAmountDom = $cartAmountDom->getCartAmount();
+                }
                 if (null !== $cartAmountDom && $cartAmountDom <= $cartAmount) {
                     $postage = 0;
                     return $postage;
                 }
             } elseif ($deliveryModeQuery === 'pr') {
                 $cartAmountPr = SocolissimoAreaFreeshippingPrQuery::create()
-                    ->findOne()
-                    ->getCartAmount();
+                    ->findOne();
+                if ($cartAmountPr) {
+                    $cartAmountPr = $cartAmountPr->getCartAmount();
+                }
                 if (null !== $cartAmountPr && $cartAmountPr <= $cartAmount) {
                     $postage = 0;
                     return $postage;
