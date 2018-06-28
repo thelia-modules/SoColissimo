@@ -1,3 +1,9 @@
+# 1.4.6
+- Displays an arror message instead of crashing when "mail_socolissimo" isn't created, thus allowing to not send any confirmation email.
+
+# 1.4.5
+- Fixed crash when using getCartAmount while cartAmount is null
+
 # 1.4.4
 - create loops: AreaFreeshippingDom and AreaFreeshippingPr
 - update template for to add these loops 

@@ -64,7 +64,7 @@ class SendMail implements EventSubscriberInterface
                     ->filterByName('mail_socolissimo')
                     ->findOne();
 
-                if (false === $message) {
+                if (false === $message || null === $message) {
                     throw new \Exception("Failed to load message 'order_confirmation'.");
                 }
 
