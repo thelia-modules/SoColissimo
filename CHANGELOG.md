@@ -1,3 +1,6 @@
+# 1.4.7
+- Changing a relay point Free Shipping for a specific area does not add the price for every other area anymore. 
+
 # 1.4.6
 - Displays an arror message instead of crashing when "mail_socolissimo" isn't created, thus allowing to not send any confirmation email.
 
