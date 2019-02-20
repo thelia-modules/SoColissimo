@@ -150,6 +150,7 @@ class SoColissimo extends AbstractDeliveryModule
 
             if ($deliveryModeQuery === 'dom') {
                 $cartAmountDom = SocolissimoAreaFreeshippingDomQuery::create()
+                    ->filterByAreaId($areaId)
                     ->findOne();
                 if ($cartAmountDom) {
                     $cartAmountDom = $cartAmountDom->getCartAmount();
@@ -160,6 +161,7 @@ class SoColissimo extends AbstractDeliveryModule
                 }
             } elseif ($deliveryModeQuery === 'pr') {
                 $cartAmountPr = SocolissimoAreaFreeshippingPrQuery::create()
+                    ->filterByAreaId($areaId)
                     ->findOne();
                 if ($cartAmountPr) {
                     $cartAmountPr = $cartAmountPr->getCartAmount();
