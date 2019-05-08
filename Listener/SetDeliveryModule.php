@@ -178,6 +178,10 @@ class SetDeliveryModule implements EventSubscriberInterface
                     throw new \Exception($message);
                 }
             }
+            else {
+                
+                throw new \ErrorException("No relay chosen for Socolissimo delivery module");
+            }
         }
     }
 
