@@ -1,7 +1,7 @@
 <?php
 /*************************************************************************************/
 /*                                                                                   */
-/*      Thelia	                                                                     */
+/*      Thelia                                                                       */
 /*                                                                                   */
 /*      Copyright (c) OpenStudio                                                     */
 /*      email : info@thelia.net                                                      */
@@ -17,7 +17,7 @@
 /*      GNU General Public License for more details.                                 */
 /*                                                                                   */
 /*      You should have received a copy of the GNU General Public License            */
-/*	    along with this program. If not, see <http://www.gnu.org/licenses/>.         */
+/*      along with this program. If not, see <http://www.gnu.org/licenses/>.         */
 /*                                                                                   */
 /*************************************************************************************/
 
@@ -119,6 +119,11 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             $response = array();
         } catch (\SoapFault $e) {
             $response = array();
+        }
+
+        if (!is_array($response) && $response !== null) {
+            $newResponse[] = $response;
+            $response = $newResponse;
         }
 
         return $response;
