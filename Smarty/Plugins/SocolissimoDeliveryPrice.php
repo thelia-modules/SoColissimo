@@ -33,7 +33,11 @@ class SocolissimoDeliveryPrice extends AbstractSmartyPlugin
     public function socolissimoDeliveryPrice($params, $smarty)
     {
         $deliveryMode = $params["delivery-mode"];
-        $country = CountryQuery::create()->findOneById($params["country"]);
+
+        $country = Country::getShopLocation();
+        if (isset($params["country"])) {
+            $country = CountryQuery::create()->findOneById($params["country"]);
+        }
 
         $cartWeight = $this->request->getSession()->getSessionCart($this->dispatcher)->getWeight();
         $cartAmount = $this->request->getSession()->getSessionCart($this->dispatcher)->getTaxedAmount($country);
