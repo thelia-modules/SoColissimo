@@ -6,6 +6,7 @@ use SoColissimo\SoColissimo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Thelia\Core\HttpFoundation\Request;
 use Thelia\Model\CountryQuery;
+use Thelia\Model\Country;
 use Thelia\Module\Exception\DeliveryException;
 use TheliaSmarty\Template\AbstractSmartyPlugin;
 use TheliaSmarty\Template\SmartyPluginDescriptor;
