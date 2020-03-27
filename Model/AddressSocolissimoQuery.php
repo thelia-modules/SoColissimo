@@ -4,6 +4,7 @@ namespace SoColissimo\Model;
 
 use SoColissimo\Model\Base\AddressSocolissimoQuery as BaseAddressSocolissimoQuery;
 
+
 /**
  * Skeleton subclass for performing query and update operations on the 'address_socolissimo' table.
  *

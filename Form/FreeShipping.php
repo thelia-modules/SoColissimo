@@ -23,7 +23,9 @@
 
 namespace SoColissimo\Form;
 
-use SoColissimo\Model\SocolissimoFreeshippingQuery;
+use SoColissimo\SoColissimo;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Thelia\Core\Translation\Translator;
 use Thelia\Form\BaseForm;
 
@@ -52,10 +54,17 @@ class FreeShipping extends BaseForm
     protected function buildForm()
     {
         $this->formBuilder
-            ->add("delivery_mode", "integer")
-            ->add("freeshipping", "checkbox", array(
-                'label'=>Translator::getInstance()->trans("Activate free shipping: ")
-            ))
+            ->add(
+                'delivery_mode',
+                IntegerType::class
+            )
+            ->add(
+                'freeshipping',
+                CheckboxType::class,
+                [
+                    'label' =>  Translator::getInstance()->trans("Activate free shipping: ", [], SoColissimo::DOMAIN)
+                ]
+            )
         ;
     }
 

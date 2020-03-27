@@ -80,8 +80,8 @@ class SetDeliveryModule implements EventSubscriberInterface
             $req->setId($pr_code)
                 ->setLangue("FR")
                 ->setDate(date("d/m/Y"))
-                ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
-                ->setPassword(ConfigQuery::read('socolissimo_pwd'));
+                ->setAccountNumber(SoColissimo::getConfigValue('socolissimo_username'))
+                ->setPassword(SoColissimo::getConfigValue('socolissimo_password'));
 
             // An argument "Code réseau" is now required in addition to the Relay Point Code to identify a relay point outside France.
             // This argument is optional for relay points inside France.

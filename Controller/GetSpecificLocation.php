@@ -23,6 +23,7 @@
 
 namespace SoColissimo\Controller;
 
+use SoColissimo\SoColissimo;
 use SoColissimo\WebService\FindById;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Thelia\Controller\Front\BaseFrontController;
@@ -59,8 +60,8 @@ class GetSpecificLocation extends BaseFrontController
         $req->setId($point_id)
             ->setLangue("FR")
             ->setDate(date("d/m/Y"))
-            ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
-            ->setPassword(ConfigQuery::read('socolissimo_pwd'))
+            ->setAccountNumber(SoColissimo::getConfigValue('socolissimo_username'))
+            ->setPassword(SoColissimo::getConfigValue('socolissimo_password'))
         ;
 
         $response = $req->exec();

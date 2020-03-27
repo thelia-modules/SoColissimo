@@ -24,6 +24,8 @@
 namespace SoColissimo\Form;
 
 use SoColissimo\SoColissimo;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Url;
 use Thelia\Core\Translation\Translator;
@@ -62,28 +64,28 @@ class ConfigureSoColissimo extends BaseForm
         $translator = Translator::getInstance();
         $this->formBuilder
             ->add(
-                'accountnumber',
-                'text',
+                'socolissimo_username',
+                TextType::class,
                 [
                     'constraints' => [new NotBlank()],
-                    'data'        => ConfigQuery::read('socolissimo_login'),
+                    'data'        => SoColissimo::getConfigValue('socolissimo_username'),
                     'label'       => $translator->trans("Account number", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'accountnumber']
+                    'label_attr'  => ['for' => 'socolissimo_username']
                 ]
             )
             ->add(
-                'password',
-                'text',
+                'socolissimo_password',
+                TextType::class,
                 [
                     'constraints' => [new NotBlank()],
-                    'data'        => ConfigQuery::read('socolissimo_pwd'),
+                    'data'        => SoColissimo::getConfigValue('socolissimo_password'),
                     'label'       => $translator->trans("Password", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'password']
+                    'label_attr'  => ['for' => 'socolissimo_password']
                 ]
             )
             ->add(
-                'url_prod',
-                'text',
+                'socolissimo_endpoint_url',
+                TextType::class,
                 [
                     'constraints' => [
                         new NotBlank(),
@@ -91,44 +93,31 @@ class ConfigureSoColissimo extends BaseForm
                             'protocols' => ['https', 'http']
                         ])
                     ],
-                    'data'        => ConfigQuery::read('socolissimo_url_prod'),
+                    'data'        => SoColissimo::getConfigValue('socolissimo_endpoint_url'),
                     'label'       => $translator->trans("Colissimo URL prod", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'socolissimo_url_prod']
+                    'label_attr'  => ['for' => 'socolissimo_endpoint_url']
                 ]
             )
             ->add(
-                'url_test',
-                'text',
-                [
-                    'constraints' => [
-                        new NotBlank(),
-                        new Url([
-                            'protocols' => ['https', 'http']
-                        ])
-                    ],
-                    'data'        => ConfigQuery::read('socolissimo_url_test'),
-                    'label'       => $translator->trans("Colissimo URL test", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'socolissimo_url_test']
-                ]
-            )
-            ->add(
-                'test_mode',
-                'text',
-                [
-                    'constraints' => [new NotBlank()],
-                    'data'        => ConfigQuery::read('socolissimo_test_mode'),
-                    'label'       => $translator->trans("Test mode", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'test_mode']
-                ]
-            )
-            ->add(
-                'google_map_key',
-                'text',
+                'socolissimo_google_map_key',
+                TextType::class,
                 [
                     'constraints' => [],
-                    'data'        => ConfigQuery::read('socolissimo_google_map_key'),
+                    'data'        => SoColissimo::getConfigValue('socolissimo_google_map_key'),
                     'label'       => $translator->trans("Google map API key", [], SoColissimo::DOMAIN),
-                    'label_attr'  => ['for' => 'google_map_key']
+                    'label_attr'  => ['for' => 'socolissimo_google_map_key']
+                ]
+            )
+            ->add(
+                'socolissimo_dom_delivery_authorized',
+                CheckboxType::class,
+                [
+                    'constraints' => [],
+                    'required'      => false,
+                    'data'          => (bool)SoColissimo::getConfigValue('socolissimo_dom_delivery_authorized'),
+                    'value'         => (bool)SoColissimo::getConfigValue('socolissimo_dom_delivery_authorized'),
+                    'label'       => $translator->trans("[DEPRECATED] Activate Dom delivery", [], SoColissimo::DOMAIN),
+                    'label_attr'  => ['for' => 'socolissimo_dom_delivery_authorized']
                 ]
             )
         ;

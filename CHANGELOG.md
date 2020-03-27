@@ -1,3 +1,9 @@
+# 2.0.0
+- Bugfixes
+- Domicile delivery is now deprecated and will not be updated or taken care of anymore.
+Use the ColissimoWs module instead for domicile delivery, and this one for relay point.
+- Change version to 2.0.0 to follow the version number of ColissimoWs
+
 # 1.4.7
 - Changing a relay point Free Shipping for a specific area does not add the price for every other area anymore. 
 

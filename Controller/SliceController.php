@@ -8,14 +8,13 @@ use SoColissimo\Model\SocolissimoPriceQuery;
 use SoColissimo\SoColissimo;
 use Thelia\Controller\Admin\BaseAdminController;
 use Thelia\Core\Security\AccessManager;
+use Thelia\Core\Security\Resource\AdminResources;
 
 class SliceController extends BaseAdminController
 {
     public function saveSliceAction()
     {
-        $response = $this->checkAuth([], ['socolissimo'], AccessManager::UPDATE);
-
-        if (null !== $response) {
+        if (null !== $response = $this->checkAuth(array(AdminResources::MODULE), ['socolissimo'], AccessManager::UPDATE)) {
             return $response;
         }
 
@@ -33,14 +32,14 @@ class SliceController extends BaseAdminController
         try {
             $requestData = $this->getRequest()->request;
 
-            if (0 !== $id = intval($requestData->get('id', 0))) {
+            if (0 !== $id = (int)$requestData->get('id', 0)) {
                 $slice = SocolissimoPriceQuery::create()->findPk($id);
             } else {
                 $slice = new SocolissimoPrice();
             }
 
 
-            if (0 !== $areaId = intval($requestData->get('area', 0))) {
+            if (0 !== $areaId = (int)$requestData->get('area', 0)) {
                 $slice->setAreaId($areaId);
             } else {
                 $messages[] = $this->getTranslator()->trans(
@@ -50,7 +49,7 @@ class SliceController extends BaseAdminController
                 );
             }
 
-            if (0 !== $deliveryMode = intval($requestData->get('deliveryModeId', 0))) {
+            if (0 !== $deliveryMode = (int)$requestData->get('deliveryModeId', 0)) {
                 $slice->setDeliveryModeId($deliveryMode);
             } else {
                 $messages[] = $this->getTranslator()->trans(
@@ -143,7 +142,7 @@ class SliceController extends BaseAdminController
                 $val = str_replace(".", "", $val);
                 $val = str_replace(",", ".", $val);
             }
-            $val = floatval($val);
+            $val = (float)$val;
 
             return $val;
         }
@@ -172,7 +171,7 @@ class SliceController extends BaseAdminController
         try {
             $requestData = $this->getRequest()->request;
 
-            if (0 !== $id = intval($requestData->get('id', 0))) {
+            if (0 !== $id = (int)$requestData->get('id', 0)) {
                 $slice = SocolissimoPriceQuery::create()->findPk($id);
                 $slice->delete();
                 $responseData['success'] = true;

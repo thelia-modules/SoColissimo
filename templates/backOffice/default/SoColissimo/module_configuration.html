@@ -1,3 +1,9 @@
+<style>
+    input[type=number]
+    {
+        min-width:100px;
+    }
+</style>
 <div class="row">
     <!-- Errors -->
     {loop name="checkrights.socolissimo" type="socolissimo.check.rights"}
@@ -219,45 +225,41 @@
                                 {/if}
                                     <form action="{url path='/admin/module/socolissimo/configure'}" method="post">
                                         {form_hidden_fields form=$form}
-                                        {form_field form=$form field='url_prod'}
+                                        {form_field form=$form field='socolissimo_endpoint_url'}
                                             <div class="form-group {if $error}has-error{/if}">
                                                 <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
                                                 <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
                                             </div>
                                         {/form_field}
-                                        {form_field form=$form field='url_test'}
-                                            <div class="form-group {if $error}has-error{/if}">
-                                                <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
-                                                <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
-                                            </div>
-                                        {/form_field}
-                                        {form_field form=$form field='test_mode'}
-                                            <div class="form-group {if $error}has-error{/if}">
-                                                <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
-
-                                                <select name="{$name}" id="{$label_attr.for}" class="form-control">
-                                                    <option value="0" {if $value == 0}selected{/if}>{intl l="PRODUCTION" d='socolissimo.bo.default'}</option>
-                                                    <option value="1" {if $value == 1}selected{/if}>{intl l="TEST" d='socolissimo.bo.default'}</option>
-                                                </select>
-                                            </div>
-                                        {/form_field}
-                                        {form_field form=$form field='accountnumber'}
+                                        {form_field form=$form field='socolissimo_username'}
                                             <div class="form-group {if $error}has-error{/if}">
                                                 <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
                                                 <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}" >
                                             </div>
                                         {/form_field}
-                                        {form_field form=$form field='password'}
+                                        {form_field form=$form field='socolissimo_password'}
                                             <div class="form-group {if $error}has-error{/if}">
                                                 <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
                                                 <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
                                             </div>
                                         {/form_field}
-                                        {form_field form=$form field='google_map_key'}
+                                        {form_field form=$form field='socolissimo_google_map_key'}
                                             <div class="form-group {if $error}has-error{/if}">
                                                 <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
                                                 <input type="text" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
                                             </div>
+                                        {/form_field}
+                                        {form_field form=$form field='socolissimo_dom_delivery_authorized'}
+                                        <div class="form-group {if $error}has-error{/if}">
+                                            <label for="{$label_attr.for}" class="control-label">{$label}{if $required} <span class="required">*</span>{/if} : </label>
+                                            <span>{intl l='Only use this for compatibility reason or if you have no other choice. For domicile delivery, you should use ColissimoWs instead.' d='socolissimo.bo.default'}</span>
+                                            {if $value}
+                                            <input type="checkbox" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}" checked>
+                                            {else}
+                                            <input type="checkbox" id="{$label_attr.for}" name="{$name}" class="form-control" value="{$value}" title="{$label}">
+                                            {/if}
+
+                                        </div>
                                         {/form_field}
                                         <br/>
                                         <button type="submit" name="save_mode" value="stay" class="form-submit-button btn btn-sm btn-default btn-success" title="{intl l='Save changes' d='socolissimo.bo.default'}">{intl l='Save changes' d='socolissimo.bo.default'} <span class="glyphicon glyphicon-ok"></span></button>
@@ -398,12 +400,12 @@
                                                         </th>
                                                         <th class="col-md-1">
                                                             <div class="btn-group">
-                                                                {loop type="auth" name="can_change" role="ADMIN" module="customdelivery" access="UPDATE"}
+                                                                {loop type="auth" name="can_change" role="ADMIN" module="socolissimo" access="UPDATE"}
                                                                     <a class="btn btn-default btn-xs js-slice-save" title="{intl d='socolissimo.bo.default' l='Save this price slice'}">
                                                                         <span class="glyphicon glyphicon-floppy-disk"></span>
                                                                     </a>
                                                                 {/loop}
-                                                                {loop type="auth" name="can_change" role="ADMIN" module="customdelivery" access="DELETE"}
+                                                                {loop type="auth" name="can_change" role="ADMIN" module="socolissimo" access="DELETE"}
                                                                     <a class="btn btn-default btn-xs js-slice-delete" title="{intl d='socolissimo.bo.default' l='Delete this price slice'}" data-id="{$ID}">
                                                                         <span class="glyphicon glyphicon-trash"></span>
                                                                     </a>

@@ -23,6 +23,7 @@
 
 namespace SoColissimo\WebService;
 
+use SoColissimo\SoColissimo;
 use Thelia\Model\ConfigQuery;
 
 /**
@@ -48,12 +49,8 @@ abstract class BaseSoColissimoWebService extends BaseWebService
 
     public function __construct($function)
     {
-        $testMode = ConfigQuery::read('socolissimo_test_mode');
-        if ($testMode) {
-            $url = ConfigQuery::read('socolissimo_url_test');
-        } else {
-            $url = ConfigQuery::read('socolissimo_url_prod');
-        }
+        $url = SoColissimo::getConfigValue('socolissimo_endpoint_url');
+
         parent::__construct($url, $function);
     }
 }

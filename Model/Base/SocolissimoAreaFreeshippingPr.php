@@ -75,7 +75,7 @@ abstract class SocolissimoAreaFreeshippingPr implements ActiveRecordInterface
 
     /**
      * The value for the cart_amount field.
-     * Note: this column has a database default value of: '0.000000'
+     * Note: this column has a database default value of: '0.00'
      * @var        string
      */
     protected $cart_amount;
@@ -106,7 +106,7 @@ abstract class SocolissimoAreaFreeshippingPr implements ActiveRecordInterface
      */
     public function applyDefaultValues()
     {
-        $this->cart_amount = '0.000000';
+        $this->cart_amount = '0.00';
     }
 
     /**
@@ -515,7 +515,7 @@ abstract class SocolissimoAreaFreeshippingPr implements ActiveRecordInterface
      */
     public function hasOnlyDefaultValues()
     {
-            if ($this->cart_amount !== '0.000000') {
+            if ($this->cart_amount !== '0.00') {
                 return false;
             }
 

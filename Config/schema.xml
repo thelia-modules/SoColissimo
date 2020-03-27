@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <database defaultIdMethod="native" name="thelia" namespace="SoColissimo\Model">
+
     <table name="address_socolissimo">
         <column name="id" primaryKey="true" required="true" type="INTEGER" />
         <column name="title_id" required="true" type="INTEGER" />
@@ -22,6 +23,7 @@
             <reference foreign="id" local="country_id" />
         </foreign-key>
     </table>
+
     <table name="order_address_socolissimo">
         <column name="id" primaryKey="true" required="true" type="INTEGER" />
         <column name="code" size="10" type="VARCHAR" required="true" />
@@ -30,6 +32,7 @@
             <reference foreign="id" local="id" />
         </foreign-key>
     </table>
+
     <table name="socolissimo_delivery_mode">
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="title" size="255" type="VARCHAR"/>
@@ -37,6 +40,7 @@
         <column name="freeshipping_active" type="BOOLEAN"/>
         <column name="freeshipping_from" type="FLOAT"/>
     </table>
+
     <table name="socolissimo_price">
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="area_id" required="true" type="INTEGER" />
@@ -53,11 +57,12 @@
         </foreign-key>
     </table>
 
+    <!-- We need to keep this for compatibility reasons with older versions : the models are needed -->
     <table name="socolissimo_area_freeshipping_dom">
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="area_id" required="true" type="INTEGER" />
         <column name="delivery_mode_id" required="true" type="INTEGER" />
-        <column name="cart_amount"  defaultValue="0.000000" scale="6" size="16" type="DECIMAL" />
+        <column name="cart_amount" defaultValue="0.00" size="16" scale="2" type="DECIMAL" />
         <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_dom_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="area_id" />
         </foreign-key>
@@ -70,7 +75,7 @@
         <column name="id" primaryKey="true" autoIncrement="true" required="true" type="INTEGER" />
         <column name="area_id" required="true" type="INTEGER" />
         <column name="delivery_mode_id" required="true" type="INTEGER" />
-        <column name="cart_amount"  defaultValue="0.000000" scale="6" size="16" type="DECIMAL" />
+        <column name="cart_amount" defaultValue="0.00" size="16" scale="2" type="DECIMAL" />
         <foreign-key foreignTable="area" name="fk_socolissimo_area_freeshipping_pr_area_id" onDelete="RESTRICT" onUpdate="RESTRICT">
             <reference foreign="id" local="area_id" />
         </foreign-key>
