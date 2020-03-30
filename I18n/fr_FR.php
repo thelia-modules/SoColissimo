@@ -7,7 +7,6 @@ return array(
     'Can\'t read Config directory' => 'Le dossier Config ne peut être lu',
     'Can\'t read file' => 'Le fichier suivant ne peut être lu',
     'Colissimo URL prod' => 'URL de Colissimo en production',
-    'Colissimo URL test' => 'URL de Colissimo en mode test',
     'Do not change' => 'Ne pas changer',
     'Google map API key' => 'Clé API Google map',
     'No relay points were selected' => 'Aucun point relais n\'a été sélectionné',
@@ -17,7 +16,6 @@ return array(
     'Set orders status as processing' => 'En traitement',
     'Set orders status as sent' => 'Envoyée',
     'So Colissimo update config' => 'Mise à jour de la configuration de So Colissimo ',
-    'Test mode' => 'Mode test',
     'The area is not valid' => 'La zone de livraison n\'est pas valide.',
     'The delivery mode is not valid' => 'Le mode de livraison n\'est pas valide.',
     'The price max value is not valid' => 'Le prix maximum n\'est pas valide.',
@@ -31,5 +29,6 @@ return array(
     'This delivery mode doesn\'t exists.' => 'Ce mode de livraison n\'existe pas.',
     'You must specify at least a price max or a weight max value.' => 'Vous devez spécifier au moins un prix maximum ou un poids maximum.',
     'Your slice has been saved' => 'Votre tranche a été enregistrée.',
+    '[DEPRECATED] Activate Dom delivery' => '[DEPRECIE] Activer la livraison à domicile',
     'server' => 'Serveur',
 );
