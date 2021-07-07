@@ -2,6 +2,7 @@
 
 namespace SoColissimo\Controller;
 
+use SoColissimo\SoColissimo;
 use Thelia\Controller\Admin\BaseAdminController;
 use SoColissimo\Form\ConfigureSoColissimo;
 use Thelia\Core\Translation\Translator;
@@ -22,12 +23,11 @@ class SaveConfig extends BaseAdminController
         try {
             $vform = $this->validateForm($form);
 
-            ConfigQuery::write('socolissimo_login', $vform->get('accountnumber')->getData(), 1, 1);
-            ConfigQuery::write('socolissimo_pwd', $vform->get('password')->getData(), 1, 1);
-            ConfigQuery::write('socolissimo_google_map_key', $vform->get('google_map_key')->getData(), 1, 1);
-            ConfigQuery::write('socolissimo_url_prod', $vform->get('url_prod')->getData(), 1, 1);
-            ConfigQuery::write('socolissimo_url_test', $vform->get('url_test')->getData(), 1, 1);
-            ConfigQuery::write('socolissimo_test_mode', $vform->get('test_mode')->getData(), 1, 1);
+            SoColissimo::setConfigValue('socolissimo_username', $vform->get('socolissimo_username')->getData());
+            SoColissimo::setConfigValue('socolissimo_password', $vform->get('socolissimo_password')->getData());
+            SoColissimo::setConfigValue('socolissimo_google_map_key', $vform->get('socolissimo_google_map_key')->getData());
+            SoColissimo::setConfigValue('socolissimo_endpoint_url', $vform->get('socolissimo_endpoint_url')->getData());
+            SoColissimo::setConfigValue('socolissimo_dom_delivery_authorized', $vform->get('socolissimo_dom_delivery_authorized')->getData());
 
             return $this->generateRedirect(
                 URL::getInstance()->absoluteUrl('/admin/module/SoColissimo', ['current_tab' => 'configure'])

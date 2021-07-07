@@ -3,6 +3,7 @@
 namespace SoColissimo\Loop;
 
 use SoColissimo\Model\SocolissimoDeliveryModeQuery;
+use SoColissimo\SoColissimo;
 use Thelia\Core\Template\Element\BaseLoop;
 use Thelia\Core\Template\Element\LoopResult;
 use Thelia\Core\Template\Element\LoopResultRow;
@@ -39,13 +40,16 @@ class SoColissimoDeliveryMode extends BaseLoop implements PropelSearchLoopInterf
     {
         /** @var \SoColissimo\Model\SocolissimoDeliveryMode $mode */
         foreach ($loopResult->getResultDataCollection() as $mode) {
-            $loopResultRow = new LoopResultRow($mode);
-            $loopResultRow->set("ID", $mode->getId())
-                ->set("TITLE", $mode->getTitle())
-                ->set("CODE", $mode->getCode())
-                ->set("FREESHIPPING_ACTIVE", $mode->getFreeshippingActive())
-                ->set("FREESHIPPING_FROM", $mode->getFreeshippingFrom());
-            $loopResult->addRow($loopResultRow);
+            if (SoColissimo::getConfigValue('socolissimo_dom_delivery_authorized') || $mode->getId() !== 1) {
+                $loopResultRow = new LoopResultRow($mode);
+                $loopResultRow
+                    ->set("ID", $mode->getId())
+                    ->set("TITLE", $mode->getTitle())
+                    ->set("CODE", $mode->getCode())
+                    ->set("FREESHIPPING_ACTIVE", $mode->getFreeshippingActive())
+                    ->set("FREESHIPPING_FROM", $mode->getFreeshippingFrom());
+                $loopResult->addRow($loopResultRow);
+            }
         }
         return $loopResult;
     }

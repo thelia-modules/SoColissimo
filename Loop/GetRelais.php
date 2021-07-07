@@ -109,8 +109,8 @@ class GetRelais extends BaseLoop implements ArraySearchLoopInterface
             ->setLang("FR")
             ->setOptionInter("1")
             ->setShippingDate(date("d/m/Y"))
-            ->setAccountNumber(ConfigQuery::read('socolissimo_login'))
-            ->setPassword(ConfigQuery::read('socolissimo_pwd'))
+            ->setAccountNumber(SoColissimo::getConfigValue('socolissimo_username'))
+            ->setPassword(SoColissimo::getConfigValue('socolissimo_password'))
         ;
 
         try {

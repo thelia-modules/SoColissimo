@@ -44,6 +44,7 @@ use Propel\Runtime\Connection\ConnectionInterface;
 use Thelia\Install\Database;
 use Thelia\Module\AbstractDeliveryModule;
 use Thelia\Module\Exception\DeliveryException;
+use Thelia\Tools\Version\Version;
 
 class SoColissimo extends AbstractDeliveryModule
 {
@@ -219,8 +220,8 @@ class SoColissimo extends AbstractDeliveryModule
         }
         $postage = null;
 
-        if (null === $postage = self::getMinPostage($areaIdArray, $cartWeight, $cartAmount, $deliveryModeCode)) {
-            $postage = self::getMinPostage($areaIdArray, $cartWeight, $cartAmount, 'dom');
+        if (null === $postage = $this->getMinPostage($areaIdArray, $cartWeight, $cartAmount, $deliveryModeCode)) {
+            $postage = $this->getMinPostage($areaIdArray, $cartWeight, $cartAmount, 'dom');
             if (null === $postage) {
                 throw new DeliveryException("Colissimo delivery unavailable for your cart weight or delivery country");
             }
@@ -276,10 +277,7 @@ class SoColissimo extends AbstractDeliveryModule
         return $areaArray;
     }
 
-
-
-
-
+    /** Return the module code */
     public function getCode()
     {
         return 'SoColissimo';
@@ -341,6 +339,62 @@ class SoColissimo extends AbstractDeliveryModule
         }
     }
 
+    protected function checkModuleConfig() {
+        /** If this isn't set, this means it's the first time we start the module or it's updating from < 2.0.0 */
+        if (null === self::getConfigValue('socolissimo-rework-2')) {
+            /**
+             * We check for every ConfigQuery the old version of the module set.
+             * We delete them if they exist, and we set a module config instead
+             */
+
+            /** Colissimo Username / Account number */
+            self::setConfigValue('socolissimo_username', '');
+            if (null !== $value = ConfigQuery::read('socolissimo_login')) {
+                self::setConfigValue('socolissimo_username', $value);
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            /** Colissimo password */
+            self::setConfigValue('socolissimo_password', '');
+            if (null !== $value = ConfigQuery::read('socolissimo_pwd')) {
+                self::setConfigValue('socolissimo_password', $value);
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            /** Colissimo Google Map key */
+            self::setConfigValue('socolissimo_google_map_key', '');
+            if (null !== $value = ConfigQuery::read('socolissimo_google_map_key')) {
+                self::setConfigValue('socolissimo_google_map_key', $value);
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            /** Colissimo Endpoint url for relay point (point relais) */
+            self::setConfigValue('socolissimo_endpoint_url', '');
+            if (null !== $value = ConfigQuery::read('socolissimo_url_prod')) {
+                self::setConfigValue('socolissimo_endpoint_url', $value);
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            /** Delete useless config value */
+            if (null !== $value = ConfigQuery::read('socolissimo_test_mode')) {
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            /** Delete useless config value */
+            if (null !== $value = ConfigQuery::read('socolissimo_url_test')) {
+                ConfigQuery::create()->findOneByValue($value)->delete();
+            }
+
+            self::setConfigValue('socolissimo-rework-2', 1);
+        }
+
+        /** Shows dom delivery in the config */
+        if (!self::getConfigValue('socolissimo_dom_delivery_authorized')) {
+            self::setConfigValue('socolissimo_dom_delivery_authorized', '0');
+        }
+    }
+
+
     public function postActivation(ConnectionInterface $con = null)
     {
         try {
@@ -364,56 +418,16 @@ class SoColissimo extends AbstractDeliveryModule
             throw $e;
         }
 
+        $this->checkModuleConfig();
 
-        ConfigQuery::write(
-            'socolissimo_login',
-            ConfigQuery::read('socolissimo_login', null),
-            1,
-            1
-        );
-
-        ConfigQuery::write(
-            'socolissimo_pwd',
-            ConfigQuery::read('socolissimo_pwd', null),
-            1,
-            1
-        );
-
-        ConfigQuery::write(
-            'socolissimo_pwd',
-            ConfigQuery::read('socolissimo_pwd', null),
-            1,
-            1
-        );
-
-        ConfigQuery::write(
-            'socolissimo_google_map_key',
-            ConfigQuery::read('socolissimo_google_map_key', null),
-            1,
-            1
-        );
-
-        ConfigQuery::write(
-            'socolissimo_url_prod',
-            ConfigQuery::read('socolissimo_url_prod', 'https://ws.colissimo.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl'),
-            1,
-            1
-        );
-
-        ConfigQuery::write(
-            'socolissimo_url_test',
-            ConfigQuery::read('socolissimo_url_test', 'https://pfi.telintrans.fr/pointretrait-ws-cxf/PointRetraitServiceWS/2.0?wsdl'),
-            1,
-            1
-        );
-
-        /* insert the images from image folder if first module activation */
+        /** Insert the images from image folder if first module activation */
         $module = $this->getModuleModel();
         if (ModuleImageQuery::create()->filterByModule($module)->count() == 0) {
             $this->deployImageFolder($module, sprintf('%s/images', __DIR__), $con);
         }
     }
 
+    /** Return the module ID */
     public static function getModCode()
     {
         return ModuleQuery::create()->findOneByCode("SoColissimo")->getId();
@@ -424,6 +438,8 @@ class SoColissimo extends AbstractDeliveryModule
      */
     public function update($currentVersion, $newVersion, ConnectionInterface $con = null)
     {
+        $this->checkModuleConfig();
+
         $finder = (new Finder)
             ->files()
             ->name('#.*?\.sql#')
